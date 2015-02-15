@@ -1,8 +1,8 @@
 <?php namespace igaster\laravelTheme;
 
 use Illuminate\Support\ServiceProvider;
-// use App\libraries\Themes\Themes;
-// use App\libraries\Domains;
+use Orchestra\Asset;
+
 
 class themeServiceProvider extends ServiceProvider {
 
@@ -34,11 +34,11 @@ class themeServiceProvider extends ServiceProvider {
 				$match[1] = Themes::url($match[1]);
 
 				if(empty($match[2]))
-					return "<?php \Asset::script('{$match[1]}', '{$match[1]}');?>";
+					return "<?php Asset::script('{$match[1]}', '{$match[1]}');?>";
 				elseif(empty($match[3]))
-					return "<?php \Asset::script('{$match[2]}', '{$match[1]}');?>";
+					return "<?php Asset::script('{$match[2]}', '{$match[1]}');?>";
 				else
-					return "<?php \Asset::script('{$match[2]}', '{$match[1]}', '{$match[3]}');?>"; // ToDo : Support for array (match[3]);
+					return "<?php Asset::script('{$match[2]}', '{$match[1]}', '{$match[3]}');?>"; // ToDo : Support for array (match[3]);
 				
 				},$value);
 		});
@@ -54,11 +54,11 @@ class themeServiceProvider extends ServiceProvider {
 				$match[1] = Themes::url($match[1]);
 
 				if(empty($match[2]))
-					return "<?php \Asset::style('{$match[1]}', '{$match[1]}');?>";
+					return "<?php Asset::style('{$match[1]}', '{$match[1]}');?>";
 				elseif(empty($match[3]))
-					return "<?php \Asset::style('{$match[2]}', '{$match[1]}');?>";
+					return "<?php Asset::style('{$match[2]}', '{$match[1]}');?>";
 				else
-					return "<?php \Asset::style('{$match[2]}', '{$match[1]}', '{$match[3]}');?>";
+					return "<?php Asset::style('{$match[2]}', '{$match[1]}', '{$match[3]}');?>";
 
 			},$value);
 		});

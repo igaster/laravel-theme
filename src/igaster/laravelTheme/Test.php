@@ -1,4 +1,4 @@
-<?php namespace igaster\Theme;
+<?php namespace igaster\laravelTheme;
 
 class Test
 {

@@ -1,4 +1,4 @@
-<?php namespace igaster\Theme;
+<?php namespace igaster\laravelTheme;
 
 use Illuminate\Support\Facades\Config;
 
@@ -35,24 +35,24 @@ class Theme {
         $this->parentTheme  = Themes::get($options['extends']);
     }
 
-    public function path($url){
+    public function url($url){
         if(preg_match('/^((http(s?):)?\/\/)/i',$url))
             return $url;
 
-		$path = (empty($this->assetPath) ? '' : '/').$this->assetPath.'/'.ltrim($url, '/');
+		$url = (empty($this->assetPath) ? '' : '/').$this->assetPath.'/'.ltrim($url, '/');
 
-        if (!file_exists($fullPath = base_path('/public').$path))
+        if (!file_exists($fullPath = base_path('/public').$url))
             if (empty($this->parentTheme))
                 throw new \Exception("$fullPath - not found");
             else
                 return $this->parentTheme->path($url);
 
-        return $path;
+        return $url;
 	}
 
     public function activate(){
         Config::set('view.paths', $this->pathsList_Views());
-        Themes::$activeTheme = $this;
+        Themes::set($this->themeName);
 	}
 
 	public function pathsList_Views(){

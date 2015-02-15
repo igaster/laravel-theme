@@ -1,8 +1,7 @@
 <?php namespace igaster\laravelTheme;
 
 use Illuminate\Support\ServiceProvider;
-use Orchestra\Asset;
-
+use Illuminate\Support\Facades\Blade;
 
 class themeServiceProvider extends ServiceProvider {
 
@@ -27,18 +26,18 @@ class themeServiceProvider extends ServiceProvider {
 		|   @js(bootstrap.js, bootstrap, jquery)
 		|--------------------------------------------------------------------------*/
 
-		\Blade::extend(function($value)
+		Blade::extend(function($value)
 		{
 			return preg_replace_callback('/\@js\s*\(\s*([\w\-\._:\\/]*)\s*(?:,\s*([\w\-\._:\\/]*)\s*,?\s*(.*))?\)/', function($match){
 
 				$match[1] = Themes::url($match[1]);
 
 				if(empty($match[2]))
-					return "<?php Asset::script('{$match[1]}', '{$match[1]}');?>";
+					return "<?php \Orchestra\Asset::script('{$match[1]}', '{$match[1]}');?>";
 				elseif(empty($match[3]))
-					return "<?php Asset::script('{$match[2]}', '{$match[1]}');?>";
+					return "<?php \Orchestra\Asset::script('{$match[2]}', '{$match[1]}');?>";
 				else
-					return "<?php Asset::script('{$match[2]}', '{$match[1]}', '{$match[3]}');?>"; // ToDo : Support for array (match[3]);
+					return "<?php \Orchestra\Asset::script('{$match[2]}', '{$match[1]}', '{$match[3]}');?>"; // ToDo : Support for array (match[3]);
 				
 				},$value);
 		});
@@ -47,18 +46,18 @@ class themeServiceProvider extends ServiceProvider {
 		|   @css (filename, alias, depends-on-alias)
 		|--------------------------------------------------------------------------*/
 
-		\Blade::extend(function($value)
+		Blade::extend(function($value)
 		{
 			return preg_replace_callback('/\@css\s*\(\s*([\w\-\._:\\/]*)\s*(?:,\s*([\w\-\._:\\/]*)\s*,?\s*(.*))?\)/', function($match){
 
 				$match[1] = Themes::url($match[1]);
 
 				if(empty($match[2]))
-					return "<?php Asset::style('{$match[1]}', '{$match[1]}');?>";
+					return "<?php \Orchestra\Asset::style('{$match[1]}', '{$match[1]}');?>";
 				elseif(empty($match[3]))
-					return "<?php Asset::style('{$match[2]}', '{$match[1]}');?>";
+					return "<?php \Orchestra\Asset::style('{$match[2]}', '{$match[1]}');?>";
 				else
-					return "<?php Asset::style('{$match[2]}', '{$match[1]}', '{$match[3]}');?>";
+					return "<?php \Orchestra\Asset::style('{$match[2]}', '{$match[1]}', '{$match[3]}');?>";
 
 			},$value);
 		});

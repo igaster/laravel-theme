@@ -33,11 +33,11 @@ class themeServiceProvider extends ServiceProvider {
 				$match[1] = Themes::url($match[1]);
 
 				if(empty($match[2]))
-					return "<?php \Orchestra\Asset::script('{$match[1]}', '{$match[1]}');?>";
+					return "<?php Orchestra\Support\Facades\Asset::script('{$match[1]}', '{$match[1]}');?>";
 				elseif(empty($match[3]))
-					return "<?php \Orchestra\Asset::script('{$match[2]}', '{$match[1]}');?>";
+					return "<?php Orchestra\Support\Facades\Asset::script('{$match[2]}', '{$match[1]}');?>";
 				else
-					return "<?php \Orchestra\Asset::script('{$match[2]}', '{$match[1]}', '{$match[3]}');?>"; // ToDo : Support for array (match[3]);
+					return "<?php Orchestra\Support\Facades\Asset::script('{$match[2]}', '{$match[1]}', '{$match[3]}');?>"; // ToDo : Support for array (match[3]);
 				
 				},$value);
 		});
@@ -53,11 +53,11 @@ class themeServiceProvider extends ServiceProvider {
 				$match[1] = Themes::url($match[1]);
 
 				if(empty($match[2]))
-					return "<?php \Orchestra\Asset::style('{$match[1]}', '{$match[1]}');?>";
+					return "<?php Orchestra\Support\Facades\Asset::style('{$match[1]}', '{$match[1]}');?>";
 				elseif(empty($match[3]))
-					return "<?php \Orchestra\Asset::style('{$match[2]}', '{$match[1]}');?>";
+					return "<?php Orchestra\Support\Facades\Asset::style('{$match[2]}', '{$match[1]}');?>";
 				else
-					return "<?php \Orchestra\Asset::style('{$match[2]}', '{$match[1]}', '{$match[3]}');?>";
+					return "<?php Orchestra\Support\Facades\Asset::style('{$match[2]}', '{$match[1]}', '{$match[3]}');?>";
 
 			},$value);
 		});

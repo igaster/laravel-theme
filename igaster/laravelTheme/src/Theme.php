@@ -13,7 +13,7 @@ class Theme {
     /**
      *
      * @param string $themeName
-     * @param array $options : ['assetPath' => xx, 'viewsPath' => xx, 'parentTheme' => xx]
+     * @param array $options : ['assetPath' => xx, 'viewsPath' => xx, 'extends' => xx]
      *
      */
     public function __construct($themeName, $options = []){
@@ -39,15 +39,15 @@ class Theme {
         if(preg_match('/^((http(s?):)?\/\/)/i',$url))
             return $url;
 
-		$url = (empty($this->assetPath) ? '' : '/').$this->assetPath.'/'.ltrim($url, '/');
+		$fullUrl = (empty($this->assetPath) ? '' : '/').$this->assetPath.'/'.ltrim($url, '/');
 
-        if (!file_exists($fullPath = base_path('/public').$url))
+        if (!file_exists($fullPath = base_path('public').$fullUrl))
             if (empty($this->parentTheme))
                 throw new \Exception("$fullPath - not found");
             else
-                return $this->parentTheme->path($url);
+                return $this->parentTheme->url($url);
 
-        return $url;
+        return $fullUrl;
 	}
 
     public function activate(){

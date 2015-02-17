@@ -7,8 +7,12 @@ class Themes {
     public static $ThemeCatalog = [];
     public static $activeTheme = null;
 
-    public static function add(Theme $theme){
-        return static::$ThemeCatalog[] = $theme;
+    // public static function add(Theme $theme){
+    //     return static::$ThemeCatalog[] = $theme;
+    // }
+
+    public static function add($themeName, $options = []){
+        return static::$ThemeCatalog[] = new Theme($themeName, $options);
     }
 
     public static function get($themeName){

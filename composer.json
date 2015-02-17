@@ -10,7 +10,6 @@
     "require": {
         "php": ">=5.4.0",
         "illuminate/support": "5.0.*",
-        "orchestra/asset"   : "3.0.*"
     },
     "autoload": {
         "psr-0" : {

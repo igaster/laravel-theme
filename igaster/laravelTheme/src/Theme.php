@@ -2,18 +2,35 @@
 
 class Theme extends Tree\Item {
     public $name;
+    public $assetPath;
+    public $viewsPath;
 
-    public function __construct($name){
+    public function __construct($name, $assetPath = null, $viewsPath = null){
         $this->name = $name;
+        $this->assetPath = $assetPath === null ? $name : $assetPath;
+        $this->viewsPath = $viewsPath === null ? $name : $viewsPath;
     }
 
-    public function find($name){
-        return $this->searchChild(function($item) use($name){
-            if ($item->name == $name)
-                return $item;
-            else
-                return false;
-        }, false);
+    public function getParent(){
+        if (!empty($this->parents))
+            return $this->parents[0];
+        else
+            return null;
+    }
+
+    public function url($url){
+        if(preg_match('/^((http(s?):)?\/\/)/i',$url))
+            return $url;
+
+        $fullUrl = (empty($this->assetPath) ? '' : '/').$this->assetPath.'/'.ltrim($url, '/');
+
+        if (file_exists($fullPath = base_path('public').$fullUrl))
+            return $fullUrl;
+
+        if ($this->getParent())
+            return $this->getParent()->url($url);
+
+        throw new \Exception("$fullPath - not found");
     }
 
 }

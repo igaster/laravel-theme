@@ -31,28 +31,31 @@ git clone https://github.com/igaster/laravel-theme.git laravel-theme
 
 // -- routes:
 
-Themes::add('Theme1');
-Themes::add('Theme2', ['extends' => 'Theme1']);
+use igaster\laravelTheme\Theme;
+use igaster\laravelTheme\Themes;
 
-Themes::set('Theme2');
+use igaster\laravelTheme\Asset;
+use igaster\laravelTheme\Assets;
 
-// echo Themes::url('something.txt');
 
-Assets::add(10, 10);
-Assets::add(11, 11, 10);
-Assets::add(20, 20, 11);
-Assets::add(21, 21, 20);
+Assets::add('x1', 'x1');
+Assets::add('x2', 'x2');
+Assets::add('x3', 'x3');
 
-dd(
-	Assets::add('xx', 'xx', [11,21])
+Assets::add('x21', 'x21', 'x2');
 
-	->dependencies()
-);
 
-Route::get('/', function()
-{
-return '';
-    return View::make('index');
-});
+dd(Assets::find('x21'));
 
+
+Themes::boot();
+
+Themes::add(new Theme('t1'));
+Themes::add(new Theme('t2'));
+Themes::add(new Theme('t3'));
+
+$t21 = Themes::add(new Theme('t21'), 't2');
+Themes::set('t21');
+//dd($t21);
+dd(Themes::url('xxx.txt'));
 

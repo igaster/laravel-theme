@@ -38,6 +38,19 @@ use igaster\laravelTheme\Asset;
 use igaster\laravelTheme\Assets;
 
 
+Themes::boot();
+
+Themes::add(new Theme('t1'));
+Themes::add(new Theme('t2'));
+Themes::add(new Theme('t3'));
+
+$t21 = Themes::add(new Theme('t21'), 't2');
+Themes::set('t21');
+//dd($t21);
+//dd(Themes::url('xxx.txt'));
+
+
+
 Assets::add('x1', 'x1');
 Assets::add('x2', 'x2');
 Assets::add('x3', 'x3');
@@ -48,14 +61,4 @@ Assets::add('x21', 'x21', 'x2');
 dd(Assets::find('x21'));
 
 
-Themes::boot();
-
-Themes::add(new Theme('t1'));
-Themes::add(new Theme('t2'));
-Themes::add(new Theme('t3'));
-
-$t21 = Themes::add(new Theme('t21'), 't2');
-Themes::set('t21');
-//dd($t21);
-dd(Themes::url('xxx.txt'));
 

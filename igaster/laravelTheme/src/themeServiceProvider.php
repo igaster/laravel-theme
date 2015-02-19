@@ -1,7 +1,9 @@
 <?php namespace igaster\laravelTheme;
 
 use Illuminate\Support\ServiceProvider;
+
 use Illuminate\Support\Facades\Blade;
+use igaster\laravelTheme\Themes;
 
 class themeServiceProvider extends ServiceProvider {
 
@@ -16,6 +18,8 @@ class themeServiceProvider extends ServiceProvider {
 
     public function boot()
     {
+
+    	Themes::boot();
 
 		/*--------------------------------------------------------------------------
 		|   @js(filename, alias, depends-on-alias)

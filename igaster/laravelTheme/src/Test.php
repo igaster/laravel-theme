@@ -30,35 +30,22 @@ git clone https://github.com/igaster/laravel-theme.git laravel-theme
 		'Assets'     => 'igaster\laravelTheme\Assets'
 
 // -- routes:
-
 use igaster\laravelTheme\Theme;
 use igaster\laravelTheme\Themes;
 
-use igaster\laravelTheme\Asset;
-use igaster\laravelTheme\Assets;
+use igaster\laravelTheme\Assets\Assets;
 
 
 Themes::boot();
 
-Themes::add(new Theme('t1'));
-Themes::add(new Theme('t2'));
-Themes::add(new Theme('t3'));
-
-$t21 = Themes::add(new Theme('t21'), 't2');
+Themes::add( new Theme('t1') );
+Themes::add( new Theme('t2') );
+Themes::add( new Theme('t21'), 't2');
 Themes::set('t21');
-//dd($t21);
-//dd(Themes::url('xxx.txt'));
 
+Assets::script('1.txt', 1);
+Assets::script('2.txt', 2, 1);
+Assets::script('3.txt', 3, 2);
 
-
-Assets::add('x1', 'x1');
-Assets::add('x2', 'x2');
-Assets::add('x3', 'x3');
-
-Assets::add('x21', 'x21', 'x2');
-
-
-dd(Assets::find('x21'));
-
-
-
+echo (Assets::find(2)->write());
+echo (Assets::find(3)->write());

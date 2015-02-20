@@ -6,7 +6,7 @@ class Themes{
 
 	public static $activeTheme = null;
 
-	private static $root = null;
+	public static $root = null;
 
     private static $defaultViewsPath = '';
 

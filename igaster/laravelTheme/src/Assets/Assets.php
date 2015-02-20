@@ -12,15 +12,15 @@ private static $items = [];
 	}
 
 	public static function script($name, $alias = '', $depends = ''){
-		self::add(new js($name, $alias), $depends);
+		return self::add(new js($name, $alias), $depends)->write();
 	}
 
 	public static function style($name, $alias = '', $depends = ''){
-		self::add(new css($name, $alias), $depends);
+		return self::add(new css($name, $alias), $depends)->write();
 	}
 
 	public static function file($name, $alias = '', $depends = ''){
-		self::add(new Asset($name, $alias), $depends);
+		return self::add(new Asset($name, $alias), $depends)->write();
 	}
 
 	public static function find($alias){

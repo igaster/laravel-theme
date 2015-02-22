@@ -6,13 +6,11 @@ This is a package for the Laravel 5 Framework that adds basic support for managi
 
 Very simple, you create a folder for each Theme in 'resources/views' and keep all your views seperated. The same goes for assets: create a folder for each theme in yput 'public' directory. Set your active theme and you are done. The rest of your application remains theme-agnostic (c), which means that when you `View::make('index')` you will access the `index.blade.php` from your selected theme's folder. Same goes for your assets.
 
-## Extending themes
+Features:
 
-You can set a theme to extend an other. When you are requesting a view/asset that doesn't exist in your active theme, then it will be resolved from it's parent theme. You can easily create variations of your theme by simply overiding your views/themes that are different. 
-
-All themes fall back to the default laravel folders if a resource is not found on the theme folders. So for example you can leave your common libraries (jquery/bootstrap ...) in your `public` folder and use them from all themes. No need to dublicate common assets for each theme!
-
-As an extra bonus this package intergrates with [Orchestra/Asset](http://orchestraplatform.com/docs/3.0/components/asset) to provide sophisticated asset managment.
+* Views & Asset seperation in theme folders
+* Theme inheritence: Extend any theme and create Theme hierarcies (WordPress style!)
+* Intergrates [Orchestra/Asset](http://orchestraplatform.com/docs/3.0/components/asset) to provide Asset dependencies managment
 
 ## Installation
 
@@ -39,7 +37,7 @@ It is recommended that you add the Asset facade in your `Facades` array in `app/
 
 Almost Done. You only need to bulish configuration file to your application with
 
-    artisan vendor:publish  --provider="themeServiceProvider"
+    artisan vendor:publish
 
 That's it. You are now ready to start theming your applications!
 
@@ -73,6 +71,14 @@ all settings are optional and can be ommited.
 ## Switching Themes
 
     igaster\laravelTheme\Themes::set('theme-name');
+
+## Extending themes
+
+You can set a theme to extend an other. When you are requesting a view/asset that doesn't exist in your active theme, then it will be resolved from it's parent theme. You can easily create variations of your theme by simply overiding your views/themes that are different. 
+
+All themes fall back to the default laravel folders if a resource is not found on the theme folders. So for example you can leave your common libraries (jquery/bootstrap ...) in your `public` folder and use them from all themes. No need to dublicate common assets for each theme!
+
+As an extra bonus this package intergrates with [Orchestra/Asset](http://orchestraplatform.com/docs/3.0/components/asset) to provide sophisticated asset managment.
 
 ## Assets
 

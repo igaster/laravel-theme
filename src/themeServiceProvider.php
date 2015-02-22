@@ -8,7 +8,7 @@ use igaster\laravelTheme\Themes;
 class themeServiceProvider extends ServiceProvider {
 
 
-    public function boot()
+    public function register()
     {
 
 		$this->publishes([
@@ -25,22 +25,25 @@ class themeServiceProvider extends ServiceProvider {
 		|   Load Themes from theme.php configuration file
 		|--------------------------------------------------------------------------*/
 
-		foreach (Config::get('themes.themes') as $themeName => $options) {
-			$assetPath = null;
-			$viewsPath = null;
-			$extends = null;
+		if (Config::has('themes')){
+			foreach (Config::get('themes.themes') as $themeName => $options) {
+				$assetPath = null;
+				$viewsPath = null;
+				$extends = null;
 
-			if(is_array($options)){
-				if(array_key_exists('asset-path', $options)) $assetPath = $options['asset-path'];
-				if(array_key_exists('views-path', $options)) $viewsPath = $options['views-path'];
-				if(array_key_exists('extends', $options)) $extends = $options['extends'];
-			} else {
-				$themeName = $options;
+				if(is_array($options)){
+					if(array_key_exists('asset-path', $options)) $assetPath = $options['asset-path'];
+					if(array_key_exists('views-path', $options)) $viewsPath = $options['views-path'];
+					if(array_key_exists('extends', $options)) $extends = $options['extends'];
+				} else {
+					$themeName = $options;
+				}
+				Themes::add(new Theme($themeName, $assetPath, $viewsPath), $extends);
 			}
-			Themes::add(new Theme($themeName, $assetPath, $viewsPath), $extends);
+
+			Themes::set(Config::get('themes.active'));
 		}
 
-		Themes::set(Config::get('themes.active'));
 
 		/*--------------------------------------------------------------------------
 		| Extend Blade to support Orcherstra\Asset (Asset Managment)
@@ -89,26 +92,5 @@ class themeServiceProvider extends ServiceProvider {
 		});
 
     }
-
-
-	/**
-	 * Register the service provider.
-	 *
-	 * @return void
-	 */
-	public function register()
-	{
-		//
-	}
-
-	/**
-	 * Get the services provided by the provider.
-	 *
-	 * @return array
-	 */
-	public function provides()
-	{
-		return [];
-	}
 
 }

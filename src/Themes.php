@@ -18,6 +18,7 @@ class Themes{
 
 	// Add a new theme to the Tree
 	public static function add(Theme $theme, $parentName = ''){
+
 		if ($parentName)
 			$parentTheme = self::find($parentName);
 		else

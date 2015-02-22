@@ -33,6 +33,18 @@ return [
 		],
 
 		// Add your themes here...
+
+		/*--------------[Example Structre]------------- 
+	
+			'BasicTheme',
+
+			'SomeTheme' => [
+				'extends'	=> 'BasicTheme',
+			],
+
+			'AnOtherTheme',
+	
+		----------------------------------------------*/
 	],
 
 ];

@@ -2,15 +2,15 @@
 
 This is a package for the Laravel 5 Framework that adds basic support for managing themes. It allows you to seperate your views & your assets files in seperate folders, and supports for theme extending! Awesome :)
 
-## How it works
-
-Very simple, you create a folder for each Theme in 'resources/views' and keep all your views seperated. The same goes for assets: create a folder for each theme in yput 'public' directory. Set your active theme and you are done. The rest of your application remains theme-agnostic (c), which means that when you `View::make('index')` you will access the `index.blade.php` from your selected theme's folder. Same goes for your assets.
-
 Features:
 
 * Views & Asset seperation in theme folders
 * Theme inheritence: Extend any theme and create Theme hierarcies (WordPress style!)
 * Intergrates [Orchestra/Asset](http://orchestraplatform.com/docs/3.0/components/asset) to provide Asset dependencies managment
+
+## How it works
+
+Very simple, you create a folder for each Theme in 'resources/views' and keep all your views seperated. The same goes for assets: create a folder for each theme in your 'public' directory. Set your active theme and you are done. The rest of your application remains theme-agnostic©, which means that when you `View::make('index')` you will access the `index.blade.php` from your selected theme's folder. Same goes for your assets.
 
 ## Installation
 
@@ -23,7 +23,7 @@ Edit your project's `composer.json` file to require:
 and install with `composer update`
 
 
-Add the services provider in `app/config/app.php`, providers array. Because this package depends on Orchestra\Asset for asset managment you need to include all these providers. IMPORTANT: place them above Laravels `RouteServiceProvider` since routing should be occured after configuring your Themes.
+Add the services provider in `app/config/app.php`, providers array. Because this package depends on Orchestra\Asset for asset managment you need to include all these providers:
 
     'igaster\laravelTheme\themeServiceProvider',
     'Orchestra\Asset\AssetServiceProvider',
@@ -35,7 +35,7 @@ It is recommended that you add the Asset facade in your `Facades` array in `app/
     'Asset' => 'Orchestra\Support\Facades\Asset',
 
 
-Almost Done. You only need to bulish configuration file to your application with
+Almost Done. You only need to publish configuration file to your application with
 
     artisan vendor:publish
 
@@ -45,26 +45,28 @@ That's it. You are now ready to start theming your applications!
 
 Simple define your themes in the `themes` array in `config\theme.php`. The format one theme is very simple:
 
-    // Select a name for your theme
-    'theme-name' => [
+```php
+// Select a name for your theme
+'theme-name' => [
 
-    	// Theme to extend
-    	// Defaults to null (=none)
+    // Theme to extend
+    // Defaults to null (=none)
 
-        'extends'	 	=> 'theme-to-extend',
+    'extends'	 	=> 'theme-to-extend',
 
-        // The path where the view are stored
-        // Defaults to 'theme-name' 
-        // It is relative to /resources/views (or what ever is defined in )
+    // The path where the view are stored
+    // Defaults to 'theme-name' 
+    // It is relative to /resources/views (or what ever is defined in )
 
-        'views-path' 	=> 'path-to-views',
+    'views-path' 	=> 'path-to-views',
 
-        // The path where the assets are stored
-        // Defaults to 'theme-name' 
-        // It is relative to /public
+    // The path where the assets are stored
+    // Defaults to 'theme-name' 
+    // It is relative to /public
 
-        'asset-path' 	=> 'path-to-assets',   // defaults to: theme-name
-    ],
+    'asset-path' 	=> 'path-to-assets',   // defaults to: theme-name
+],
+```
 
 all settings are optional and can be ommited.
 

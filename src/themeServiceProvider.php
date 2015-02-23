@@ -41,7 +41,8 @@ class themeServiceProvider extends ServiceProvider {
 				Themes::add(new Theme($themeName, $assetPath, $viewsPath), $extends);
 			}
 
-			Themes::set(Config::get('themes.active'));
+			if (!Themes::$activeTheme)
+				Themes::set(Config::get('themes.active'));
 		}
 
 

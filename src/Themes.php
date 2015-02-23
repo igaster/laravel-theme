@@ -16,6 +16,18 @@ class Themes{
 		self::$root = new Theme('root','','');
     }
 
+
+
+    private static $callback = null;
+    public static function selectTheme($callback){
+    	self::$callback = $callback;
+    }
+
+    public static function select(){
+    	if(self::$callback)
+    		static::set(self::$callback->__invoke());
+    }
+
 	// Add a new theme to the Tree
 	public static function add(Theme $theme, $parentName = ''){
 

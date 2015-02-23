@@ -7,10 +7,11 @@ use igaster\laravelTheme\Themes;
 
 class themeServiceProvider extends ServiceProvider {
 
+	public function boot(){
+	}
 
     public function register()
     {
-
 		$this->publishes([
 			__DIR__.'/config.php' => config_path('themes.php'),
 		]);
@@ -41,6 +42,8 @@ class themeServiceProvider extends ServiceProvider {
 				Themes::add(new Theme($themeName, $assetPath, $viewsPath), $extends);
 			}
 
+			Themes::select();
+
 			if (!Themes::$activeTheme)
 				Themes::set(Config::get('themes.active'));
 		}
@@ -63,7 +66,6 @@ class themeServiceProvider extends ServiceProvider {
 				$p2 = empty($match[2]) ? $match[1] : $match[2];
 				$p3 = empty($match[3]) ? '' : $match[3];
 
-
 				if(empty($p2))
 					return "<?php Asset::script('$p2', '$p1');?>";
 				elseif(empty($p3))
@@ -81,7 +83,6 @@ class themeServiceProvider extends ServiceProvider {
 				$p1 = Themes::url($match[1]);
 				$p2 = empty($match[2]) ? $match[1] : $match[2];
 				$p3 = empty($match[3]) ? '' : $match[3];
-
 
 				if(empty($p2))
 					return "<?php Asset::style('$p2', '$p1');?>";

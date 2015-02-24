@@ -14,8 +14,6 @@ class Themes{
 		$this->defaultViewsPath = Config::get('view.paths')[0];
 		
 		$this->root = new Theme('root','','');
-
-		$this->set('root');
     }
 
 	// Add a new theme to the Tree

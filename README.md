@@ -126,3 +126,8 @@ and your assets dependencies will be auto resolved. Your assets will be exported
 
     @js  (jquery.js,    jq)
     @js  (bootstrap.js, bs, jq)
+
+
+## Important Note:
+
+Laravel is compiling your views every-time you make an edit. A compiled view will not recompile if you switch to another theme unless you make any edit to your view. Keep this in mind while you are developing themes...

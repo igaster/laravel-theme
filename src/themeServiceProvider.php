@@ -7,20 +7,18 @@ use igaster\laravelTheme\Themes;
 
 class themeServiceProvider extends ServiceProvider {
 
-	public function boot(){
-	}
 
-    public function register()
-    {
-		$this->publishes([
-			__DIR__.'/config.php' => config_path('themes.php'),
-		]);
+    public function register(){
+
+		$this->app->bindShared('Themes', function(){
+			return new Themes();
+		});
 
 		/*--------------------------------------------------------------------------
 		| Initialize Themes
 		|--------------------------------------------------------------------------*/
 
-    	Themes::boot();
+		$Themes = $this->app->make('Themes');
 
 		/*--------------------------------------------------------------------------
 		|   Load Themes from theme.php configuration file
@@ -39,15 +37,20 @@ class themeServiceProvider extends ServiceProvider {
 				} else {
 					$themeName = $options;
 				}
-				Themes::add(new Theme($themeName, $assetPath, $viewsPath), $extends);
+				$Themes->add(new Theme($themeName, $assetPath, $viewsPath), $extends);
 			}
 
-			Themes::select();
-
-			if (!Themes::$activeTheme)
-				Themes::set(Config::get('themes.active'));
+			if (!$Themes->activeTheme)
+				$Themes->set(Config::get('themes.active'));
 		}
 
+    }
+
+	public function boot(){
+
+		$this->publishes([
+			__DIR__.'/config.php' => config_path('themes.php'),
+		]);
 
 		/*--------------------------------------------------------------------------
 		| Extend Blade to support Orcherstra\Asset (Asset Managment)
@@ -93,6 +96,7 @@ class themeServiceProvider extends ServiceProvider {
 			},$value);
 		});
 
-    }
+	}
+
 
 }

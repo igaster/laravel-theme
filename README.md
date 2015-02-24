@@ -72,7 +72,24 @@ all settings are optional and can be ommited.
 
 ## Switching Themes
 
-    igaster\laravelTheme\Themes::set('theme-name');
+The active theme can be configured in the `theme.php` configuration file. If you need to switch to another theme:
+
+    \App::make('Themes')->set('theme-name');
+
+Unfortunately you can not hot-switch theme anywhere in your application. You must place the login in a Service provider in the `register` method.
+For example this is a Service Provider that will select a different theme for the `/admin/xxx` urls:
+
+```php
+class themeSelectServiceProvider extends ServiceProvider {
+
+    public function register()
+    {
+        if (\Request::segment(1)=='admin')
+            \App::make('Themes')->set('adminTheme');
+    }
+
+}
+```
 
 ## Extending themes
 

@@ -1,6 +1,6 @@
 {
     "name": "igaster/laravel-theme",
-	"description": "Blank Laravel 5 package",
+	"description": "Laravel 5 Theme manager",
     "authors": [
         {
             "name": "Giannis Gasteratos",

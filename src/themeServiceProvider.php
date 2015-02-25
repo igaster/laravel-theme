@@ -10,7 +10,11 @@ class themeServiceProvider extends ServiceProvider {
 
     public function register(){
 
-		$this->app->bindShared('Themes', function(){
+		/*--------------------------------------------------------------------------
+		| Bind in IOC
+		|--------------------------------------------------------------------------*/
+
+		$this->app->bindShared('igaster.themes', function(){
 			return new Themes();
 		});
 
@@ -18,7 +22,7 @@ class themeServiceProvider extends ServiceProvider {
 		| Initialize Themes
 		|--------------------------------------------------------------------------*/
 
-		$Themes = $this->app->make('Themes');
+		$Themes = $this->app->make('igaster.themes');
 
 		/*--------------------------------------------------------------------------
 		|   Load Themes from theme.php configuration file

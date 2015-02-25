@@ -22,18 +22,13 @@ Edit your project's `composer.json` file to require:
 
 and install with `composer update`
 
-
-Add the services provider in `app/config/app.php`, providers array. Because this package depends on Orchestra\Asset for asset managment you need to include all these providers:
+Add the service provider in `app/config/app.php`, `Providers` array:
 
     'igaster\laravelTheme\themeServiceProvider',
-    'Orchestra\Asset\AssetServiceProvider',
-    'Orchestra\Html\HtmlServiceProvider',
 
+also edit the `Facades` array and add:
 
-It is recommended that you add the Asset facade in your `Facades` array in `app/config/app.php`
-
-    'Asset' => 'Orchestra\Support\Facades\Asset',
-
+    'Theme'  => 'igaster\laravelTheme\Facades\Theme',
 
 Almost Done. You only need to publish configuration file to your application with
 
@@ -43,7 +38,7 @@ That's it. You are now ready to start theming your applications!
 
 ## Defining themes
 
-Simple define your themes in the `themes` array in `config\theme.php`. The format one theme is very simple:
+Simple define your themes in the `themes` array in `config\theme.php`. The format every theme is very simple:
 
 ```php
 // Select a name for your theme
@@ -51,19 +46,16 @@ Simple define your themes in the `themes` array in `config\theme.php`. The forma
 
     // Theme to extend
     // Defaults to null (=none)
-
     'extends'	 	=> 'theme-to-extend',
 
     // The path where the view are stored
     // Defaults to 'theme-name' 
     // It is relative to /resources/views (or what ever is defined in )
-
     'views-path' 	=> 'path-to-views',
 
     // The path where the assets are stored
     // Defaults to 'theme-name' 
     // It is relative to /public
-
     'asset-path' 	=> 'path-to-assets',   // defaults to: theme-name
 ],
 ```
@@ -72,9 +64,9 @@ all settings are optional and can be ommited.
 
 ## Switching Themes
 
-The active theme can be configured in the `theme.php` configuration file. If you need to switch to another theme:
+The default theme can be configured in the `theme.php` configuration file. If you need to switch to another theme:
 
-    \App::make('Themes')->set('theme-name');
+    Theme::set('theme-name');
 
 Unfortunately you can not hot-switch theme anywhere in your application. You must place the login in a Service provider in the `register` method.
 For example this is a Service Provider that will select a different theme for the `/admin/xxx` urls:
@@ -85,7 +77,7 @@ class themeSelectServiceProvider extends ServiceProvider {
     public function register()
     {
         if (\Request::segment(1)=='admin')
-            \App::make('Themes')->set('adminTheme');
+            \Theme::set('adminTheme');
     }
 
 }
@@ -97,11 +89,32 @@ You can set a theme to extend an other. When you are requesting a view/asset tha
 
 All themes fall back to the default laravel folders if a resource is not found on the theme folders. So for example you can leave your common libraries (jquery/bootstrap ...) in your `public` folder and use them from all themes. No need to dublicate common assets for each theme!
 
-As an extra bonus this package intergrates with [Orchestra/Asset](http://orchestraplatform.com/docs/3.0/components/asset) to provide sophisticated asset managment.
+## Building your views
 
-## Assets
+Whenever you need to link to a local file (image/css/js etc) you can retreive its path with:
 
-This packages makes use of the [Orchestra/Asset](http://orchestraplatform.com/docs/3.0/components/asset) component. All the features are explained in the official documentation. However some Blade-specific sugar has been added to ease your work. So here how to build your views:
+    Theme::url('path-to-file')
+
+The path is relative to Theme Folder (NOT to pubic!). For example, if you have placed an image in `public\theme-name\*img\logo.png*` your Blade code would be:
+
+    <img src="{{Theme::url('img\logo.png')}}">
+
+When you are refering to a local file it will be looked-up in the current theme hierarcy, and the correct path will be returned. If the file is not found on the current theme or its parents then an exception will be thrown.
+
+## Assets Managment
+
+This package provides intergration with [Orchestra/Asset](http://orchestraplatform.com/docs/3.0/components/asset) component. All the features are explained in the official documentation. The use of this package is optional.
+
+To use the Orchestra\Asset you need to add in your Providers array:
+
+    'Orchestra\Asset\AssetServiceProvider',
+    'Orchestra\Html\HtmlServiceProvider',
+
+and add the Asset facade in your `Facades` array in `app/config/app.php`
+
+    'Asset' => 'Orchestra\Support\Facades\Asset',
+
+Now you can leverage all the power of Orchestra\Asset package. Some Blade-specific sugar has been added to ease your work. So here how to build your views:
 
 In any blade file when you need to refer to a script or css: (dont use single/double quotes)
 
@@ -113,11 +126,11 @@ Please note that you are just defining your css/js files but not actually dumpin
     {!! Asset::styles() !!}
     {!! Asset::scripts() !!}
 
-exactly where you want write your declerations. If you are refering to a local file then it will check that it exists on the active theme or else an exception will be thrown.
+exactly where you want write your declerations (usualy on HEAD and footer of the page).
 
 ## Assets dependencies
 
-Well this is an [Orchestra/Asset](http://orchestraplatform.com/docs/3.0/components/asset) feature explained well in the documentation. Long story short you can:
+Well this is an [Orchestra/Asset](http://orchestraplatform.com/docs/3.0/components/asset) feature explained well in the official documentation. Long story short:
 
     @css (filename, alias, depends-on)
     @js  (filename, alias, depends-on)

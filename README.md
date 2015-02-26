@@ -17,7 +17,7 @@ Very simple, you create a folder for each Theme in 'resources/views' and keep al
 Edit your project's `composer.json` file to require:
 
     "require": {
-        "igaster/laravel-theme": "dev-master"
+        "igaster/laravel-theme": "~1.0"
     }
 
 and install with `composer update`

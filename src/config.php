@@ -34,17 +34,27 @@ return [
 
 		// Add your themes here...
 
-		/*--------------[Example Structre]------------- 
+		/*--------------[ Example Structre ]------------- 
 	
+			// Recomended (all defaults) : Assets -> \public\BasicTheme , Views -> \resources\views\BasicTheme
+
 			'BasicTheme',
 
+
+			// This theme shares the views with BasicTheme but defines its own assets in \public\SomeTheme
+
 			'SomeTheme' => [
-				'extends'	=> 'BasicTheme',
+				'views-path'	=> 'BasicTheme',
 			],
 
-			'AnOtherTheme',
+
+			// This theme extends BasicTheme and ovverides SOME views\assets in its folders
+
+			'AnOtherTheme' => [ 
+				'extends'	=> 'BasicTheme',
+			],
 	
-		----------------------------------------------*/
+		------------------------------------------------*/
 	],
 
 ];

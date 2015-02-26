@@ -3,7 +3,6 @@
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Blade;
-use igaster\laravelTheme\Themes;
 
 class themeServiceProvider extends ServiceProvider {
 
@@ -47,10 +46,13 @@ class themeServiceProvider extends ServiceProvider {
 			if (!$Themes->activeTheme)
 				$Themes->set(Config::get('themes.active'));
 		}
-
     }
 
 	public function boot(){
+
+		/*--------------------------------------------------------------------------
+		| Pulish configuration file
+		|--------------------------------------------------------------------------*/
 
 		$this->publishes([
 			__DIR__.'/config.php' => config_path('themes.php'),
@@ -69,7 +71,7 @@ class themeServiceProvider extends ServiceProvider {
 		{
 		    return preg_replace_callback('/\@js\s*\(\s*([\w\-\._:\\/]*)\s*(?:,\s*([\w\-\._:\\/]*)\s*,?\s*(.*))?\)/', function($match){
 
-				$p1 = Themes::url($match[1]);
+				$p1 = \Theme::url($match[1]);
 				$p2 = empty($match[2]) ? $match[1] : $match[2];
 				$p3 = empty($match[3]) ? '' : $match[3];
 
@@ -78,7 +80,7 @@ class themeServiceProvider extends ServiceProvider {
 				elseif(empty($p3))
 					return "<?php Asset::script('$p2', '$p1');?>";
 				else
-					return "<?php Asset::script('$p2', '$p1', '$p3');?>"; // ToDo : Support for array of dependencies
+					return "<?php Asset::script('$p2', '$p1', '$p3');?>";
 			},$value);
 		});
 
@@ -87,7 +89,7 @@ class themeServiceProvider extends ServiceProvider {
 		{
 			return preg_replace_callback('/\@css\s*\(\s*([\w\-\._:\\/]*)\s*(?:,\s*([\w\-\._:\\/]*)\s*,?\s*(.*))?\)/', function($match){
 
-				$p1 = Themes::url($match[1]);
+				$p1 = \Theme::url($match[1]);
 				$p2 = empty($match[2]) ? $match[1] : $match[2];
 				$p3 = empty($match[3]) ? '' : $match[3];
 
@@ -96,10 +98,9 @@ class themeServiceProvider extends ServiceProvider {
 				elseif(empty($p3))
 					return "<?php Asset::style('$p2', '$p1');?>";
 				else
-					return "<?php Asset::style('$p2', '$p1', '$p3');?>"; // ToDo : Support for array of dependencies
+					return "<?php Asset::style('$p2', '$p1', '$p3');?>";
 			},$value);
 		});
-
 	}
 
 

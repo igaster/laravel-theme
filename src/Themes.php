@@ -54,4 +54,18 @@ class Themes{
 	public function url($url){
 		return $this->activeTheme->url($url);
 	}
+
+	//	Helper Functions (for Blade files)
+
+	public function css($href){
+		return '<link media="all" type="text/css" rel="stylesheet" href="'.$this->url($href).'">'."\n";
+	}
+
+	public function js($href){
+		return '<script src="'.$this->url($href).'"></script>'."\n";
+	}
+
+	public function img($src, $alt='', $Class=''){
+		return '<img src="'.$this->url($src).'" alt="'.$alt.'" class="'.$Class.'">'."\n";
+	}	
 }

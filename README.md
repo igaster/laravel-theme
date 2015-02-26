@@ -38,7 +38,7 @@ That's it. You are now ready to start theming your applications!
 
 ## Defining themes
 
-Simple define your themes in the `themes` array in `config\theme.php`. The format every theme is very simple:
+Simple define your themes in the `themes` array in `config\theme.php`. The format for every theme is very simple:
 
 ```php
 // Select a name for your theme
@@ -101,7 +101,13 @@ The path is relative to Theme Folder (NOT to pubic!). For example, if you have p
 
 When you are refering to a local file it will be looked-up in the current theme hierarcy, and the correct path will be returned. If the file is not found on the current theme or its parents then an exception will be thrown.
 
-## Assets Managment (by Orchestra/ASset)
+Some usefull helpers you can use:
+    
+    Theme::js('file-name')
+    Theme::css('file-name')
+    Theme::img('src','alt', 'class-name')
+
+## Assets Managment on steroids (by Orchestra/ASset)
 
 This package provides intergration with [Orchestra/Asset](http://orchestraplatform.com/docs/3.0/components/asset) component. All the features are explained in the official documentation. Although Orchestra/Asset is installed along with this package, it's use is optional.
 
@@ -114,7 +120,7 @@ and add the Asset facade in your `Facades` array in `app/config/app.php`
 
     'Asset' => 'Orchestra\Support\Facades\Asset',
 
-Now you can leverage all the power of Orchestra\Asset package. However the syntax can become painful when you are using Themes + Orchestra/Asset, so some Blade-specific sugar has been added to ease your work. So here how to build your views:
+Now you can leverage all the power of Orchestra\Asset package. However the syntax can become quite cumbersome when you are using Themes + Orchestra/Asset, so some Blade-specific sugar has been added to ease your work. Here how to build your views:
 
 In any blade file when you need to refer to a script or css: (dont use single/double quotes)
 
@@ -130,7 +136,7 @@ exactly where you want write your declerations (usualy on Head and Footer of the
 
 ## Assets dependencies
 
-Well this is an [Orchestra/Asset](http://orchestraplatform.com/docs/3.0/components/asset) feature explained well in the official documentation. Long story short:
+This is an [Orchestra/Asset](http://orchestraplatform.com/docs/3.0/components/asset) feature explained well in the official documentation. Long story short:
 
     @css (filename, alias, depends-on)
     @js  (filename, alias, depends-on)

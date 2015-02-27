@@ -19,6 +19,8 @@ return [
 	| 		'extends'	 	=> 'theme-to-extend',  // optional
 	| 		'views-path' 	=> 'path-to-views',    // defaults to: resources/views/theme-name
 	| 		'asset-path' 	=> 'path-to-assets',   // defaults to: public/theme-name
+    |
+    |		// you can add your own custom keys and retreive them with Theme::config('key');
 	| 	],
 	|
 	|--------------------------------------------------------------------------

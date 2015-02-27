@@ -57,6 +57,8 @@ Simple define your themes in the `themes` array in `config\theme.php`. The forma
     // Defaults to 'theme-name' 
     // It is relative to /public
     'asset-path' 	=> 'path-to-assets',   // defaults to: theme-name
+
+    // you can add your own custom keys and retreive them with Theme::config('key')
 ],
 ```
 
@@ -69,11 +71,15 @@ You can set a theme to extend an other. When you are requesting a view/asset tha
 All themes fall back to the default laravel folders if a resource is not found on the theme folders. So for example you can leave your common libraries (jquery/bootstrap ...) in your `public` folder and use them from all themes. No need to dublicate common assets for each theme!
 
 
-## Switching Themes
+## Working with Themes
 
-The default theme can be configured in the `theme.php` configuration file. If you need to switch to another theme:
+The default theme can be configured in the `theme.php` configuration file. Working with themes is very straightforward. Use:
 
-    Theme::set('theme-name');
+```php
+Theme::set('theme-name');  // switch to 'theme-name'
+Theme::get();              // retreive current theme's name
+Theme::config('key');      // read current theme's configuration value for 'key'
+```
 
 Unfortunately you can not hot-switch theme anywhere in your application. You must place the login in a Service provider in the `register` method.
 For example this is a Service Provider that will select a different theme for the `/admin/xxx` urls:

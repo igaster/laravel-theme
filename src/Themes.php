@@ -51,6 +51,16 @@ class Themes{
 		Config::set('view.paths', $paths);
 	}
 
+	// get active theme (name)
+	public function get(){
+		return $this->activeTheme ? $this->activeTheme->name : '';
+	}
+
+	// get current theme's configuration
+	public function config($key){
+		return \Config::get("themes.themes")[$this->get()][$key];
+	}
+
 	public function url($url){
 		return $this->activeTheme->url($url);
 	}

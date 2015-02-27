@@ -58,7 +58,7 @@ class Themes{
 
 	// get current theme's configuration
 	public function config($key){
-		return \Config::get("themes.themes")[$this->get()][$key];
+		return $this->activeTheme->config($key);
 	}
 
 	public function url($url){

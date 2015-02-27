@@ -33,6 +33,18 @@ class Theme extends Tree\Item {
         throw new \Exception("$fullPath - not found");
     }
 
+    // get theme's configuration
+    public function config($key){
+        if (array_key_exists($key, $conf = \Config::get("themes.themes")[$this->name]))
+            return $conf[$key];
+
+        if ($this->getParent())
+            return $this->getParent()->config($key);
+
+        return null;
+    }
+
+
 }
 
 

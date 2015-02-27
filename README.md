@@ -99,7 +99,9 @@ class themeSelectServiceProvider extends ServiceProvider {
 
 Whenever you need to link to a local file (image/css/js etc) you can retreive its path with:
 
-    Theme::url('path-to-file')
+```php
+Theme::url('path-to-file')
+```
 
 The path is relative to Theme Folder (NOT to pubic!). For example, if you have placed an image in `public\theme-name\img\logo.png` your Blade code would be:
 
@@ -108,10 +110,12 @@ The path is relative to Theme Folder (NOT to pubic!). For example, if you have p
 When you are refering to a local file it will be looked-up in the current theme hierarcy, and the correct path will be returned. If the file is not found on the current theme or its parents then an exception will be thrown.
 
 Some usefull helpers you can use:
-    
-    Theme::js('file-name')
-    Theme::css('file-name')
-    Theme::img('src','alt', 'class-name')
+
+```php
+Theme::js('file-name')
+Theme::css('file-name')
+Theme::img('src','alt', 'class-name')
+```    
 
 ## Assets Managment on steroids (by Orchestra/ASset)
 

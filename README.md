@@ -7,6 +7,7 @@ Features:
 * Views & Asset seperation in theme folders
 * Theme inheritence: Extend any theme and create Theme hierarcies (WordPress style!)
 * Intergrates [Orchestra/Asset](http://orchestraplatform.com/docs/3.0/components/asset) to provide Asset dependencies managment
+* Your App & Views remain theme-agnostic. Include new themes with (almost) no modifications
 
 ## How it works
 
@@ -117,7 +118,7 @@ Theme::css('file-name')
 Theme::img('src','alt', 'class-name')
 ```    
 
-## Assets Managment on steroids (by Orchestra/ASset)
+## Advanced Assets Managment (by Orchestra/Asset)
 
 This package provides intergration with [Orchestra/Asset](http://orchestraplatform.com/docs/3.0/components/asset) component. All the features are explained in the official documentation. Although Orchestra/Asset is installed along with this package, it's use is optional.
 
@@ -137,12 +138,12 @@ In any blade file when you need to refer to a script or css: (dont use single/do
     @css(filename)
     @js(filename)
 
-Please note that you are just defining your css/js files but not actually dumping them in html. Usually you only need write your css/js decleration in one place on the head/bottom of you file. So open your master layout and place:
+Please note that you are just defining your css/js files but not actually dumping them in html. Usually you only need write your css/js decleration in one place on the Head/Footer of you page. So open your master layout and place:
 
     {!! Asset::styles() !!}
     {!! Asset::scripts() !!}
 
-exactly where you want write your declerations (usualy on Head and Footer of the page respectively).
+exactly where you want write your declerations.
 
 ## Assets dependencies
 

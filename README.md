@@ -120,7 +120,7 @@ Theme::img('src','alt', 'class-name')
 
 ## Advanced Assets Managment (by Orchestra/Asset)
 
-This package provides intergration with [Orchestra/Asset](http://orchestraplatform.com/docs/3.0/components/asset) component. All the features are explained in the official documentation. Although Orchestra/Asset is installed along with this package, it's use is optional.
+This package provides intergration with [Orchestra/Asset](http://orchestraplatform.com/docs/3.0/components/asset) component. All the features are explained in the official documentation. Although Orchestra/Asset is installed along with this package, *it's use is optional.*
 
 To use the Orchestra\Asset you need to add in your Providers array:
 
@@ -152,7 +152,7 @@ This is an [Orchestra/Asset](http://orchestraplatform.com/docs/3.0/components/as
     @css (filename, alias, depends-on)
     @js  (filename, alias, depends-on)
 
-and your assets dependencies will be auto resolved. Your assets will be exported in the correct order. The biggest benefit of this approach is that you don't have to move all your declerations in your master layout file. Each sub-view can define it's requirements and they will auto-resolved in the correct order with no dublications. Awesome! A short example:
+and your assets dependencies will be auto resolved. Your assets will be exported in the correct order. The biggest benefit of this approach is that you don't have to move all your declerations in your master layout file. Each sub-view can define it's requirements and they will auto-resolved in the correct order with no doublications. Awesome! A short example:
 
     @js  (jquery.js,    jq)
     @js  (bootstrap.js, bs, jq)

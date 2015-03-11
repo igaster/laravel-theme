@@ -1,7 +1,7 @@
 {
     "name": "igaster/laravel-theme",
 	"description": "Laravel 5 Theme manager",
-    "keywords": ["themes", "views", "assets", "blade" "laravel-5", "package"],
+    "keywords": ["themes", "views", "assets", "blade", "laravel-5", "package"],
     "license": "MIT",
     "homepage": "https://github.com/igaster/laravel-theme",
     "authors": [

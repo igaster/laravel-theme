@@ -21,7 +21,7 @@ class themeServiceProvider extends ServiceProvider {
 		| Is package enabled?
 		|--------------------------------------------------------------------------*/
 
-		if (Config::has('themes') && !Config::get('themes.enabled'))
+		if (Config::has('themes') && !Config::get('themes.enabled', true))
 			return;
 
 		/*--------------------------------------------------------------------------

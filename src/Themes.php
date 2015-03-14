@@ -38,9 +38,17 @@ class Themes{
         });
     }
 
+    public function exists($themeName){
+    	return ($this->find($themeName)!==false);
+    }
+
 	// Set active theme (by name)
 	public function set($themeName){
 		$theme = $this->find($themeName);
+
+		if (!$theme) 
+			throw new \Exception("Theme '$themeName' not found");
+
 		$this->activeTheme = $theme;
 
 		$paths = [];
@@ -49,6 +57,8 @@ class Themes{
 		} while ($theme = $theme->getParent());
 
 		Config::set('view.paths', $paths);
+
+		\View::setFinder(app('view.finder'));
 	}
 
 	// get active theme (name)

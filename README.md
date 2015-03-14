@@ -77,18 +77,18 @@ All themes fall back to the default laravel folders if a resource is not found o
 The default theme can be configured in the `theme.php` configuration file. Working with themes is very straightforward. Use:
 
 ```php
-Theme::set('theme-name');  // switch to 'theme-name'
-Theme::get();              // retreive current theme's name
-Theme::config('key');      // read current theme's configuration value for 'key'
+Theme::set('theme-name');    // switch to 'theme-name'
+Theme::get();                // retreive current theme's name
+Theme::config('key');        // read current theme's configuration value for 'key'
+Theme::exists('theme-name'); // check if theme-name is declared in `themes.php`
 ```
 
-Unfortunately you can not hot-switch theme anywhere in your application. You must place the login in a Service provider in the `register` method.
 For example this is a Service Provider that will select a different theme for the `/admin/xxx` urls:
 
 ```php
 class themeSelectServiceProvider extends ServiceProvider {
 
-    public function register()
+    public function boot()
     {
         if (\Request::segment(1)=='admin')
             \Theme::set('adminTheme');
@@ -96,6 +96,8 @@ class themeSelectServiceProvider extends ServiceProvider {
 
 }
 ```
+for more advanced example check [set Theme from Session](https://github.com/igaster/laravel-theme/issues/1) 
+
 ## Building your views
 
 Whenever you need to link to a local file (image/css/js etc) you can retreive its path with:

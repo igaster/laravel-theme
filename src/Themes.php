@@ -72,7 +72,10 @@ class Themes{
 	}
 
 	public function url($url){
-		return $this->activeTheme->url($url);
+		if (Config::get('themes.enabled', true))
+			return $this->activeTheme->url($url);
+		else
+			return $url;
 	}
 
 	//	Helper Functions (for Blade files)

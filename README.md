@@ -96,7 +96,7 @@ class themeSelectServiceProvider extends ServiceProvider {
 
 }
 ```
-for more advanced example check [set Theme from Session](https://github.com/igaster/laravel-theme/issues/1) 
+for more advanced example check demo application: [Set Theme in Session](https://github.com/igaster/laravel-theme-demo) 
 
 ## Building your views
 

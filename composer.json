@@ -1,6 +1,6 @@
 {
     "name": "igaster/laravel-theme",
-	"description": "Laravel 5 Theme manager",
+	"description": "Laravel 5 Themes: Asset & Views folder per theme. Theme inheritance (fallback to parent theme)",
     "keywords": ["themes", "views", "assets", "blade", "laravel-5", "package"],
     "license": "MIT",
     "homepage": "https://github.com/igaster/laravel-theme",

@@ -120,9 +120,9 @@ Theme::css('file-name')
 Theme::img('src','alt', 'class-name')
 ```    
 
-## Assets dependencies (Optional)
+## Assets Managment (Optional)
 
-This package provides intergration with [Orchestra/Asset](http://orchestraplatform.com/docs/3.0/components/asset) component. All the features are explained in the official documentation. Although Orchestra/Asset is installed along with this package, *it's use is optional.*
+This package provides intergration with [Orchestra/Asset](http://orchestraplatform.com/docs/3.0/components/asset) component. All the features are explained in the official documentation. Although Orchestra/Asset is installed along with this package, **it's use is optional.**
 
 To use the Orchestra\Asset you need to add in your Providers array:
 

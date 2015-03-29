@@ -8,10 +8,10 @@ class Themes{
 
 	public  $root = null;
 
-    private  $defaultViewsPath = '';
+    private  $defaultViewsPath;
 
     public function __construct(){
-		$this->defaultViewsPath = Config::get('view.paths')[0];
+		$this->defaultViewsPath = Config::get('view.paths');
 		
 		$this->root = new Theme('root','','');
     }
@@ -44,21 +44,33 @@ class Themes{
 
 	// Set active theme (by name)
 	public function set($themeName){
-		$theme = $this->find($themeName);
-
-		if (!$theme) 
-			throw new \Exception("Theme '$themeName' not found");
+		if (!Config::get('themes.enabled', true))
+			return;
+		
+		if (!$theme = $this->find($themeName))
+			$theme = $this->add(new Theme($themeName));
 
 		$this->activeTheme = $theme;
 
+		// Build Paths array. 
+		// All paths are relative first entry in 'paths' array (set in views.php config file)
 		$paths = [];
 		do {
-			$paths[] = $this->defaultViewsPath.'/'.$theme->viewsPath;
+			$path = $this->defaultViewsPath[0];
+			$path .= empty($theme->viewsPath) ? '' : '/'.$theme->viewsPath;
+			if(!in_array($path, $paths))
+				$paths[] = $path;
 		} while ($theme = $theme->getParent());
 
-		Config::set('view.paths', $paths);
+		// fall-back to default paths (set in views.php config file)
+		foreach ($this->defaultViewsPath as $path)
+			if(!in_array($path, $paths))
+				$paths[] = $path;
 
-		\View::setFinder(app('view.finder'));
+		Config::set('view.paths', $paths);
+	
+		$themeViewFinder = app('view.finder');
+		$themeViewFinder->setPaths($paths);
 	}
 
 	// get active theme (name)

@@ -25,6 +25,16 @@ class themeServiceProvider extends ServiceProvider {
 			return;
 
 		/*--------------------------------------------------------------------------
+		| Extend FileViewFinder
+		|--------------------------------------------------------------------------*/
+
+		$this->app->bindShared('view.finder', function($app)
+		{
+			$paths = $app['config']['view.paths'];
+			return new \igaster\laravelTheme\themeViewFinder($app['files'], $paths);
+		});
+
+		/*--------------------------------------------------------------------------
 		| Initialize Themes
 		|--------------------------------------------------------------------------*/
 

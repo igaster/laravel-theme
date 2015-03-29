@@ -1,6 +1,7 @@
 ## Description
 [![Laravel](https://img.shields.io/badge/Laravel-5.0-orange.svg?style=flat-square)](http://laravel.com)
 [![License](http://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](https://tldrlegal.com/license/mit-license)
+[![Downloads](https://img.shields.io/packagist/dt/igaster/laravel-theme.svg?style=flat-square)](https://packagist.org/packages/igaster/laravel-theme)
 
 This is a package for the Laravel 5 Framework that adds basic support for managing themes. It allows you to seperate your views & your assets files in seperate folders, and supports for theme extending! Awesome :)
 
@@ -64,15 +65,13 @@ Simple define your themes in the `themes` array in `config\theme.php`. The forma
     // you can add your own custom keys and retreive them with Theme::config('key')
 ],
 ```
-
-all settings are optional and can be ommited. Check the example in the configuration file...
+all settings are optional and can be ommited. Check the example in the configuration file... If you are OK with the defaults then you don't even have to touch the configuration file. If a theme is not found then the default values will be used (Convention over configuration)
 
 ## Extending themes
 
 You can set a theme to extend an other. When you are requesting a view/asset that doesn't exist in your active theme, then it will be resolved from it's parent theme. You can easily create variations of your theme by simply overiding your views/themes that are different. 
 
 All themes fall back to the default laravel folders if a resource is not found on the theme folders. So for example you can leave your common libraries (jquery/bootstrap ...) in your `public` folder and use them from all themes. No need to dublicate common assets for each theme!
-
 
 ## Working with Themes
 
@@ -82,7 +81,6 @@ The default theme can be configured in the `theme.php` configuration file. Worki
 Theme::set('theme-name');    // switch to 'theme-name'
 Theme::get();                // retreive current theme's name
 Theme::config('key');        // read current theme's configuration value for 'key'
-Theme::exists('theme-name'); // check if theme-name is declared in `themes.php`
 ```
 
 For example this is a Service Provider that will select a different theme for the `/admin/xxx` urls:
@@ -98,7 +96,7 @@ class themeSelectServiceProvider extends ServiceProvider {
 
 }
 ```
-for more advanced example check demo application: [Set Theme in Session](https://github.com/igaster/laravel-theme-demo) 
+...or you can use a middleware to apply a theme to a `Route::group()` etc. For more advanced example check demo application: [Set Theme in Session](https://github.com/igaster/laravel-theme-demo) 
 
 ## Building your views
 
@@ -122,7 +120,7 @@ Theme::css('file-name')
 Theme::img('src','alt', 'class-name')
 ```    
 
-## Advanced Assets Managment (by Orchestra/Asset)
+## Assets dependencies (Optional)
 
 This package provides intergration with [Orchestra/Asset](http://orchestraplatform.com/docs/3.0/components/asset) component. All the features are explained in the official documentation. Although Orchestra/Asset is installed along with this package, *it's use is optional.*
 
@@ -163,4 +161,4 @@ and your assets dependencies will be auto resolved. Your assets will be exported
 
 ## Important Note:
 
-Laravel is compiling your views every-time you make an edit. A compiled view will not recompile if you switch to another theme unless you make any edit to your view. Keep this in mind while you are developing themes...
+Laravel is compiling your views every-time you make an edit. A compiled view will not recompile unless you make any edit to your view. Keep this in mind while you are developing themes...

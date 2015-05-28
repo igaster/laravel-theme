@@ -16,7 +16,7 @@
     },
     "suggest": {
         "orchestra/asset"   : "~3.0"
-    }    
+    },
     "autoload": {
         "psr-4" : {
             "igaster\\laravelTheme\\" : "src/"

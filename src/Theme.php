@@ -30,7 +30,7 @@ class Theme extends Tree\Item {
         if ($this->getParent())
             return $this->getParent()->url($url);
 
-        throw new \Exception("$fullPath - not found");
+        // throw new \Exception("$fullPath - not found");
     }
 
     // get theme's configuration

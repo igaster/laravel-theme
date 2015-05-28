@@ -15,7 +15,7 @@
         "illuminate/support": "5.0.*"
     },
     "suggest": {
-        "orchestra/asset"   : "~3.0"
+        "orchestra/asset" : "Intergrates with orchestra/asset. Allows using '@css' and '@js' in blade files"
     },
     "autoload": {
         "psr-4" : {

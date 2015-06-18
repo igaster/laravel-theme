@@ -28,7 +28,7 @@ return [
 	| 		'views-path' 	=> 'path-to-views',    // defaults to: resources/views/theme-name
 	| 		'asset-path' 	=> 'path-to-assets',   // defaults to: public/theme-name
     |
-    |		// you can add your own custom keys and retreive them with Theme::config('key');
+    |		// you can add your own custom keys and retrieve them with Theme::config('key');
 	| 	],
 	|
 	|--------------------------------------------------------------------------
@@ -44,8 +44,8 @@ return [
 
 		// Add your themes here...
 
-		/*--------------[ Example Structre ]------------- 
-	
+		/*--------------[ Example Structre ]-------------
+
 			// Recomended (all defaults) : Assets -> \public\BasicTheme , Views -> \resources\views\BasicTheme
 
 			'BasicTheme',
@@ -60,10 +60,10 @@ return [
 
 			// This theme extends BasicTheme and ovverides SOME views\assets in its folders
 
-			'AnOtherTheme' => [ 
+			'AnotherTheme' => [
 				'extends'	=> 'BasicTheme',
 			],
-	
+
 		------------------------------------------------*/
 	],
 

@@ -100,7 +100,7 @@ class themeSelectServiceProvider extends ServiceProvider {
 
 ## Building your views
 
-Whenever you need to link to a local file (image/css/js etc) you can retrieve its path with:
+Whenever you need the url of a local file (image/css/js etc) you can retrieve its path with:
 
 ```php
 Theme::url('path-to-file')
@@ -110,7 +110,7 @@ The path is relative to Theme Folder (NOT to public!). For example, if you have 
 
     <img src="{{Theme::url('img/logo.png')}}">
 
-When you are refering to a local file it will be looked-up in the current theme hierarcy, and the correct path will be returned. If the file is not found on the current theme or its parents then an exception will be thrown.
+When you are refering to a local file it will be looked-up in the current theme hierarcy, and the correct path will be returned. If the file is not found on the current theme or its parents then you can define in the configuration file the action that will be carried out: Throw an exception | Log a warning (Default) | Ignore Completly.
 
 Some usefull helpers you can use:
 
@@ -122,14 +122,14 @@ Theme::img('src','alt', 'class-name')
 
 ## Assets Managment (Optional)
 
-This package provides intergration with [Orchestra/Asset](http://orchestraplatform.com/docs/3.0/components/asset) component. All the features are explained in the official documentation. Although Orchestra/Asset is installed along with this package, **it's use is optional.**
+This package provides intergration with [Orchestra/Asset](http://orchestraplatform.com/docs/3.0/components/asset) component. All the features are explained in the official documentation. If you don't need the extra functinality you can skip this section. Orchestra/Asset is NOT installed along with this package - you have to install it manualy.
 
-To use the Orchestra\Asset you must require it in your composer.json (see the [Official Documentation](https://github.com/orchestral/asset)) and then add in your Providers array:
+To install Orchestra\Asset you must add it in your composer.json (see the [Official Documentation](https://github.com/orchestral/asset)) and then add in your Providers array:
 
     'Orchestra\Asset\AssetServiceProvider',
     'Orchestra\Html\HtmlServiceProvider',
 
-and add the Asset facade in your `Facades` array in `app/config/app.php`
+Add the Asset facade in your `Facades` array in `app/config/app.php`
 
     'Asset' => 'Orchestra\Support\Facades\Asset',
 

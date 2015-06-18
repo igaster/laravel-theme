@@ -29,8 +29,14 @@ class Theme extends Tree\Item {
 
         if ($this->getParent())
             return $this->getParent()->url($url);
+        
+        //Asset not found
+        $action = \Config::get('themes.asset_not_found','LOG_ERROR');
 
-        // throw new \Exception("$fullPath - not found");
+        if ($action == 'THROW_EXCEPTION')
+            throw new themeException("Asset not found [$url]");
+        elseif($action == 'LOG_ERROR')
+            \Log::warning("Asset not found [$url] in Theme [".\Theme::get()."]");
     }
 
     // get theme's configuration

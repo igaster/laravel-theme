@@ -12,6 +12,15 @@ return [
 
 	/*
 	|--------------------------------------------------------------------------
+	| Set behavior if an asset is not found in a Theme hierarcy.
+	| Available options: THROW_EXCEPTION | LOG_ERROR | IGNORE
+	|--------------------------------------------------------------------------
+	*/
+
+	'asset_not_found' => 'THROW_EXCEPTION',
+
+	/*
+	|--------------------------------------------------------------------------
 	| Set the Active Theme. Can be set at runtime with:
 	|  Themes::set('theme-name');
 	|--------------------------------------------------------------------------

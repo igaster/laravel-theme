@@ -42,7 +42,7 @@ That's it. You are now ready to start theming your applications!
 
 ## Defining themes
 
-Simple define your themes in the `themes` array in `config\theme.php`. The format for every theme is very simple:
+Simple define your themes in the `themes` array in `config/theme.php`. The format for every theme is very simple:
 
 ```php
 // Select a name for your theme
@@ -62,7 +62,7 @@ Simple define your themes in the `themes` array in `config\theme.php`. The forma
     // It is relative to /public
     'asset-path' 	=> 'path-to-assets',   // defaults to: theme-name
 
-    // you can add your own custom keys and retreive them with Theme::config('key')
+    // you can add your own custom keys and retrieve them with Theme::config('key')
 ],
 ```
 all settings are optional and can be ommited. Check the example in the configuration file... If you are OK with the defaults then you don't even have to touch the configuration file. If a theme is not found then the default values will be used (Convention over configuration)
@@ -79,7 +79,7 @@ The default theme can be configured in the `theme.php` configuration file. Worki
 
 ```php
 Theme::set('theme-name');    // switch to 'theme-name'
-Theme::get();                // retreive current theme's name
+Theme::get();                // retrieve current theme's name
 Theme::config('key');        // read current theme's configuration value for 'key'
 ```
 
@@ -100,15 +100,15 @@ class themeSelectServiceProvider extends ServiceProvider {
 
 ## Building your views
 
-Whenever you need to link to a local file (image/css/js etc) you can retreive its path with:
+Whenever you need to link to a local file (image/css/js etc) you can retrieve its path with:
 
 ```php
 Theme::url('path-to-file')
 ```
 
-The path is relative to Theme Folder (NOT to pubic!). For example, if you have placed an image in `public\theme-name\img\logo.png` your Blade code would be:
+The path is relative to Theme Folder (NOT to public!). For example, if you have placed an image in `public/theme-name/img/logo.png` your Blade code would be:
 
-    <img src="{{Theme::url('img\logo.png')}}">
+    <img src="{{Theme::url('img/logo.png')}}">
 
 When you are refering to a local file it will be looked-up in the current theme hierarcy, and the correct path will be returned. If the file is not found on the current theme or its parents then an exception will be thrown.
 

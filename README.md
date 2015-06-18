@@ -110,7 +110,7 @@ The path is relative to Theme Folder (NOT to public!). For example, if you have 
 
     <img src="{{Theme::url('img/logo.png')}}">
 
-When you are refering to a local file it will be looked-up in the current theme hierarcy, and the correct path will be returned. If the file is not found on the current theme or its parents then you can define in the configuration file the action that will be carried out: Throw an exception | Log a warning (Default) | Ignore Completly.
+When you are refering to a local file it will be looked-up in the current theme hierarcy, and the correct path will be returned. If the file is not found on the current theme or its parents then you can define in the configuration file the action that will be carried out: `THROW_EXCEPTION` | `LOG_ERROR` as warning (Default) | `IGNORE` completly.
 
 Some usefull helpers you can use:
 

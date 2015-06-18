@@ -54,7 +54,7 @@ Simple define your themes in the `themes` array in `config/theme.php`. The forma
 
     // The path where the view are stored
     // Defaults to 'theme-name' 
-    // It is relative to /resources/views (or what ever is defined in config/view.php)
+    // It is relative to /resources/views (or whatever is defined in config/view.php)
     'views-path' 	=> 'path-to-views',
 
     // The path where the assets are stored

@@ -42,7 +42,7 @@ That's it. You are now ready to start theming your applications!
 
 ## Defining themes
 
-Simple define your themes in the `themes` array in `config/theme.php`. The format for every theme is very simple:
+Simple define your themes in the `themes` array in `config/themes.php`. The format for every theme is very simple:
 
 ```php
 // Select a name for your theme
@@ -59,7 +59,7 @@ Simple define your themes in the `themes` array in `config/theme.php`. The forma
 
     // The path where the assets are stored
     // Defaults to 'theme-name' 
-    // It is relative to /public
+    // It is relative to laravels public folder (/public)
     'asset-path' 	=> 'path-to-assets',   // defaults to: theme-name
 
     // you can add your own custom keys and retrieve them with Theme::config('key')

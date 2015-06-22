@@ -24,7 +24,7 @@ class Theme extends Tree\Item {
 
         $fullUrl = (empty($this->assetPath) ? '' : '/').$this->assetPath.'/'.ltrim($url, '/');
 
-        if (file_exists($fullPath = base_path('public').$fullUrl))
+        if (file_exists($fullPath = public_path($fullUrl)))
             return $fullUrl;
 
         if ($this->getParent())

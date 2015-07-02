@@ -5,10 +5,10 @@ class Theme extends Tree\Item {
     public $assetPath;
     public $viewsPath;
 
-    public function __construct($name, $assetPath = null, $viewsPath = null){
-        $this->name = $name;
-        $this->assetPath = $assetPath === null ? $name : $assetPath;
-        $this->viewsPath = $viewsPath === null ? $name : $viewsPath;
+    public function __construct($themeName, $assetPath = null, $viewsPath = null){
+        $this->name = $themeName;
+        $this->assetPath = $assetPath === null ? $themeName : $assetPath;
+        $this->viewsPath = $viewsPath === null ? $themeName : $viewsPath;
     }
 
     public function getParent(){
@@ -18,19 +18,34 @@ class Theme extends Tree\Item {
             return null;
     }
 
+
+    /**
+     * Attach theme paths to a local Url. The Url must be a resource located on the asset path
+     * of the current theme or it's parents. 
+     *
+     * @param  string $url
+     * @return string
+     */
     public function url($url){
+        // return external URLs unmodified
         if(preg_match('/^((http(s?):)?\/\/)/i',$url))
             return $url;
 
+        // Is it on AWS? Dont lookup parent themes...
+        if(preg_match('/^((http(s?):)?\/\/)/i',$this->assetPath))
+            return $this->assetPath.'/'.ltrim($url, '/');
+
+        // Lookup asset in current's theme asset path
         $fullUrl = (empty($this->assetPath) ? '' : '/').$this->assetPath.'/'.ltrim($url, '/');
 
         if (file_exists($fullPath = public_path($fullUrl)))
             return $fullUrl;
 
+        // If not found then lookup in parent's theme asset path
         if ($this->getParent())
             return $this->getParent()->url($url);
         
-        //Asset not found
+        // Asset not found at all. Error handling
         $action = \Config::get('themes.asset_not_found','LOG_ERROR');
 
         if ($action == 'THROW_EXCEPTION')
@@ -39,7 +54,13 @@ class Theme extends Tree\Item {
             \Log::warning("Asset not found [$url] in Theme [".\Theme::get()."]");
     }
 
-    // get theme's configuration
+    /**
+     * Return the configuration value of $key for the current theme. Configuration values
+     * are stored per theme in themes.php config file. 
+     *
+     * @param  string $key
+     * @return mixed
+     */
     public function config($key){
         if (array_key_exists($key, $conf = \Config::get("themes.themes")[$this->name]))
             return $conf[$key];
@@ -52,71 +73,3 @@ class Theme extends Tree\Item {
 
 
 }
-
-
-// use Illuminate\Support\Facades\Config;
-
-// class Theme {
-// 	public $themeName;
-//     public $assetPath;
-//     public $viewsPath;
-//     public $parentTheme;
-
-//     public static $defaultViewsPath = '';
-
-//     /**
-//      *
-//      * @param string $themeName
-//      * @param array $options : ['assetPath' => xx, 'viewsPath' => xx, 'extends' => xx]
-//      *
-//      */
-//     public function __construct($themeName, $options = []){
-
-//         if (empty(static::$defaultViewsPath))
-//             static::$defaultViewsPath = Config::get('view.paths')[0];
-
-//         $defaults = [
-//             'asset-path'  => $themeName,
-//             'views-path'  => $themeName,
-//             'extends'     => '',
-//         ];
-
-//         $options = array_merge($defaults, $options);
-
-//         $this->themeName    = $themeName;
-//         $this->assetPath    = $options['asset-path'];
-//         $this->viewsPath    = $options['views-path'];
-//         $this->parentTheme  = Themes::get($options['extends']);
-//     }
-
-//     public function url($url){
-//         if(preg_match('/^((http(s?):)?\/\/)/i',$url))
-//             return $url;
-
-// 		$fullUrl = (empty($this->assetPath) ? '' : '/').$this->assetPath.'/'.ltrim($url, '/');
-
-//         if (!file_exists($fullPath = base_path('public').$fullUrl))
-//             if (empty($this->parentTheme))
-//                 throw new \Exception("$fullPath - not found");
-//             else
-//                 return $this->parentTheme->url($url);
-
-//         return $fullUrl;
-// 	}
-
-//     public function activate(){
-//         Config::set('view.paths', $this->pathsList_Views());
-//         Themes::set($this->themeName);
-// 	}
-
-// 	public function pathsList_Views(){
-// 		if (!empty($this->parentTheme))
-// 			$paths = $this->parentTheme->pathsList_Views();
-// 		else
-// 			$paths = [];
-
-//         array_unshift($paths,static::$defaultViewsPath.'/'.$this->viewsPath);
-// 		return $paths;
-// 	}
-
-// }

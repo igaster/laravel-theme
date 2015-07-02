@@ -12,11 +12,11 @@ Features:
 * Intergrates [Orchestra/Asset](http://orchestraplatform.com/docs/3.0/components/asset) to provide Asset dependencies managment
 * Your App & Views remain theme-agnostic. Include new themes with (almost) no modifications
 
-## How it works
+# How it works
 
 Very simple, you create a folder for each Theme in 'resources/views' and keep all your views seperated. The same goes for assets: create a folder for each theme in your 'public' directory. Set your active theme and you are done. The rest of your application remains theme-agnostic©, which means that when you `View::make('index')` you will access the `index.blade.php` from your selected theme's folder. Same goes for your assets.
 
-## Installation
+# Installation
 
 Edit your project's `composer.json` file to require:
 
@@ -40,7 +40,7 @@ Almost Done. You only need to publish configuration file to your application wit
 
 That's it. You are now ready to start theming your applications!
 
-## Defining themes
+# Defining themes
 
 Simple define your themes in the `themes` array in `config/themes.php`. The format for every theme is very simple:
 
@@ -67,13 +67,13 @@ Simple define your themes in the `themes` array in `config/themes.php`. The form
 ```
 all settings are optional and can be ommited. Check the example in the configuration file... If you are OK with the defaults then you don't even have to touch the configuration file. If a theme is not found then the default values will be used (Convention over configuration)
 
-## Extending themes
+# Extending themes
 
 You can set a theme to extend an other. When you are requesting a view/asset that doesn't exist in your active theme, then it will be resolved from it's parent theme. You can easily create variations of your theme by simply overiding your views/themes that are different. 
 
 All themes fall back to the default laravel folders if a resource is not found on the theme folders. So for example you can leave your common libraries (jquery/bootstrap ...) in your `public` folder and use them from all themes. No need to dublicate common assets for each theme!
 
-## Working with Themes
+# Working with Themes
 
 The default theme can be configured in the `theme.php` configuration file. Working with themes is very straightforward. Use:
 
@@ -98,7 +98,7 @@ class themeSelectServiceProvider extends ServiceProvider {
 ```
 ...or you can use a middleware to apply a theme to a `Route::group()` etc. For more advanced example check demo application: [Set Theme in Session](https://github.com/igaster/laravel-theme-demo) 
 
-## Building your views
+# Building your views
 
 Whenever you need the url of a local file (image/css/js etc) you can retrieve its path with:
 
@@ -120,7 +120,7 @@ Theme::css('file-name')
 Theme::img('src','alt', 'class-name')
 ```    
 
-## Assets Managment (Optional)
+# Assets Managment (Optional)
 
 This package provides intergration with [Orchestra/Asset](http://orchestraplatform.com/docs/3.0/components/asset) component. All the features are explained in the official documentation. If you don't need the extra functinality you can skip this section. Orchestra/Asset is NOT installed along with this package - you have to install it manualy.
 
@@ -147,7 +147,7 @@ Please note that you are just defining your css/js files but not actually dumpin
 
 exactly where you want write your declerations.
 
-## Assets dependencies
+# Assets dependencies
 
 This is an [Orchestra/Asset](http://orchestraplatform.com/docs/3.0/components/asset) feature explained well in the official documentation. Long story short:
 
@@ -159,6 +159,20 @@ and your assets dependencies will be auto resolved. Your assets will be exported
     @js  (jquery.js,    jq)
     @js  (bootstrap.js, bs, jq)
 
-## Important Note:
+# Important Note:
 
+Laravel is compiling your views every-time you make an edit. A compiled view will not recompile unless you make any edit to your view. Keep this in mind while you are developing themes...
+
+# FAQ:
+
+##### Is this package compatible with AWS?
+Yes with one exception: If you are building Theme hierarcies, asset's will not be looked up on the parent theme. Performing file searching on a remote repository is not the best practice. Should be addressed in a future version... However Blade templates auto-discovery works fine since they are local files.
+
+##### What about external assets (eg CDN)?
+Link directly to your external assets. Every url that starts with http(s) will not be proccesed by default.
+
+##### How do I change the public path?
+Rebind Laravel's 'path.public'. [(More info)](https://laracasts.com/discuss/channels/general-discussion/where-do-you-set-public-directory-laravel-5)
+
+##### I'm editing a view but I dont see the changes
 Laravel is compiling your views every-time you make an edit. A compiled view will not recompile unless you make any edit to your view. Keep this in mind while you are developing themes...

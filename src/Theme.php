@@ -62,9 +62,12 @@ class Theme extends Tree\Item {
      * @return mixed
      */
     public function config($key){
-        if (array_key_exists($key, $conf = \Config::get("themes.themes")[$this->name]))
-            return $conf[$key];
-
+        //root theme not have configs
+        if(array_key_exists($this->name, $confs = \Config::get("themes.themes")))
+        {
+            if (array_key_exists($key, $conf = $confs[$this->name]))
+                return $conf[$key];
+        }
         if ($this->getParent())
             return $this->getParent()->config($key);
 

@@ -122,8 +122,16 @@ class Themes{
      * @return string
      */
 	public function url($url){
-		if (Config::get('themes.enabled', true))
+		if (Config::get('themes.enabled', true)){
+
+            // Check for valid {xxx} keys and replace them with the Theme's configuration value (in themes.php)
+            preg_match_all('/\{(.*?)\}/', $url, $matches);
+            foreach ($matches[1] as $param)
+                if(($value=$this->config($param)) !== null)
+                    $url = str_replace('{'.$param.'}', $value, $url);
+
 			return $this->activeTheme->url($url);
+        }
 		else
 			return $url;
 	}
@@ -137,7 +145,7 @@ class Themes{
      * @return string
      */
 	public function css($href){
-		return '<link media="all" type="text/css" rel="stylesheet" href="'.$this->url($href).'">'."\n";
+		return '<link media="all" type="text/css" rel="stylesheet" href="'.$this->url($href).'">';
 	}
 
     /**
@@ -147,7 +155,7 @@ class Themes{
      * @return string
      */
 	public function js($href){
-		return '<script src="'.$this->url($href).'"></script>'."\n";
+		return '<script src="'.$this->url($href).'"></script>';
 	}
 
     /**
@@ -159,6 +167,6 @@ class Themes{
      * @return string
      */
 	public function img($src, $alt='', $Class=''){
-		return '<img src="'.$this->url($src).'" alt="'.$alt.'" class="'.$Class.'">'."\n";
-	}	
+		return '<img src="'.$this->url($src).'" alt="'.$alt.'" class="'.$Class.'">';
+	}
 }

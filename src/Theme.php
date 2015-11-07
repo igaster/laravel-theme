@@ -74,5 +74,4 @@ class Theme extends Tree\Item {
         return null;
     }
 
-
 }

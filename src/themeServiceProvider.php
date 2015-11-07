@@ -86,39 +86,36 @@ class themeServiceProvider extends ServiceProvider {
 
 		Blade::extend(function($value)
 		{
-		    return preg_replace_callback('/\@js\s*\(\s*([\w\-\._:\\/]*)\s*(?:,\s*([\w\-\._:\\/]*)\s*,?\s*(.*))?\)/', function($match){
+			return preg_replace_callback('/\@js\s*\(\s*([^),]*)(?:,\s*([^),]*))?(?:,\s*([^),]*))?\)/', function($match){
 
-				$p1 = \Theme::url($match[1]);
-				$p2 = empty($match[2]) ? $match[1] : $match[2];
-				$p3 = empty($match[3]) ? '' : $match[3];
+				$p1 = trim($match[1], " \t\n\r\0\x0B\"'");
+				$p2 = trim(empty($match[2]) ? $p1 : $match[2], " \t\n\r\0\x0B\"'");
+				$p3 = trim(empty($match[3]) ? '' : $match[3], " \t\n\r\0\x0B\"'");
 
-				if(empty($p2))
-					return "<?php Asset::script('$p2', '$p1');?>";
-				elseif(empty($p3))
-					return "<?php Asset::script('$p2', '$p1');?>";
+				if(empty($p3))
+					return "<?php Asset::script('$p2', \Theme::url('$p1'));?>";
 				else
-					return "<?php Asset::script('$p2', '$p1', '$p3');?>";
+					return "<?php Asset::script('$p2', \Theme::url('$p1'), '$p3');?>";
+
 			},$value);
 		});
 
 
 		Blade::extend(function($value)
 		{
-			return preg_replace_callback('/\@css\s*\(\s*([\w\-\._:\\/]*)\s*(?:,\s*([\w\-\._:\\/]*)\s*,?\s*(.*))?\)/', function($match){
+			return preg_replace_callback('/\@css\s*\(\s*([^),]*)(?:,\s*([^),]*))?(?:,\s*([^),]*))?\)/', function($match){
 
-				$p1 = \Theme::url($match[1]);
-				$p2 = empty($match[2]) ? $match[1] : $match[2];
-				$p3 = empty($match[3]) ? '' : $match[3];
+				$p1 = trim($match[1], " \t\n\r\0\x0B\"'");
+				$p2 = trim(empty($match[2]) ? $p1 : $match[2], " \t\n\r\0\x0B\"'");
+				$p3 = trim(empty($match[3]) ? '' : $match[3], " \t\n\r\0\x0B\"'");
 
-				if(empty($p2))
-					return "<?php Asset::style('$p2', '$p1');?>";
-				elseif(empty($p3))
-					return "<?php Asset::style('$p2', '$p1');?>";
+				if(empty($p3))
+					return "<?php Asset::style('$p2', \Theme::url('$p1'));?>";
 				else
-					return "<?php Asset::style('$p2', '$p1', '$p3');?>";
+					return "<?php Asset::style('$p2', \Theme::url('$p1'), '$p3');?>";
+
 			},$value);
 		});
 	}
-
 
 }

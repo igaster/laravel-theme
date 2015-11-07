@@ -62,7 +62,8 @@ Simple define your themes in the `themes` array in `config/themes.php`. The form
     // It is relative to laravels public folder (/public)
     'asset-path' 	=> 'path-to-assets',   // defaults to: theme-name
 
-    // you can add your own custom keys and retrieve them with Theme::config('key')
+    // you can add your own custom keys and retrieve them with Theme::config('key'). e.g.:
+    'parameter'        => 'value', 
 ],
 ```
 all settings are optional and can be ommited. Check the example in the configuration file... If you are OK with the defaults then you don't even have to touch the configuration file. If a theme is not found then the default values will be used (Convention over configuration)
@@ -117,8 +118,18 @@ Some usefull helpers you can use:
 ```php
 Theme::js('file-name')
 Theme::css('file-name')
-Theme::img('src','alt', 'class-name')
+Theme::img('src', 'alt', 'class-name')
 ```    
+
+## Paremeters in filenames
+
+You can include any configuration key of the current them inside the path using {curly brackets}. For examle:
+
+```php
+Theme::url('main-{version}.css')
+```
+
+if there is a `"version"` key defined in the theme's configuration it will be evaluated and then the filename will be looked-up in the theme hierarcy. (e.g: many comercial themes ship with multiple versions of the main.css for different color-schemes)
 
 ## Assets Managment (Optional)
 
@@ -137,8 +148,8 @@ Now you can leverage all the power of Orchestra\Asset package. However the synta
 
 In any blade file when you need to refer to a script or css: (dont use single/double quotes)
 
-    @css(filename)
-    @js(filename)
+    @css('filename')
+    @js('filename')
 
 Please note that you are just defining your css/js files but not actually dumping them in html. Usually you only need write your css/js decleration in one place on the Head/Footer of you page. So open your master layout and place:
 
@@ -151,17 +162,13 @@ exactly where you want write your declerations.
 
 This is an [Orchestra/Asset](http://orchestraplatform.com/docs/3.0/components/asset) feature explained well in the official documentation. Long story short:
 
-    @css (filename, alias, depends-on)
-    @js  (filename, alias, depends-on)
+    @css ('filename', 'alias', 'depends-on')
+    @js  ('filename', 'alias', 'depends-on')
 
 and your assets dependencies will be auto resolved. Your assets will be exported in the correct order. The biggest benefit of this approach is that you don't have to move all your declerations in your master layout file. Each sub-view can define it's requirements and they will auto-resolved in the correct order with no doublications. Awesome! A short example:
 
-    @js  (jquery.js,    jq)
-    @js  (bootstrap.js, bs, jq)
-
-## Important Note:
-
-Laravel is compiling your views every-time you make an edit. A compiled view will not recompile unless you make any edit to your view. Keep this in mind while you are developing themes...
+    @js  ('jquery.js',    'jquery')
+    @js  ('bootstrap.js', 'bootsrap', jquery)
 
 ## FAQ:
 

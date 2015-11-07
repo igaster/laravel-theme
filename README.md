@@ -123,7 +123,7 @@ Theme::img('src', 'alt', 'class-name')
 
 ## Paremeters in filenames
 
-You can include any configuration key of the current them inside the path using {curly brackets}. For examle:
+You can include any configuration key of the current theme inside any path string using *{curly brackets}*. For examle:
 
 ```php
 Theme::url('main-{version}.css')

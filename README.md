@@ -146,7 +146,7 @@ Add the Asset facade in your `Facades` array in `app/config/app.php`
 
 Now you can leverage all the power of Orchestra\Asset package. However the syntax can become quite cumbersome when you are using Themes + Orchestra/Asset, so some Blade-specific sugar has been added to ease your work. Here how to build your views:
 
-In any blade file when you need to refer to a script or css: (dont use single/double quotes)
+In any blade file you can require a script or a css:
 
     @css('filename')
     @js('filename')

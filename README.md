@@ -28,15 +28,15 @@ and install with `composer update`
 
 Add the service provider in `app/config/app.php`, `Providers` array:
 
-    'igaster\laravelTheme\themeServiceProvider',
+    igaster\laravelTheme\themeServiceProvider::class,
 
 also edit the `Facades` array and add:
 
-    'Theme'  => 'igaster\laravelTheme\Facades\Theme',
+    'Theme' => igaster\laravelTheme\Facades\Theme::class,
 
-Almost Done. You only need to publish configuration file to your application with
+Almost Done. You can optionally publish a configuration file to your application with
 
-    artisan vendor:publish
+    php artisan vendor:publish --provider=igaster\laravelTheme\themeServiceProvider
 
 That's it. You are now ready to start theming your applications!
 
@@ -63,10 +63,10 @@ Simple define your themes in the `themes` array in `config/themes.php`. The form
     'asset-path' 	=> 'path-to-assets',   // defaults to: theme-name
 
     // you can add your own custom keys and retrieve them with Theme::config('key'). e.g.:
-    'parameter'        => 'value', 
+    'key'           => 'value', 
 ],
 ```
-all settings are optional and can be ommited. Check the example in the configuration file... If you are OK with the defaults then you don't even have to touch the configuration file. If a theme is not found then the default values will be used (Convention over configuration)
+all settings are optional and can be ommited. Check the example in the configuration file... If you are OK with the defaults then you don't even have to touch the configuration file. If a theme has not been registered then the default values will be used!
 
 ## Extending themes
 

@@ -79,9 +79,10 @@ All themes fall back to the default laravel folders if a resource is not found o
 The default theme can be configured in the `theme.php` configuration file. Working with themes is very straightforward. Use:
 
 ```php
-Theme::set('theme-name');    // switch to 'theme-name'
-Theme::get();                // retrieve current theme's name
-Theme::config('key');        // read current theme's configuration value for 'key'
+Theme::set('theme-name');        // switch to 'theme-name'
+Theme::get();                    // retrieve current theme's name
+Theme::config('key');            // read current theme's configuration value for 'key'
+Theme::configSet('key','value'); // assign a key-value pair to current theme's configuration
 ```
 
 For example this is a Service Provider that will select a different theme for the `/admin/xxx` urls:

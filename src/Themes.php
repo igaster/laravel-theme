@@ -105,14 +105,25 @@ class Themes{
 	}
 
     /**
-     * Return current theme's configuration option for $key
+     * Return current theme's configuration value for $key
      *
      * @param   string $key
      * @return  mixed
      */
-	public function config($key){
-		return $this->activeTheme->config($key);
+	public function config($key, $defaultValue = null){
+		return $this->activeTheme->config($key, $defaultValue);
 	}
+
+    /**
+     * Set current theme's configuration value for $key
+     *
+     * @param   string $key
+     * @return  mixed
+     */
+    public function configSet($key, $value){
+        return $this->activeTheme->configSet($key, $value);
+    }
+
 
     /**
      * Attach current theme's paths to a local Url. The Url must be a resource located on the asset path

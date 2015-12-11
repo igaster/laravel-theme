@@ -59,9 +59,10 @@ class Theme extends Tree\Item {
      * are stored per theme in themes.php config file. 
      *
      * @param  string $key
+     * @param  mixed $defaultValue
      * @return mixed
      */
-    public function config($key){
+    public function config($key, $defaultValue){
         //root theme not have configs
         if(array_key_exists($this->name, $confs = \Config::get("themes.themes")))
         {
@@ -69,9 +70,24 @@ class Theme extends Tree\Item {
                 return $conf[$key];
         }
         if ($this->getParent())
-            return $this->getParent()->config($key);
+            return $this->getParent()->config($key, $defaultValue);
 
-        return null;
+        return $defaultValue;
     }
+
+    /**
+     * Return the configuration value of $key for the current theme. Configuration values
+     * are stored per theme in themes.php config file. 
+     *
+     * @param  string $key
+     * @param  mixed $value
+     * @return mixed
+     */
+    public function configSet($key, $value){
+        $themeName = $this->name;
+        \Config::set("themes.themes.$themeName.$key",$value);
+        return $value;
+    }
+
 
 }

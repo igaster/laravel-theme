@@ -130,7 +130,7 @@ You can include any configuration key of the current theme inside any path strin
 Theme::url('main-{version}.css')
 ```
 
-if there is a `"version"` key defined in the theme's configuration it will be evaluated and then the filename will be looked-up in the theme hierarcy. (e.g: many comercial themes ship with multiple versions of the main.css for different color-schemes)
+if there is a `"version"` key defined in the theme's configuration it will be evaluated and then the filename will be looked-up in the theme hierarcy. (e.g: many comercial themes ship with multiple versions of the main.css for different color-schemes, or use [language-dependent assets](https://github.com/igaster/laravel-theme/issues/17))
 
 ## Assets Managment (Optional)
 

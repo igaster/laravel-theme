@@ -144,12 +144,17 @@ if there is a `"version"` key defined in the theme's configuration it will be ev
 
 This package provides intergration with [Orchestra/Asset](http://orchestraplatform.com/docs/3.0/components/asset) component. All the features are explained in the official documentation. If you don't need the extra functinality you can skip this section. Orchestra/Asset is NOT installed along with this package - you have to install it manualy.
 
-To install Orchestra\Asset you must add it in your composer.json (see the [Official Documentation](https://github.com/orchestral/asset)) and then add in your Providers array:
+To install Orchestra\Asset you must add it in your composer.json (see the [Official Documentation](https://github.com/orchestral/asset)):
+
+    "orchestra/asset": "~3.0",
+    "orchestra/support": "~3.0",
+
+and run `composer update`. Then add the Service Providers in your Providers array (in `app/config/app.php`):
 
     Orchestra\Asset\AssetServiceProvider::class,
     Collective\Html\HtmlServiceProvider::class,
 
-Add the Asset facade in your `aliases` array in `app/config/app.php`
+Add the Asset facade in your `aliases` array:
 
     'Asset' => Orchestra\Support\Facades\Asset::class,
 

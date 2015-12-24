@@ -11,11 +11,10 @@
         }
     ],	
     "require": {
-        "php": ">=5.4.0",
-        "illuminate/support": "5.0.*|5.1.*"
+        "illuminate/support": ">=5.2.0"
     },
     "suggest": {
-        "orchestra/asset" : "Intergrates with orchestra/asset. Allows using '@css' and '@js' in blade files"
+        "orchestra/asset" : "Use '@css' and '@js' in Blade files"
     },
     "autoload": {
         "psr-4" : {

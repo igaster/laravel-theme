@@ -29,7 +29,7 @@ Laravel    | laravel-theme
 Edit your project's `composer.json` file to require:
 
     "require": {
-        "igaster/laravel-theme": "~1.0.0"
+        "igaster/laravel-theme": "~1.1.0"
     }
 
 and install with `composer update`
@@ -146,12 +146,12 @@ This package provides intergration with [Orchestra/Asset](http://orchestraplatfo
 
 To install Orchestra\Asset you must add it in your composer.json (see the [Official Documentation](https://github.com/orchestral/asset)) and then add in your Providers array:
 
-    'Orchestra\Asset\AssetServiceProvider',
-    'Orchestra\Html\HtmlServiceProvider',
+    Orchestra\Asset\AssetServiceProvider::class,
+    Collective\Html\HtmlServiceProvider::class,
 
-Add the Asset facade in your `Facades` array in `app/config/app.php`
+Add the Asset facade in your `aliases` array in `app/config/app.php`
 
-    'Asset' => 'Orchestra\Support\Facades\Asset',
+    'Asset' => Orchestra\Support\Facades\Asset::class,
 
 Now you can leverage all the power of Orchestra\Asset package. However the syntax can become quite cumbersome when you are using Themes + Orchestra/Asset, so some Blade-specific sugar has been added to ease your work. Here how to build your views:
 

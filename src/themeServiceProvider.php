@@ -13,7 +13,7 @@ class themeServiceProvider extends ServiceProvider {
 		| Bind in IOC
 		|--------------------------------------------------------------------------*/
 
-		$this->app->bindShared('igaster.themes', function(){
+		$this->app->singleton('igaster.themes', function(){
 			return new Themes();
 		});
 
@@ -28,7 +28,7 @@ class themeServiceProvider extends ServiceProvider {
 		| Extend FileViewFinder
 		|--------------------------------------------------------------------------*/
 
-		$this->app->bindShared('view.finder', function($app)
+		$this->app->singleton('view.finder', function($app)
 		{
 			$paths = $app['config']['view.paths'];
 			return new \igaster\laravelTheme\themeViewFinder($app['files'], $paths);

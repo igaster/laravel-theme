@@ -29,7 +29,7 @@ Laravel    | laravel-theme
 Edit your project's `composer.json` file to require:
 
     "require": {
-        "igaster/laravel-theme": "~1.0"
+        "igaster/laravel-theme": "~1.0.0"
     }
 
 and install with `composer update`

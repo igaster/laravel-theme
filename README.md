@@ -44,7 +44,7 @@ also edit the `Facades` array and add:
 
 Almost Done. You can optionally publish a configuration file to your application with
 
-    php artisan vendor:publish --provider=igaster\laravelTheme\themeServiceProvider
+    php artisan vendor:publish --provider="igaster\laravelTheme\themeServiceProvider"
 
 That's it. You are now ready to start theming your applications!
 

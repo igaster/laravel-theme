@@ -93,13 +93,13 @@ Theme::config('key');            // read current theme's configuration value for
 Theme::configSet('key','value'); // assign a key-value pair to current theme's configuration
 ```
 
-You are free to create your own implementation to pick a Theme via a ServiceProvider, or a Middleware, or even set the Theme in your Controllers. 
+You are free to create your own implementation to set a Theme via a ServiceProvider, or a Middleware, or even define the Theme in your Controllers. 
 
 ## 'setTheme' middleware (Laravel 5.2+)
 
-A helper middleware is included out of the box if you want to define a Theme per route. To use it:
+A [helper middleware](https://github.com/igaster/laravel-theme/blob/master/src/Middleware/setTheme.php) is included out of the box if you want to define a Theme per route. To use it:
 
-First register the middleware in `app\Http\Kernel.php`:
+First register it in `app\Http\Kernel.php`:
 
 ```php
 protected $routeMiddleware = [
@@ -113,7 +113,7 @@ Now you can apply the middleware to a route or route-group. Eg:
 ```php
 Route::group(['prefix' => 'admin', 'middleware'=>'setTheme:ADMIN_THEME'], function() {
     // ... Add your routes here 
-    // The ADMIN_THEME will be applied
+    // The ADMIN_THEME will be applied.
 });
 ```
 For more advanced example check demo application: [Set Theme in Session](https://github.com/igaster/laravel-theme-demo) 

@@ -1,7 +1,5 @@
 <?php namespace igaster\laravelTheme\Middleware;
 
-namespace App\Http\Middleware;
-
 use Closure;
 
 class setTheme
@@ -11,6 +9,7 @@ class setTheme
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
+     * @param  string  $themeName
      * @return mixed
      */
     public function handle($request, Closure $next, $themeName)

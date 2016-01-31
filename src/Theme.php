@@ -62,7 +62,7 @@ class Theme extends Tree\Item {
      * @param  mixed $defaultValue
      * @return mixed
      */
-    public function config($key, $defaultValue){
+    public function config($key, $defaultValue = null){
         //root theme not have configs
         if(array_key_exists($this->name, $confs = \Config::get("themes.themes")))
         {

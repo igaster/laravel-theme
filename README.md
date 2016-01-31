@@ -93,20 +93,30 @@ Theme::config('key');            // read current theme's configuration value for
 Theme::configSet('key','value'); // assign a key-value pair to current theme's configuration
 ```
 
-For example this is a Service Provider that will select a different theme for the `/admin/xxx` urls:
+You are free to create your own implementation to pick a Theme via a ServiceProvider, or a Middleware, or even set the Theme in your Controllers. 
+
+## 'setTheme' middleware (Laravel 5.2+)
+
+A helper middleware is included out of the box if you want to define a Theme per route. To use it:
+
+First register the middleware in `app\Http\Kernel.php`:
 
 ```php
-class themeSelectServiceProvider extends ServiceProvider {
-
-    public function boot()
-    {
-        if (\Request::segment(1)=='admin')
-            \Theme::set('adminTheme');
-    }
-
-}
+protected $routeMiddleware = [
+    // ...
+    'setTheme' => \igaster\laravelTheme\Middleware\setTheme::class,
+];
 ```
-...or you can use a middleware to apply a theme to a `Route::group()` etc. For more advanced example check demo application: [Set Theme in Session](https://github.com/igaster/laravel-theme-demo) 
+
+Now you can apply the middleware to a route or route-group. Eg:
+
+```php
+Route::group(['prefix' => 'admin', 'middleware'=>'setTheme:ADMIN_THEME'], function() {
+    // ... Add your routes here 
+    // The ADMIN_THEME will be applied
+});
+```
+For more advanced example check demo application: [Set Theme in Session](https://github.com/igaster/laravel-theme-demo) 
 
 ## Building your views
 

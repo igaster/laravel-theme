@@ -22,7 +22,7 @@ Very simple, you create a folder for each Theme in 'resources/views' and keep al
 
 install with
 
-    `composer require "igaster/laravel-theme"`
+    composer require "igaster/laravel-theme"
 
 Add the service provider in `app/config/app.php`, `Providers` array:
 

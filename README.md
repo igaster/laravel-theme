@@ -12,27 +12,17 @@ Features:
 * Intergrates [Orchestra/Asset](http://orchestraplatform.com/docs/3.0/components/asset) to provide Asset dependencies managment
 * Your App & Views remain theme-agnostic. Include new themes with (almost) no modifications
 
+#### For Laravel 5.0 & 5.1, please use the [v1.0.x branch](https://github.com/igaster/laravel-theme/tree/v1.0)
+
 ## How it works
 
 Very simple, you create a folder for each Theme in 'resources/views' and keep all your views seperated. The same goes for assets: create a folder for each theme in your 'public' directory. Set your active theme and you are done. The rest of your application remains theme-agnostic©, which means that when you `View::make('index')` you will access the `index.blade.php` from your selected theme's folder. Same goes for your assets.
 
-## Version Compatibility
-
-Laravel    | laravel-theme
-:----------|:----------
- 5.0.x     | 1.0.x
- 5.1.x     | 1.0.x
- 5.2.x     | 1.1.x
-
 ## Installation
 
-Edit your project's `composer.json` file to require:
+install with
 
-    "require": {
-        "igaster/laravel-theme": "~1.1.0"
-    }
-
-and install with `composer update`
+    `composer require "igaster/laravel-theme"`
 
 Add the service provider in `app/config/app.php`, `Providers` array:
 
@@ -109,29 +99,6 @@ Theme::configSet('key','value'); // assign a key-value pair to current theme's c
 
 You are free to create your own implementation to set a Theme via a ServiceProvider, or a Middleware, or even define the Theme in your Controllers. 
 
-## 'setTheme' middleware (Laravel 5.2+)
-
-A [helper middleware](https://github.com/igaster/laravel-theme/blob/master/src/Middleware/setTheme.php) is included out of the box if you want to define a Theme per route. To use it:
-
-First register it in `app\Http\Kernel.php`:
-
-```php
-protected $routeMiddleware = [
-    // ...
-    'setTheme' => \igaster\laravelTheme\Middleware\setTheme::class,
-];
-```
-
-Now you can apply the middleware to a route or route-group. Eg:
-
-```php
-Route::group(['prefix' => 'admin', 'middleware'=>'setTheme:ADMIN_THEME'], function() {
-    // ... Add your routes here 
-    // The ADMIN_THEME will be applied.
-});
-```
-For more advanced example check demo application: [Set Theme in Session](https://github.com/igaster/laravel-theme-demo) 
-
 ## Building your views
 
 Whenever you need the url of a local file (image/css/js etc) you can retrieve its path with:
@@ -154,15 +121,38 @@ Theme::css('file-name')
 Theme::img('src', 'alt', 'class-name')
 ```    
 
-## Paremeters in filenames
+## Paremeteric filenames
 
 You can include any configuration key of the current theme inside any path string using *{curly brackets}*. For examle:
 
 ```php
-Theme::url('main-{version}.css')
+Theme::url('jquery-{version}.js')
 ```
 
-if there is a `"version"` key defined in the theme's configuration it will be evaluated and then the filename will be looked-up in the theme hierarcy. (e.g: many comercial themes ship with multiple versions of the main.css for different color-schemes, or use [language-dependent assets](https://github.com/igaster/laravel-theme/issues/17))
+if there is a `"version"` key defined in the theme's configuration it will be evaluated and then the filename will be looked-up in the theme hierarcy. (e.g: many comercial themes ship with multiple versions of the main.css for different color-schemes, or you can use [language-dependent assets](https://github.com/igaster/laravel-theme/issues/17))
+
+## 'setTheme' middleware (Laravel 5.2+)
+
+A [helper middleware](https://github.com/igaster/laravel-theme/blob/master/src/Middleware/setTheme.php) is included out of the box if you want to define a Theme per route. To use it:
+
+First register it in `app\Http\Kernel.php`:
+
+```php
+protected $routeMiddleware = [
+    // ...
+    'setTheme' => \igaster\laravelTheme\Middleware\setTheme::class,
+];
+```
+
+Now you can apply the middleware to a route or route-group. Eg:
+
+```php
+Route::group(['prefix' => 'admin', 'middleware'=>'setTheme:ADMIN_THEME'], function() {
+    // ... Add your routes here 
+    // The ADMIN_THEME will be applied.
+});
+```
+For a more advanced example check demo application: [Set Theme in Session](https://github.com/igaster/laravel-theme-demo) 
 
 ## Assets Managment (Optional)
 

@@ -4,15 +4,14 @@ use Illuminate\Support\Facades\Config;
 
 class Themes{
 
-	public  $activeTheme = null;
-
-	public  $root = null;
-
-    private  $defaultViewsPath;
+	public $activeTheme = null;
+	public $root = null;
+    private $defaultViewsPath;
+    private $themesPath;
 
     public function __construct(){
 		$this->defaultViewsPath = Config::get('view.paths');
-		
+        $this->themesPath = Config::get('themes.themes_path', null) ?: Config::get('view.paths')[0];
 		$this->root = new Theme('root','','');
     }
 
@@ -75,10 +74,11 @@ class Themes{
 		$this->activeTheme = $theme;
 
 		// Build Paths array. 
-		// All paths are relative first entry in 'paths' array (set in views.php config file)
+		// All paths are relative to Config::get('theme.theme_path')
 		$paths = [];
 		do {
-			$path = $this->defaultViewsPath[0];
+			// $path = $this->defaultViewsPath[0];
+            $path = $this->themesPath;
 			$path .= empty($theme->viewsPath) ? '' : '/'.$theme->viewsPath;
 			if(!in_array($path, $paths))
 				$paths[] = $path;

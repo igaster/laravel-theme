@@ -10,6 +10,17 @@ return [
 
 	'enabled' => true,
 
+    /*
+    |--------------------------------------------------------------------------
+    | File path where themes will be located.
+    | Can be outside default views path EG: resources/themes
+    | Leave it null if you place your themes in the default views folder 
+    | (as defined in config\views.php)
+    |--------------------------------------------------------------------------
+    */
+
+    'themes_path' => null, // eg: realpath(base_path('resources/themes'))
+
 	/*
 	|--------------------------------------------------------------------------
 	| Set behavior if an asset is not found in a Theme hierarcy.
@@ -36,8 +47,8 @@ return [
 	| 		'extends'	 	=> 'theme-to-extend',  // optional
 	| 		'views-path' 	=> 'path-to-views',    // defaults to: resources/views/theme-name
 	| 		'asset-path' 	=> 'path-to-assets',   // defaults to: public/theme-name
-    |
-    |		// you can add your own custom keys and retrieve them with Theme::config('key');
+	|
+	|		// you can add your own custom keys and retrieve them with Theme::config('key');
 	| 	],
 	|
 	|--------------------------------------------------------------------------

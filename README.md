@@ -50,27 +50,41 @@ That's it. You are now ready to start theming your applications!
 
 ## Defining themes
 
-Simple define your themes in the `themes` array in `config/themes.php`. The format for every theme is very simple:
+Heads up: Defining a theme is completly optional. You may not touch the config file as long as the defaults fits you! If you want more control then you can define your themes in the `themes` array in [config/themes.php](https://github.com/igaster/laravel-theme/blob/master/src/config.php). The format for every theme is very simple:
 
 ```php
 // Select a name for your theme
 'theme-name' => [
 
-    // Theme to extend
-    // Defaults to null (=none)
+    /*
+    |--------------------------------------------------------------------------
+    | Theme to extend. Defaults to null (=none)
+    |--------------------------------------------------------------------------
+    */
     'extends'	 	=> 'theme-to-extend',
 
-    // The path where the view are stored
-    // Defaults to 'theme-name' 
-    // It is relative to /resources/views (or whatever is defined in config/view.php)
+    /*
+    |--------------------------------------------------------------------------
+    | The path where the view are stored. Defaults to 'theme-name' 
+    | It is relative to 'themes_path' ('/resources/views' by default)
+    |--------------------------------------------------------------------------
+    */
     'views-path' 	=> 'path-to-views',
 
-    // The path where the assets are stored
-    // Defaults to 'theme-name' 
-    // It is relative to laravels public folder (/public)
-    'asset-path' 	=> 'path-to-assets',   // defaults to: theme-name
+    /*
+    |--------------------------------------------------------------------------
+    | The path where the assets are stored. Defaults to 'theme-name' 
+    | It is relative to laravels public folder (/public)
+    |--------------------------------------------------------------------------
+    */
+    'asset-path' 	=> 'path-to-assets',
 
-    // you can add your own custom keys and retrieve them with Theme::config('key'). e.g.:
+    /*
+    |--------------------------------------------------------------------------
+    | Custom configuration. You can add your own custom keys.
+    | Retrieve these values with Theme::config('key'). e.g.:
+    |--------------------------------------------------------------------------
+    */
     'key'           => 'value', 
 ],
 ```
@@ -202,8 +216,11 @@ Yes with one exception: If you are building Theme hierarcies, asset's will not b
 ##### What about external assets (eg CDN)?
 Link directly to your external assets. Every url that starts with http(s) will not be proccesed by default.
 
+##### Can I place my themes in a different path than Laravel's views folder?
+Yes. Set the `themes_path` option in `themes.php` configuration file to any path. However the default Laravel views path will be used as a fallback when a view is requested and can not be located in any other folder.
+
 ##### How do I change the public path?
 Rebind Laravel's 'path.public'. [(More info)](https://laracasts.com/discuss/channels/general-discussion/where-do-you-set-public-directory-laravel-5)
 
 ##### I'm editing a view but I dont see the changes
-Laravel is compiling your views every-time you make an edit. A compiled view will not recompile unless you make any edit to your view. Keep this in mind while you are developing themes...
+Laravel is compiling your views every-time you make an edit. A compiled view will not recompile unless you make any edit to your view. You can manualy clear compiled views with `artisan view:clear`.Keep this in mind while you are developing themes...

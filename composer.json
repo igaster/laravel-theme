@@ -11,15 +11,23 @@
         }
     ],	
     "require": {
+        "php": ">=5.4.0",
         "illuminate/support": ">=5.2.0"
     },
+    "require-dev": {
+        "illuminate/database": "~5.2",
+        "orchestra/testbench": "~3.0", 
+        "vlucas/phpdotenv": "~2.0",      
+        "phpunit/phpunit": "~4.0"
+    },       
     "suggest": {
         "orchestra/asset" : "Use '@css' and '@js' in Blade files"
     },
     "autoload": {
         "psr-4" : {
-            "igaster\\laravelTheme\\" : "src/"
+            "igaster\\laravelTheme\\" : "src/",
+            "igaster\\laravelTheme\\Tests\\" : "tests/"
         }
     },
-    "minimum-stability": "dev"
+    "minimum-stability": "stable"
 }

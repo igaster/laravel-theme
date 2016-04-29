@@ -175,9 +175,25 @@ class Themes{
      * @param  string $src
      * @param  string $alt
      * @param  string $Class
+     * @param  array  $attributes
      * @return string
      */
-	public function img($src, $alt='', $Class=''){
-		return '<img src="'.$this->url($src).'" alt="'.$alt.'" class="'.$Class.'">';
-	}
+    public function img($src, $alt='', $Class='', $attributes=array()){
+        return '<img src="'.$this->url($src).'" alt="'.$alt.'" class="'.$Class.'" '.$this->HtmlAttributes($attributes).'>';
+    }
+    /**
+     * Return attributes in html format
+     *
+     * @param  array $attributes
+     * @return string
+     */
+    private function HtmlAttributes($attributes){
+        $formatted = join(' ', array_map(function($key) use ($attributes){
+           if(is_bool($attributes[$key])){
+              return $attributes[$key]?$key:'';
+           }
+           return $key.'="'.$attributes[$key].'"';
+        }, array_keys($attributes)));
+        return $formatted;
+    }
 }

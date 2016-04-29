@@ -119,7 +119,7 @@ Some usefull helpers you can use:
 ```php
 Theme::js('file-name')
 Theme::css('file-name')
-Theme::img('src', 'alt', 'class-name')
+Theme::img('src', 'alt', 'class-name', ['attribute' => 'value'])
 ```    
 
 ## Paremeteric filenames

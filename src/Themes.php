@@ -77,9 +77,12 @@ class Themes{
 		// All paths are relative to Config::get('theme.theme_path')
 		$paths = [];
 		do {
-			// $path = $this->defaultViewsPath[0];
-            $path = $this->themesPath;
-			$path .= empty($theme->viewsPath) ? '' : '/'.$theme->viewsPath;
+			if(substr($theme->viewsPath, 0, 1) === DIRECTORY_SEPARATOR){
+				$path = base_path(substr($theme->viewsPath, 1));
+			} else {
+				$path = $this->themesPath;
+				$path .= empty($theme->viewsPath) ? '' : DIRECTORY_SEPARATOR . $theme->viewsPath;
+			}
 			if(!in_array($path, $paths))
 				$paths[] = $path;
 		} while ($theme = $theme->getParent());

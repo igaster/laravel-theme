@@ -81,7 +81,7 @@ class Themes{
 				$path = base_path(substr($theme->viewsPath, 1));
 			} else {
 				$path = $this->themesPath;
-				$path .= empty($theme->viewsPath) ? '' : '/' . $theme->viewsPath;
+				$path .= empty($theme->viewsPath) ? '' : DIRECTORY_SEPARATOR . $theme->viewsPath;
 			}
 			if(!in_array($path, $paths))
 				$paths[] = $path;

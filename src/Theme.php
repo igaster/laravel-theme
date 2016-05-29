@@ -52,6 +52,10 @@ class Theme extends Tree\Item {
             throw new themeException("Asset not found [$url]");
         elseif($action == 'LOG_ERROR')
             \Log::warning("Asset not found [$url] in Theme [".\Theme::get()."]");
+        elseif($action === 'ASSUME_EXISTS'){
+            $assetPath = \Theme::find(\Theme::get())->assetPath;
+            return (empty($assetPath) ? '' : '/') . $assetPath . '/' . ltrim($url, '/');
+        }
     }
 
     /**

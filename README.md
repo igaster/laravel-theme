@@ -76,18 +76,6 @@ The format for every theme is very simple:
 
     /*
     |--------------------------------------------------------------------------
-    | An array of vendors to load from the root of the theme rather than vendor/ 
-    | e.g. view('backend::menu.main') would normally look for following path
-    | \path\to\theme\views\vendor\backend\menu\main.blade.php
-    | if the below array contained the vendor 'backend' view('backend::menu.main')
-    | will instead look in \path\to\theme\views\backend\menu.main.blade.php
-    | non-listed vendors will still look in \vendor\...
-    |--------------------------------------------------------------------------
-    */
-    'vendor-as-root' 	=> ['name', 'of', 'vendors'],
-
-    /*
-    |--------------------------------------------------------------------------
     | Custom configuration. You can add your own custom keys.
     | Retrieve these values with Theme::config('key'). e.g.:
     |--------------------------------------------------------------------------

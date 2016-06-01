@@ -8,16 +8,18 @@ This is a package for the Laravel 5 Framework that adds basic support for managi
 
 Features:
 
-* Views & Asset seperation in theme folders
-* Theme inheritence: Extend any theme and create Theme hierarcies (WordPress style!)
-* Intergrates [Orchestra/Asset](http://orchestraplatform.com/docs/3.0/components/asset) to provide Asset dependencies managment
+* Views & Asset separation in theme folders
+* Theme inheritance: Extend any theme and create Theme hierarchies (WordPress style!)
+* Integrates [Orchestra/Asset](http://orchestraplatform.com/docs/3.0/components/asset) to provide Asset dependencies managment
 * Your App & Views remain theme-agnostic. Include new themes with (almost) no modifications
 
 #### For Laravel 5.0 & 5.1, please use the [v1.0.x branch](https://github.com/igaster/laravel-theme/tree/v1.0)
 
 ## How it works
 
-Very simple, you create a folder for each Theme in 'resources/views' and keep all your views seperated. The same goes for assets: create a folder for each theme in your 'public' directory. Set your active theme and you are done. The rest of your application remains theme-agnostic©, which means that when you `View::make('index')` you will access the `index.blade.php` from your selected theme's folder. Same goes for your assets.
+Very simple, you create a folder for each Theme in 'resources/views' and keep all your views separated. 
+The same goes for assets: create a folder for each theme in your 'public' directory. Set your active theme and you are done. 
+The rest of your application remains theme-agnostic©, which means that when you `View::make('index')` you will access the `index.blade.php` from your selected theme's folder. Same goes for your assets.
 
 ## Installation
 
@@ -41,7 +43,9 @@ That's it. You are now ready to start theming your applications!
 
 ## Defining themes
 
-Heads up: Defining a theme is completly optional. You may not touch the config file as long as the defaults fits you! If you want more control then you can define your themes in the `themes` array in [config/themes.php](https://github.com/igaster/laravel-theme/blob/master/src/config.php). The format for every theme is very simple:
+Heads up: Defining a theme is completely optional. You may not touch the config file as long as the defaults fits you! 
+If you want more control then you can define your themes in the `themes` array in [config/themes.php](https://github.com/igaster/laravel-theme/blob/master/src/config.php). 
+The format for every theme is very simple:
 
 ```php
 // Select a name for your theme
@@ -61,6 +65,18 @@ Heads up: Defining a theme is completly optional. You may not touch the config f
     |--------------------------------------------------------------------------
     */
     'views-path' 	=> 'path-to-views',
+    
+    /*
+    |--------------------------------------------------------------------------
+    | An array of vendors to load from the root of the theme rather than vendor/ 
+    | e.g. view('backend::menu.main') would normally look for following path
+    | \path\to\theme\views\vendor\backend\menu\main.blade.php
+    | if the below array contained the vendor 'backend' view('backend::menu.main')
+    | will instead look in \path\to\theme\views\backend\menu.main.blade.php
+    | non-listed vendors will still look in \vendor\...
+    |--------------------------------------------------------------------------
+    */
+    'vendor-as-root' 	=> ['name', 'of', 'vendors'],
 
     /*
     |--------------------------------------------------------------------------
@@ -79,13 +95,17 @@ Heads up: Defining a theme is completly optional. You may not touch the config f
     'key'           => 'value', 
 ],
 ```
-all settings are optional and can be ommited. Check the example in the configuration file... If you are OK with the defaults then you don't even have to touch the configuration file. If a theme has not been registered then the default values will be used!
+all settings are optional and can be omitted. Check the example in the configuration file... 
+If you are OK with the defaults then you don't even have to touch the configuration file. If a theme has not been registered then the default values will be used!
 
 ## Extending themes
 
-You can set a theme to extend an other. When you are requesting a view/asset that doesn't exist in your active theme, then it will be resolved from it's parent theme. You can easily create variations of your theme by simply overiding your views/themes that are different. 
+You can set a theme to extend an other. When you are requesting a view/asset that doesn't exist in your active theme, then it will be resolved from it's parent theme. 
+You can easily create variations of your theme by simply overriding your views/themes that are different. 
 
-All themes fall back to the default laravel folders if a resource is not found on the theme folders. So for example you can leave your common libraries (jquery/bootstrap ...) in your `public` folder and use them from all themes. No need to dublicate common assets for each theme!
+All themes fall back to the default laravel folders if a resource is not found on the theme folders. 
+So for example you can leave your common libraries (jquery/bootstrap ...) in your `public` folder and use them from all themes. 
+No need to duplicate common assets for each theme!
 
 ## Working with Themes
 
@@ -94,6 +114,7 @@ The default theme can be configured in the `theme.php` configuration file. Worki
 ```php
 Theme::set('theme-name');        // switch to 'theme-name'
 Theme::get();                    // retrieve current theme's name
+Theme::current();                // retrieve current theme's object
 Theme::config('key');            // read current theme's configuration value for 'key'
 Theme::configSet('key','value'); // assign a key-value pair to current theme's configuration
 ```
@@ -112,9 +133,11 @@ The path is relative to Theme Folder (NOT to public!). For example, if you have 
 
     <img src="{{Theme::url('img/logo.png')}}">
 
-When you are refering to a local file it will be looked-up in the current theme hierarcy, and the correct path will be returned. If the file is not found on the current theme or its parents then you can define in the configuration file the action that will be carried out: `THROW_EXCEPTION` | `LOG_ERROR` as warning (Default) | `IGNORE` completly.
+When you are referring to a local file it will be looked-up in the current theme hierarchy, and the correct path will be returned. 
+If the file is not found on the current theme or its parents then you can define in the configuration file the action that will be carried out: 
+`THROW_EXCEPTION` | `LOG_ERROR` as warning (Default) | `ASSUME_EXISTS` assumes the file does exist and returns the path | `IGNORE` completely.
 
-Some usefull helpers you can use:
+Some useful helpers you can use:
 
 ```php
 Theme::js('file-name')
@@ -122,15 +145,16 @@ Theme::css('file-name')
 Theme::img('src', 'alt', 'class-name', ['attribute' => 'value'])
 ```    
 
-## Paremeteric filenames
+## Parametric filenames
 
-You can include any configuration key of the current theme inside any path string using *{curly brackets}*. For examle:
+You can include any configuration key of the current theme inside any path string using *{curly brackets}*. For example:
 
 ```php
 Theme::url('jquery-{version}.js')
 ```
 
-if there is a `"version"` key defined in the theme's configuration it will be evaluated and then the filename will be looked-up in the theme hierarcy. (e.g: many comercial themes ship with multiple versions of the main.css for different color-schemes, or you can use [language-dependent assets](https://github.com/igaster/laravel-theme/issues/17))
+if there is a `"version"` key defined in the theme's configuration it will be evaluated and then the filename will be looked-up in the theme hierarchy. 
+(e.g: many commercial themes ship with multiple versions of the main.css for different color-schemes, or you can use [language-dependent assets](https://github.com/igaster/laravel-theme/issues/17))
 
 ## 'setTheme' middleware (Laravel 5.2+)
 
@@ -155,9 +179,11 @@ Route::group(['prefix' => 'admin', 'middleware'=>'setTheme:ADMIN_THEME'], functi
 ```
 For a more advanced example check demo application: [Set Theme in Session](https://github.com/igaster/laravel-theme-demo) 
 
-## Assets Managment (Optional)
+## Assets Management (Optional)
 
-This package provides intergration with [Orchestra/Asset](http://orchestraplatform.com/docs/3.0/components/asset) component. All the features are explained in the official documentation. If you don't need the extra functinality you can skip this section. Orchestra/Asset is NOT installed along with this package - you have to install it manualy.
+This package provides integration with [Orchestra/Asset](http://orchestraplatform.com/docs/3.0/components/asset) component. 
+All the features are explained in the official documentation. If you don't need the extra functionality you can skip this section. 
+Orchestra/Asset is NOT installed along with this package - you have to install it manually.
 
 To install Orchestra\Asset you must add it in your composer.json (see the [Official Documentation](https://github.com/orchestral/asset)):
 
@@ -173,19 +199,23 @@ Add the Asset facade in your `aliases` array:
 
     'Asset' => Orchestra\Support\Facades\Asset::class,
 
-Now you can leverage all the power of Orchestra\Asset package. However the syntax can become quite cumbersome when you are using Themes + Orchestra/Asset, so some Blade-specific sugar has been added to ease your work. Here how to build your views:
+Now you can leverage all the power of Orchestra\Asset package. However the syntax can become quite cumbersome when you are using Themes + Orchestra/Asset, 
+so some Blade-specific sugar has been added to ease your work. Here how to build your views:
 
 In any blade file you can require a script or a css:
 
     @css('filename')
     @js('filename')
+    @jsIn('container-name', 'filename')
 
-Please note that you are just defining your css/js files but not actually dumping them in html. Usually you only need write your css/js decleration in one place on the Head/Footer of you page. So open your master layout and place:
+Please note that you are just defining your css/js files but not actually dumping them in html. Usually you only need write your css/js declaration 
+in one place on the Head/Footer of you page. So open your master layout and place:
 
     {!! Asset::styles() !!}
     {!! Asset::scripts() !!}
+    {!! Asset::container('container-name')->scripts() !!}
 
-exactly where you want write your declerations.
+exactly where you want write your declarations.
 
 ## Assets dependencies
 
@@ -213,5 +243,5 @@ Yes. Set the `themes_path` option in `themes.php` configuration file to any path
 ##### How do I change the public path?
 Rebind Laravel's 'path.public'. [(More info)](https://laracasts.com/discuss/channels/general-discussion/where-do-you-set-public-directory-laravel-5)
 
-##### I'm editing a view but I dont see the changes
-Laravel is compiling your views every-time you make an edit. A compiled view will not recompile unless you make any edit to your view. You can manualy clear compiled views with `artisan view:clear`.Keep this in mind while you are developing themes...
+##### I'm editing a view but I don't see the changes
+Laravel is compiling your views every-time you make an edit. A compiled view will not recompile unless you make any edit to your view. You can manually clear compiled views with `artisan view:clear`.Keep this in mind while you are developing themes...

@@ -67,13 +67,13 @@ class Themes{
 	public function set($themeName){
 		if (!Config::get('themes.enabled', true))
 			return;
-		
+
 		if (!$theme = $this->find($themeName))
 			$theme = $this->add(new Theme($themeName));
 
 		$this->activeTheme = $theme;
 
-		// Build Paths array. 
+		// Build Paths array.
 		// All paths are relative to Config::get('theme.theme_path')
 		$paths = [];
 		do {
@@ -93,7 +93,7 @@ class Themes{
 				$paths[] = $path;
 
 		Config::set('view.paths', $paths);
-	
+
 		$themeViewFinder = app('view.finder');
 		$themeViewFinder->setPaths($paths);
 	}
@@ -105,6 +105,10 @@ class Themes{
      */
 	public function get(){
 		return $this->activeTheme ? $this->activeTheme->name : '';
+	}
+
+	public function current(){
+		return $this->activeTheme ? $this->activeTheme : false;
 	}
 
     /**
@@ -130,7 +134,7 @@ class Themes{
 
     /**
      * Attach current theme's paths to a local Url. The Url must be a resource located on the asset path
-     * of the current theme or it's parents. 
+     * of the current theme or it's parents.
      *
      * @param  string $url
      * @return string

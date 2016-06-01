@@ -31,7 +31,7 @@ class themeServiceProvider extends ServiceProvider {
 		$this->app->singleton('view.finder', function($app)
 		{
 			$paths = $app['config']['view.paths'];
-			return new \igaster\laravelTheme\themeViewFinder($app['files'], $paths);
+			return new \igaster\laravelTheme\themeViewFinder($app['files'], $paths, null, $app['igaster.themes']);
 		});
 
 		/*--------------------------------------------------------------------------
@@ -98,6 +98,25 @@ class themeServiceProvider extends ServiceProvider {
 					return "<?php Asset::script('$p2', \Theme::url('$p1'), '$p3');?>";
 
 			},$value);
+		});
+
+		\Blade::extend(function ($value)
+		{
+			return preg_replace_callback('/\@jsIn\s*\(\s*([^),]*)(?:,\s*([^),]*))?(?:,\s*([^),]*))?(?:,\s*([^),]*))?\)/',
+				function ($match) {
+
+					$p1 = trim($match[1], " \t\n\r\0\x0B\"'");
+					$p2 = trim($match[2], " \t\n\r\0\x0B\"'");
+					$p3 = trim(empty($match[3]) ? $p2 : $match[3], " \t\n\r\0\x0B\"'");
+					$p4 = trim(empty($match[4]) ? '' : $match[4], " \t\n\r\0\x0B\"'");
+
+					if (empty($p4)) {
+						return "<?php Asset::container('$p1')->script('$p3', \\Theme::url('$p2'));?>";
+					} else {
+						return "<?php Asset::container('$p1')->script('$p3', \\Theme::url('$p2'), '$p4');?>";
+					}
+
+				}, $value);
 		});
 
 

@@ -1,12 +1,23 @@
 <?php namespace igaster\laravelTheme;
 
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\View\FileViewFinder;
 use Illuminate\Support\Arr;
 
 class themeViewFinder extends FileViewFinder {
 
+    /** @var  Themes */
+    protected $themeEngine;
+
+    public function __construct(Filesystem $files, array $paths, array $extensions = null, $themeEngine)
+    {
+        $this->themeEngine = $themeEngine;
+        parent::__construct($files, $paths, $extensions);
+    }
+
+
     /**
-     * Add support for vendor namded path overrides.
+     * Add support for vendor named path overrides.
      *
      * @param  string  $name
      * @return string
@@ -15,10 +26,16 @@ class themeViewFinder extends FileViewFinder {
     {
         list($namespace, $view) = $this->getNamespaceSegments($name);
 
-        $vendorPath = $this->paths[0] . '/vendor/' . $namespace;
+        $rootVendors = $this->themeEngine->config('vendor-as-root', []);
+        if(in_array($namespace, $rootVendors)){
+            $vendorPath = $this->paths[0];
+        } else {
+            $vendorPath = $this->paths[0] . '/vendor/' . $namespace;
+        }
+
         $hints = $this->hints[$namespace];
 
-        if (!Arr::has($hints, $vendorPath)) {
+        if (!Arr::has($hints, $vendorPath) && $this->files->isDirectory($vendorPath)) {
             $this->hints[$namespace] = Arr::prepend($hints, $vendorPath);
         }
 

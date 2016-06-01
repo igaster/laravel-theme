@@ -14,14 +14,14 @@ class Theme extends Tree\Item {
     public function getParent(){
         if (!empty($this->parents))
             return $this->parents[0];
-        else
+       else
             return null;
     }
 
 
     /**
      * Attach theme paths to a local Url. The Url must be a resource located on the asset path
-     * of the current theme or it's parents. 
+     * of the current theme or it's parents.
      *
      * @param  string $url
      * @return string
@@ -44,7 +44,7 @@ class Theme extends Tree\Item {
         // If not found then lookup in parent's theme asset path
         if ($this->getParent())
             return $this->getParent()->url($url);
-        
+
         // Asset not found at all. Error handling
         $action = \Config::get('themes.asset_not_found','LOG_ERROR');
 
@@ -60,7 +60,7 @@ class Theme extends Tree\Item {
 
     /**
      * Return the configuration value of $key for the current theme. Configuration values
-     * are stored per theme in themes.php config file. 
+     * are stored per theme in themes.php config file.
      *
      * @param  string $key
      * @param  mixed $defaultValue
@@ -81,7 +81,7 @@ class Theme extends Tree\Item {
 
     /**
      * Return the configuration value of $key for the current theme. Configuration values
-     * are stored per theme in themes.php config file. 
+     * are stored per theme in themes.php config file.
      *
      * @param  string $key
      * @param  mixed $value

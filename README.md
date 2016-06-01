@@ -169,11 +169,13 @@ if there is a `"version"` key defined in the theme's configuration it will be ev
 
 ## Handling Vendor paths (eg for Package Development)
 
+When you are namespacing your views then Laravel will look up for view files into the `vendor` folder of the active theme:
+
 ```php
 view('VENDOR_NAME::viewName'); //  \theme_Path\vendor\VENDOR_NAME\viewName.blade.php
 ```
 
-You can optionaly set a list of vendors in each theme's configuration that will be loaded from the theme's root rather from a 'vendor' directory:
+You can optionaly set a list of vendors in each theme's configuration that will be loaded from the theme's root rather from the 'vendor' directory:
 
 ```php
 'theme-name' => [
@@ -194,7 +196,7 @@ You can optionaly set a list of vendors in each theme's configuration that will 
 ]
 ```php
 
-Now:
+Now you can:
 
 ```php
 view('VENDOR_NAME::viewName'); //  \theme_Path\VENDOR_NAME\viewName.blade.php

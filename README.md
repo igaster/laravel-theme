@@ -68,6 +68,14 @@ The format for every theme is very simple:
     
     /*
     |--------------------------------------------------------------------------
+    | The path where the assets are stored. Defaults to 'theme-name' 
+    | It is relative to laravels public folder (/public)
+    |--------------------------------------------------------------------------
+    */
+    'asset-path'    => 'path-to-assets',
+
+    /*
+    |--------------------------------------------------------------------------
     | An array of vendors to load from the root of the theme rather than vendor/ 
     | e.g. view('backend::menu.main') would normally look for following path
     | \path\to\theme\views\vendor\backend\menu\main.blade.php
@@ -77,14 +85,6 @@ The format for every theme is very simple:
     |--------------------------------------------------------------------------
     */
     'vendor-as-root' 	=> ['name', 'of', 'vendors'],
-
-    /*
-    |--------------------------------------------------------------------------
-    | The path where the assets are stored. Defaults to 'theme-name' 
-    | It is relative to laravels public folder (/public)
-    |--------------------------------------------------------------------------
-    */
-    'asset-path' 	=> 'path-to-assets',
 
     /*
     |--------------------------------------------------------------------------
@@ -145,17 +145,6 @@ Theme::css('file-name')
 Theme::img('src', 'alt', 'class-name', ['attribute' => 'value'])
 ```    
 
-## Parametric filenames
-
-You can include any configuration key of the current theme inside any path string using *{curly brackets}*. For example:
-
-```php
-Theme::url('jquery-{version}.js')
-```
-
-if there is a `"version"` key defined in the theme's configuration it will be evaluated and then the filename will be looked-up in the theme hierarchy. 
-(e.g: many commercial themes ship with multiple versions of the main.css for different color-schemes, or you can use [language-dependent assets](https://github.com/igaster/laravel-theme/issues/17))
-
 ## 'setTheme' middleware (Laravel 5.2+)
 
 A [helper middleware](https://github.com/igaster/laravel-theme/blob/master/src/Middleware/setTheme.php) is included out of the box if you want to define a Theme per route. To use it:
@@ -178,6 +167,51 @@ Route::group(['prefix' => 'admin', 'middleware'=>'setTheme:ADMIN_THEME'], functi
 });
 ```
 For a more advanced example check demo application: [Set Theme in Session](https://github.com/igaster/laravel-theme-demo) 
+
+## Parametric filenames
+
+You can include any configuration key of the current theme inside any path string using *{curly brackets}*. For example:
+
+```php
+Theme::url('jquery-{version}.js')
+```
+
+if there is a `"version"` key defined in the theme's configuration it will be evaluated and then the filename will be looked-up in the theme hierarchy. 
+(e.g: many commercial themes ship with multiple versions of the main.css for different color-schemes, or you can use [language-dependent assets](https://github.com/igaster/laravel-theme/issues/17))
+
+## Handling Vendor paths (eg for Package Development)
+
+```php
+view('VENDOR_NAME::viewName'); //  \theme_Path\vendor\VENDOR_NAME\viewName.blade.php
+```
+
+You can optionaly set a list of vendors in each theme's configuration that will be loaded from the theme's root rather from a 'vendor' directory:
+
+```php
+'theme-name' => [
+
+    /*
+    |--------------------------------------------------------------------------
+    | An array of vendors to load from the root of the theme rather than vendor/ 
+    | e.g. view('backend::menu.main') would normally look for following path
+    | \path\to\theme\views\vendor\backend\menu\main.blade.php
+    | if the below array contained the vendor 'backend' view('backend::menu.main')
+    | will instead look in \path\to\theme\views\backend\menu\main.blade.php
+    | non-listed vendors will still look in \vendor\...
+    |--------------------------------------------------------------------------
+    */
+    'vendor-as-root'    => ['name', 'of', 'vendors'],    
+
+    // ....
+]
+```php
+
+Now:
+
+```php
+view('VENDOR_NAME::viewName'); //  \theme_Path\VENDOR_NAME\viewName.blade.php
+```
+
 
 ## Assets Management (Optional)
 

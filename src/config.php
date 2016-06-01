@@ -24,7 +24,7 @@ return [
 	/*
 	|--------------------------------------------------------------------------
 	| Set behavior if an asset is not found in a Theme hierarcy.
-	| Available options: THROW_EXCEPTION | LOG_ERROR | IGNORE
+	| Available options: THROW_EXCEPTION | LOG_ERROR | ASSUME_EXISTS | IGNORE
 	|--------------------------------------------------------------------------
 	*/
 
@@ -49,6 +49,7 @@ return [
 	| 		'asset-path' 	=> 'path-to-assets',   // defaults to: public/theme-name
 	|
 	|		// you can add your own custom keys and retrieve them with Theme::config('key');
+	| 		'key' 			=> 'value', 
 	| 	],
 	|
 	|--------------------------------------------------------------------------

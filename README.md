@@ -199,7 +199,7 @@ You can optionaly set a list of vendors in each theme's configuration that will 
 Now you can:
 
 ```php
-view('VENDOR_NAME::viewName'); //  \theme_Path\VENDOR_NAME\viewName.blade.php
+view('VENDOR_NAME::viewName'); //  \theme_Path\viewName.blade.php
 ```
 
 

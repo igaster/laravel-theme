@@ -41,7 +41,7 @@ class themeViewFinder extends FileViewFinder {
 
         $hints = $this->hints[$namespace];
 
-        if (!Arr::has($hints, $vendorPath) && $this->files->isDirectory($vendorPath)) {
+        if (!in_array($vendorPath, $hints) && $this->files->isDirectory($vendorPath)) {
             $this->hints[$namespace] = Arr::prepend($hints, $vendorPath);
         }
 

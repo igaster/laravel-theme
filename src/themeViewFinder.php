@@ -26,10 +26,16 @@ class themeViewFinder extends FileViewFinder {
     {
         list($namespace, $view) = $this->getNamespaceSegments($name);
 
-        $rootVendors = $this->themeEngine->config('vendor-as-root', []);
-        if(in_array($namespace, $rootVendors)){
-            $vendorPath = $this->paths[0];
-        } else {
+        $namespaceOverrides = $this->themeEngine->config('namespace-overrides', []);
+        if (in_array($namespace, array_keys($namespaceOverrides))) {
+            if ($namespaceOverrides[$namespace] === '') {
+                $vendorPath = $this->paths[0];
+            } else {
+                $vendorPath = $this->paths[0] . DIRECTORY_SEPARATOR . $namespaceOverrides[$namespace];
+            }
+        }
+
+        if (!isset($vendorPath) || !$this->files->isDirectory($vendorPath)) {
             $vendorPath = $this->paths[0] . '/vendor/' . $namespace;
         }
 

@@ -1,6 +1,7 @@
 <?php namespace igaster\laravelTheme;
 
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Event;
 
 class Themes{
 
@@ -87,6 +88,7 @@ class Themes{
 
             $themeViewFinder = app('view.finder');
             $themeViewFinder->setPaths($paths);
+            \Event::fire('igaster.laravel-theme.change', $this->activeTheme);
     }
 
     /**

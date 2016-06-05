@@ -175,33 +175,20 @@ When you are namespacing your views then Laravel will look up for view files int
 view('VENDOR_NAME::viewName'); //  \theme_Path\vendor\VENDOR_NAME\viewName.blade.php
 ```
 
-You can optionaly set a list of vendors in each theme's configuration that will be loaded from the theme's root rather from the 'vendor' directory:
+You can optionaly redefine each Namespaces's path for each theme. Within a themes's configuration you can define the `namespace-overrides` assosiative array:
 
 ```php
 'theme-name' => [
 
-    /*
-    |--------------------------------------------------------------------------
-    | An array of vendors to load from the root of the theme rather than vendor/ 
-    | e.g. view('backend::menu.main') would normally look for following path
-    | \path\to\theme\views\vendor\backend\menu\main.blade.php
-    | if the below array contained the vendor 'backend' view('backend::menu.main')
-    | will instead look in \path\to\theme\views\backend\menu\main.blade.php
-    | non-listed vendors will still look in \vendor\...
-    |--------------------------------------------------------------------------
-    */
-    'vendor-as-root'    => ['name', 'of', 'vendors'],    
+    'namespace-overrides' => [
+        'ns-a' => ''           // view('ns-a::viewName') = /themePath/viewName.blade.php
+        'ns-b' => 'modules'    // view('ns-b::viewName') = /themePath/modules/viewName.blade.php
+        //ns-c not in array so // view('ns-c::viewName') = /themePath/vendor/ns-c/viewName.blade.php
+    ]
 
-    // ....
+    // .... theme configuration
 ]
-```php
-
-Now you can:
-
-```php
-view('VENDOR_NAME::viewName'); //  \theme_Path\viewName.blade.php
 ```
-
 
 ## Assets Management (Optional)
 

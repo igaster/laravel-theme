@@ -175,7 +175,7 @@ When you are namespacing your views then Laravel will look up for view files int
 view('VENDOR_NAME::viewName'); //  \theme_Path\vendor\VENDOR_NAME\viewName.blade.php
 ```
 
-You can optionaly redefine each Namespaces's path for each theme. Within a themes's configuration you can define the `namespace-overrides` assosiative array:
+You can optionally redefine each Namespace's path for each theme. Within a theme's configuration you can define the `namespace-overrides` associative array:
 
 ```php
 'theme-name' => [

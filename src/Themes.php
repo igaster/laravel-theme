@@ -1,18 +1,19 @@
 <?php namespace igaster\laravelTheme;
 
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Event;
 
 class Themes{
 
-	public $activeTheme = null;
-	public $root = null;
+    public $activeTheme = null;
+    public $root = null;
     private $defaultViewsPath;
     private $themesPath;
 
     public function __construct(){
-		$this->defaultViewsPath = Config::get('view.paths');
+        $this->defaultViewsPath = Config::get('view.paths');
         $this->themesPath = Config::get('themes.themes_path', null) ?: Config::get('view.paths')[0];
-		$this->root = new Theme('root','','');
+        $this->root = new Theme('root','','');
     }
 
     /**
@@ -22,15 +23,9 @@ class Themes{
      * @param   string $parentName
      * @return  \igaster\laravelTheme\Theme
      */
-	public function add(Theme $theme, $parentName = ''){
-
-		if ($parentName)
-			$parentTheme = $this->find($parentName);
-		else
-			$parentTheme = $this->root;
-
-		$theme->addParent($parentTheme);
-		return $theme;
+    public function add(Theme $theme, $parentName = ''){
+            $theme->addParent($parentName ? $this->find($parentName) : $this->root);
+            return $theme;
 	}
 
     /**
@@ -41,10 +36,7 @@ class Themes{
      */
     public function find($themeName){
         return $this->root->searchChild(function($item) use($themeName){
-            if ($item->name == $themeName)
-                return $item;
-            else
-                return false;
+            return ($item->name == $themeName ? $item : false);  
         });
     }
 
@@ -55,7 +47,7 @@ class Themes{
      * @return  bool
      */
     public function exists($themeName){
-    	return ($this->find($themeName)!==false);
+        return ($this->find($themeName) !== false);
     }
 
     /**
@@ -64,52 +56,53 @@ class Themes{
      * @param   string $themeName
      * @return  void
      */
-	public function set($themeName){
-		if (!Config::get('themes.enabled', true))
-			return;
+    public function set($themeName){
+        if (!Config::get('themes.enabled', true))
+            return;
 
-		if (!$theme = $this->find($themeName))
-			$theme = $this->add(new Theme($themeName));
+        if (!$theme = $this->find($themeName))
+            $theme = $this->add(new Theme($themeName));
 
-		$this->activeTheme = $theme;
+        $this->activeTheme = $theme;
 
-		// Build Paths array.
-		// All paths are relative to Config::get('theme.theme_path')
-		$paths = [];
-		do {
-			if(substr($theme->viewsPath, 0, 1) === DIRECTORY_SEPARATOR){
-				$path = base_path(substr($theme->viewsPath, 1));
-			} else {
-				$path = $this->themesPath;
-				$path .= empty($theme->viewsPath) ? '' : DIRECTORY_SEPARATOR . $theme->viewsPath;
-			}
-			if(!in_array($path, $paths))
-				$paths[] = $path;
-		} while ($theme = $theme->getParent());
+        // Build Paths array.
+        // All paths are relative to Config::get('theme.theme_path')
+        $paths = [];
+        do {
+            if(substr($theme->viewsPath, 0, 1) === DIRECTORY_SEPARATOR){
+                $path = base_path(substr($theme->viewsPath, 1));
+            } else {
+                $path = $this->themesPath;
+                $path .= empty($theme->viewsPath) ? '' : DIRECTORY_SEPARATOR . $theme->viewsPath;
+            }
+            if(!in_array($path, $paths))
+                $paths[] = $path;
+        } while ($theme = $theme->getParent());
 
-		// fall-back to default paths (set in views.php config file)
-		foreach ($this->defaultViewsPath as $path)
-			if(!in_array($path, $paths))
-				$paths[] = $path;
+        // fall-back to default paths (set in views.php config file)
+        foreach ($this->defaultViewsPath as $path)
+            if(!in_array($path, $paths))
+                $paths[] = $path;
 
-		Config::set('view.paths', $paths);
+            Config::set('view.paths', $paths);
 
-		$themeViewFinder = app('view.finder');
-		$themeViewFinder->setPaths($paths);
-	}
+            $themeViewFinder = app('view.finder');
+            $themeViewFinder->setPaths($paths);
+            \Event::fire('igaster.laravel-theme.change', $this->activeTheme);
+    }
 
     /**
      * Get  active's Theme Name
      *
      * @return  string
      */
-	public function get(){
-		return $this->activeTheme ? $this->activeTheme->name : '';
-	}
+    public function get(){
+        return $this->activeTheme ? $this->activeTheme->name : '';
+    }
 
-	public function current(){
-		return $this->activeTheme ? $this->activeTheme : false;
-	}
+    public function current(){
+        return $this->activeTheme ? $this->activeTheme : false;
+    }
 
     /**
      * Return current theme's configuration value for $key
@@ -117,9 +110,9 @@ class Themes{
      * @param   string $key
      * @return  mixed
      */
-	public function config($key, $defaultValue = null){
-		return $this->activeTheme->config($key, $defaultValue);
-	}
+    public function config($key, $defaultValue = null){
+        return $this->activeTheme->config($key, $defaultValue);
+    }
 
     /**
      * Set current theme's configuration value for $key
@@ -139,8 +132,8 @@ class Themes{
      * @param  string $url
      * @return string
      */
-	public function url($url){
-		if (Config::get('themes.enabled', true)){
+    public function url($url){
+        if (Config::get('themes.enabled', true)){
 
             // Check for valid {xxx} keys and replace them with the Theme's configuration value (in themes.php)
             preg_match_all('/\{(.*?)\}/', $url, $matches);
@@ -148,13 +141,13 @@ class Themes{
                 if(($value=$this->config($param)) !== null)
                     $url = str_replace('{'.$param.'}', $value, $url);
 
-			return $this->activeTheme->url($url);
+            return $this->activeTheme->url($url);
         }
-		else
-			return $url;
-	}
+        
+        return $url;
+    }
 
-	//---------------- Helper Functions (for Blade files) -------------------------
+    //---------------- Helper Functions (for Blade files) -------------------------
 
     /**
      * Return css link for $href
@@ -162,9 +155,9 @@ class Themes{
      * @param  string $href
      * @return string
      */
-	public function css($href){
-		return '<link media="all" type="text/css" rel="stylesheet" href="'.$this->url($href).'">';
-	}
+    public function css($href){
+        return '<link media="all" type="text/css" rel="stylesheet" href="'.$this->url($href).'">';
+    }
 
     /**
      * Return script link for $href
@@ -172,9 +165,9 @@ class Themes{
      * @param  string $href
      * @return string
      */
-	public function js($href){
-		return '<script src="'.$this->url($href).'"></script>';
-	}
+    public function js($href){
+        return '<script src="'.$this->url($href).'"></script>';
+    }
 
     /**
      * Return img tag

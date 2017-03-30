@@ -16,8 +16,23 @@ class themeViewFinder extends FileViewFinder {
     }
 
 
+    /*
+     * Intersect findNamespacedView() to add Theme/vendor/....
+     * Laravel >= 5.4
+     *
+     * @param  string  $name
+     * @return string
+     */
+    protected function findNamespacedView($name)
+    {
+        list($namespace, $view) = $this->parseNamespaceSegments($name);
+        $this->addThemeInNamespacedViews($namespace, $view);
+        return $this->findInPaths($view, $this->hints[$namespace]);
+    }
+
     /**
-     * Add support for vendor named path overrides.
+     * Intersect findNamespacedView() to add Theme/vendor/....
+     * Laravel <= 5.3 - Replaced by findNamespacedView() in 5.4
      *
      * @param  string  $name
      * @return string
@@ -25,28 +40,57 @@ class themeViewFinder extends FileViewFinder {
     protected function findNamedPathView($name)
     {
         list($namespace, $view) = $this->getNamespaceSegments($name);
+        $this->addThemeInNamespacedViews($namespace, $view);
+        return $this->findInPaths($view, $this->hints[$namespace]);
+    }
 
-        $namespaceOverrides = $this->themeEngine->config('namespace-overrides', []);
-        if (in_array($namespace, array_keys($namespaceOverrides))) {
-            if ($namespaceOverrides[$namespace] === '') {
-                $vendorPath = $this->paths[0];
-            } else {
-                $vendorPath = $this->paths[0] . DIRECTORY_SEPARATOR . $namespaceOverrides[$namespace];
-            }
-        }
+    /**
+     * Inject theme paths into namespaced views
+     *
+     * @param  string  $name
+     * @return string
+     */
+    protected function addThemeInNamespacedViews($namespace, $view)
+    {
+        $rootVendors = $this->themeEngine->config('vendor-as-root', []);
 
-        if (!isset($vendorPath) || !$this->files->isDirectory($vendorPath)) {
+        if(in_array($namespace, $rootVendors)){
+            $vendorPath = $this->paths[0];
+        } else {
             $vendorPath = $this->paths[0] . '/vendor/' . $namespace;
         }
 
         $hints = $this->hints[$namespace];
 
-        if (!in_array($vendorPath, $hints) && $this->files->isDirectory($vendorPath)) {
+        if (!Arr::has($hints, $vendorPath) && $this->files->isDirectory($vendorPath)) {
             $this->hints[$namespace] = Arr::prepend($hints, $vendorPath);
         }
-
-        return $this->findInPaths($view, $this->hints[$namespace]);
     }
+
+
+    /**
+     * Intersect replaceNamespace() to add path for custom error pages from themes...
+     *
+     * @param  string  $namespace
+     * @param  string|array  $hints
+     * @return void
+     */
+    public function replaceNamespace($namespace, $hints)
+    {
+        $this->hints[$namespace] = (array) $hints;
+        if($namespace == 'errors')
+            $this->setupErrorViews();
+    }
+
+    public function setupErrorViews() {
+
+        $errorPaths = array_map(function($path){
+            return "$path/errors";
+        },$this->paths);
+
+        $this->prependNamespace('errors',$errorPaths);
+    }
+
 
     /**
      * Set the array of active view paths.

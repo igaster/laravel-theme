@@ -15,6 +15,22 @@ Features:
 
 #### For Laravel 5.0 & 5.1, please use the [v1.0.x branch](https://github.com/igaster/laravel-theme/tree/v1.0)
 
+Table of contents
+=================
+
+  * [How it Works](#how-it-works)
+  * [Installation](#installation)
+  * [Define Themes](#defining-themes)
+  * [Extend Themes](#extending-themes)
+  * [Work with Themes](#working-with-themes)
+  * [Build your Views](#building-your-views)
+  * [setTheme middleware](#settheme-middleware-laravel-52)
+  * [Parametric filenames](#parametric-filenames)
+  * [Vendor Paths (Package Development)](#handling-vendor-paths-eg-for-package-development)
+  * [Custom Error Pages](#custom-error-pages)
+  * [Assets Management](#assets-management-optional)
+  * [Assets Dependencies](#assets-dependencies)
+
 ## How it works
 
 Very simple, you create a folder for each Theme in 'resources/views' and keep all your views separated. 
@@ -56,7 +72,7 @@ The format for every theme is very simple:
     | Theme to extend. Defaults to null (=none)
     |--------------------------------------------------------------------------
     */
-    'extends'	 	=> 'theme-to-extend',
+    'extends'       => 'theme-to-extend',
 
     /*
     |--------------------------------------------------------------------------
@@ -64,7 +80,7 @@ The format for every theme is very simple:
     | It is relative to 'themes_path' ('/resources/views' by default)
     |--------------------------------------------------------------------------
     */
-    'views-path' 	=> 'path-to-views',
+    'views-path'    => 'path-to-views',
     
     /*
     |--------------------------------------------------------------------------
@@ -175,20 +191,36 @@ When you are namespacing your views then Laravel will look up for view files int
 view('VENDOR_NAME::viewName'); //  \theme_Path\vendor\VENDOR_NAME\viewName.blade.php
 ```
 
-You can optionally redefine each Namespace's path for each theme. Within a theme's configuration you can define the `namespace-overrides` associative array:
+You can optionaly set a list of vendors in each theme's configuration that will be loaded from the theme's root rather from the 'vendor' directory:
 
 ```php
 'theme-name' => [
 
-    'namespace-overrides' => [
-        'ns-a' => ''           // view('ns-a::viewName') = /themePath/viewName.blade.php
-        'ns-b' => 'modules'    // view('ns-b::viewName') = /themePath/modules/viewName.blade.php
-        //ns-c not in array so // view('ns-c::viewName') = /themePath/vendor/ns-c/viewName.blade.php
-    ]
+    /*
+    |--------------------------------------------------------------------------
+    | An array of vendors to load from the root of the theme rather than vendor/ 
+    | e.g. view('backend::menu.main') would normally look for following path
+    | \path\to\theme\views\vendor\backend\menu\main.blade.php
+    | if the below array contained the vendor 'backend' view('backend::menu.main')
+    | will instead look in \path\to\theme\views\backend\menu\main.blade.php
+    | non-listed vendors will still look in \vendor\...
+    |--------------------------------------------------------------------------
+    */
+    'vendor-as-root'    => ['name', 'of', 'vendors'],    
 
-    // .... theme configuration
+    // ....
 ]
+```php
+
+Now you can:
+
+```php
+view('VENDOR_NAME::viewName'); //  \theme_Path\VENDOR_NAME\viewName.blade.php
 ```
+
+## Custom Error Pages
+
+Sure! Create a folder 'errors' in your theme folder and place 404.blade.php etc. Original error pages will be overidden per theme!
 
 ## Assets Management (Optional)
 

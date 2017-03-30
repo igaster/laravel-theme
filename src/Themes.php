@@ -84,11 +84,11 @@ class Themes{
             if(!in_array($path, $paths))
                 $paths[] = $path;
 
-            Config::set('view.paths', $paths);
+        Config::set('view.paths', $paths);
 
-            $themeViewFinder = app('view.finder');
-            $themeViewFinder->setPaths($paths);
-            \Event::fire('igaster.laravel-theme.change', $this->activeTheme);
+        $themeViewFinder = app('view.finder');
+        $themeViewFinder->setPaths($paths);
+        \Event::fire('igaster.laravel-theme.change', $this->activeTheme);
     }
 
     /**

@@ -3,6 +3,7 @@
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\View\FileViewFinder;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Config;
 
 class themeViewFinder extends FileViewFinder {
 
@@ -82,15 +83,21 @@ class themeViewFinder extends FileViewFinder {
             $this->setupErrorViews();
     }
 
+    /**
+     * If we're not trying to debug the application replace
+     * the error views with those from the active theme.
+     */
     public function setupErrorViews() {
+        if (Config::get('app.debug')) {
+            return;
+        }
 
         $errorPaths = array_map(function($path){
             return "$path/errors";
-        },$this->paths);
+        }, $this->paths);
 
-        $this->prependNamespace('errors',$errorPaths);
+        $this->prependNamespace('errors', $errorPaths);
     }
-
 
     /**
      * Set the array of active view paths.

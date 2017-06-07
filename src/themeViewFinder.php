@@ -7,15 +7,11 @@ use Illuminate\Support\Facades\Config;
 
 class themeViewFinder extends FileViewFinder {
 
-    /** @var  Themes */
-    protected $themeEngine;
-
-    public function __construct(Filesystem $files, array $paths, array $extensions = null, $themeEngine)
+    public function __construct(Filesystem $files, array $paths, array $extensions = null)
     {
-        $this->themeEngine = $themeEngine;
+        $this->themeEngine = \App::make('igaster.themes');
         parent::__construct($files, $paths, $extensions);
     }
-
 
     /*
      * Intersect findNamespacedView() to add Theme/vendor/....

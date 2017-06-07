@@ -28,7 +28,13 @@ class themeServiceProvider extends ServiceProvider {
 		| Replace FileViewFinder
 		|--------------------------------------------------------------------------*/
 
-		$this->replaceFileViewFinder();
+        $this->app->singleton('view.finder', function($app) {
+            return new \igaster\laravelTheme\themeViewFinder(
+                $app['files'],
+                $app['config']['view.paths'],
+                null
+            );
+        });
 
 		/*--------------------------------------------------------------------------
 		| Initialize Themes
@@ -133,15 +139,4 @@ class themeServiceProvider extends ServiceProvider {
 		});
 	}
 
-    protected function replaceFileViewFinder()
-    {
-        $this->app->singleton('view.finder', function($app) {
-            return new \igaster\laravelTheme\themeViewFinder(
-                $app['files'],
-                $app['config']['view.paths'],
-                null,
-                $app['igaster.themes']
-            );
-        });
-    }
 }

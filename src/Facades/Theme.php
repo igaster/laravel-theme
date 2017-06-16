@@ -1,4 +1,4 @@
-<?php namespace igaster\laravelTheme\Facades;
+<?php namespace Igaster\LaravelTheme\Facades;
 
 use Illuminate\Support\Facades\Facade;
 

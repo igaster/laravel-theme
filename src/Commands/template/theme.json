@@ -1,0 +1,6 @@
+{
+  "name"        : "[THEME_NAME]",
+  "extends"     : "[THEME_PARENT]",
+  "views-path"  : "[VIEWS_PATH]",
+  "asset-path"  : "[ASSET_PATH]"
+}

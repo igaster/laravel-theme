@@ -1,4 +1,4 @@
-<?php namespace igaster\laravelTheme;
+<?php namespace Igaster\LaravelTheme;
 
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\View\FileViewFinder;
@@ -14,59 +14,78 @@ class themeViewFinder extends FileViewFinder {
     }
 
     /*
-     * Intersect findNamespacedView() to add Theme/vendor/....
-     * Laravel >= 5.4
+     * Override findNamespacedView() to add "Theme/vendor/..." paths
      *
      * @param  string  $name
      * @return string
      */
     protected function findNamespacedView($name)
     {
+        // Extract the $view and the $namespace parts
         list($namespace, $view) = $this->parseNamespaceSegments($name);
-        $this->addThemeInNamespacedViews($namespace, $view);
-        return $this->findInPaths($view, $this->hints[$namespace]);
+
+        $paths = $this->addThemeNamespacePaths($namespace);
+
+        // Find and return the view
+        return $this->findInPaths($view, $paths);
     }
 
-    /**
-     * Intersect findNamespacedView() to add Theme/vendor/....
-     * Laravel <= 5.3 - Replaced by findNamespacedView() in 5.4
-     *
-     * @param  string  $name
-     * @return string
-     */
-    protected function findNamedPathView($name)
-    {
-        list($namespace, $view) = $this->getNamespaceSegments($name);
-        $this->addThemeInNamespacedViews($namespace, $view);
-        return $this->findInPaths($view, $this->hints[$namespace]);
-    }
+    public function addThemeNamespacePaths($namespace){
+        // This rule will remap all paths starting with $key to $value.
+        // For exapmle paths starting with 'resources/views/vendor' (relative to base_path())
+        // will be maped to path 'THEMENAME/vendor' (relative to current theme views-path)
+        $pathsMap = [
+            // 'resources/views/vendor/mail' => 'mail',
+            'resources/views/vendor' => 'vendor',
+        ];
 
-    /**
-     * Inject theme paths into namespaced views
-     *
-     * @param  string  $name
-     * @return string
-     */
-    protected function addThemeInNamespacedViews($namespace, $view)
-    {
-        $rootVendors = $this->themeEngine->config('vendor-as-root', []);
-
-        if(in_array($namespace, $rootVendors)){
-            $vendorPath = $this->paths[0];
-        } else {
-            $vendorPath = $this->paths[0] . '/vendor/' . $namespace;
+        // Does $namespace exists?
+        if(!isset($this->hints[$namespace])){
+            return [];
         }
 
-        $hints = $this->hints[$namespace];
+        // Get the paths registered to the $namespace
+        $paths = $this->hints[$namespace];
 
-        if (!Arr::has($hints, $vendorPath) && $this->files->isDirectory($vendorPath)) {
-            $this->hints[$namespace] = Arr::prepend($hints, $vendorPath);
+        // Search $paths array and remap paths that start with a key of $pathsMap array.
+        // replace with the value of $pathsMap array
+        $themeSubPaths = [];
+        foreach ($paths as $path) {
+            $pathRelativeToApp = substr($path, strlen(base_path())+1);
+            // Ignore paths in composer installed packages (paths inside vendor folder)
+            if(strpos($pathRelativeToApp,'vendor')!==0){
+                // Remap paths definded int $pathsMap array
+                foreach ($pathsMap as $key => $value) {
+                    if(strpos($pathRelativeToApp, $key)===0){
+                        $pathRelativeToApp = str_replace($key, $value, $pathRelativeToApp);
+                        break;
+                    }
+                }
+                $themeSubPaths[] = $pathRelativeToApp;
+            }
         }
+
+        // Prepend current theme's view path to the remaped paths
+        $newPaths = [];
+        $searchPaths = array_diff($this->paths, \Theme::getLaravelViewPaths());
+        foreach ($searchPaths as $path1) {
+            foreach ($themeSubPaths as $path2) {
+                $newPaths[] = $path1.'/'.$path2;
+            }
+        }
+
+        // Add new paths in the beggin of the search paths array
+        foreach (array_reverse($newPaths) as $path) {
+            if (!in_array($path, $paths)) {
+                $paths = Arr::prepend($paths, $path);
+            }
+        }
+
+        return $paths;
     }
 
-
     /**
-     * Intersect replaceNamespace() to add path for custom error pages from themes...
+     * Override replaceNamespace() to add path for custom error pages "Theme/errors/..."
      *
      * @param  string  $namespace
      * @param  string|array  $hints
@@ -75,33 +94,34 @@ class themeViewFinder extends FileViewFinder {
     public function replaceNamespace($namespace, $hints)
     {
         $this->hints[$namespace] = (array) $hints;
-        if($namespace == 'errors')
-            $this->setupErrorViews();
-    }
 
-    /**
-     * If we're not trying to debug the application replace
-     * the error views with those from the active theme.
-     */
-    public function setupErrorViews() {
-        if (Config::get('app.debug')) {
-            return;
+        // Overide Error Pages
+        if($namespace == 'errors' || $namespace == 'mails'){
+
+            $searchPaths = array_diff($this->paths, \Theme::getLaravelViewPaths());
+
+            $addPaths = array_map(function($path) use ($namespace){
+                return "$path/$namespace";
+            }, $searchPaths);
+
+            $this->prependNamespace($namespace, $addPaths);
         }
-
-        $errorPaths = array_map(function($path){
-            return "$path/errors";
-        }, $this->paths);
-
-        $this->prependNamespace('errors', $errorPaths);
     }
 
     /**
-     * Set the array of active view paths.
+     * Set the array of paths wherew the views are being searched.
      *
      * @param  array  $paths
      */
-	public function setPaths($paths){
-		$this->paths = $paths;
-	}
+    public function setPaths($paths){
+        $this->paths = $paths;
+    }
+
+    /**
+     * Get the array of paths wherew the views are being searched.
+     */
+    public function getPaths(){
+        return $this->paths;
+    }
 
 }

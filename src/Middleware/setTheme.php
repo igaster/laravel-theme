@@ -1,4 +1,4 @@
-<?php namespace igaster\laravelTheme\Middleware;
+<?php namespace Igaster\LaravelTheme\Middleware;
 
 use Closure;
 

@@ -39,6 +39,12 @@ class createPackage extends baseCommand
         system("cp -r $viewsPath {$this->tempPath}/views");
         system("cp -r $assetPath {$this->tempPath}/asset");
 
+        // Add viewsPath into theme.json file
+        $themeJson = new \Igaster\LaravelTheme\themeManifest();
+        $themeJson->loadFromFile("{$this->tempPath}/views/theme.json");
+        $themeJson->set('views-path',$theme->viewsPath);
+        $themeJson->saveToFile("{$this->tempPath}/views/theme.json");
+
         // Tar Temp Folder contents
         system("cd {$this->tempPath} && tar -cvzf $packageFileName .");
         

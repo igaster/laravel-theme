@@ -51,27 +51,19 @@ class createTheme extends baseCommand
 
         if ($this->confirm('Create Theme?', true)){
 
-            // Create theme.json
-            $templateFile = (dirname(__FILE__)."/template/theme.json");
-            $template = file_get_contents($templateFile);
-
-            $replace = [
-                '[THEME_NAME]'      =>  $themeName,
-                '[VIEWS_PATH]'      =>  $viewsPath,
-                '[ASSET_PATH]'      =>  $assetPath,
-                '[THEME_PARENT]'    =>  $parentTheme,
-            ];
-            $template = str_replace(array_keys($replace), array_values($replace), $template);
+            $themeJson = new \Igaster\LaravelTheme\themeManifest([
+                "name"        => $themeName,
+                "extends"     => $parentTheme,
+                "asset-path"  => $assetPath,
+                // "views-path"  => $viewsPath,
+            ]);
 
             // Create Paths + copy theme.json
             system("mkdir $viewsPathFull");
             system("mkdir $assetPathFull");
-            file_put_contents(themes_path("$viewsPath/theme.json"),$template);
 
+            $themeJson->saveToFile(themes_path("$viewsPath/theme.json"));
         }
     }
-
-
-
 
 }

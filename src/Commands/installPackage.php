@@ -27,11 +27,11 @@ class installPackage extends baseCommand
         exec("tar xzf $package -C {$this->tempPath}");
 
         // Read theme.json
-        $json = file_get_contents("{$this->tempPath}/views/theme.json");
-        $data = json_decode($json, true);
-
+        $themeJson = new \Igaster\LaravelTheme\themeManifest();
+        $themeJson->loadFromFile("{$this->tempPath}/views/theme.json");
+        
         // Check if theme is already installed
-        $themeName = $data['name'];
+        $themeName = $themeJson->get('name');
         if($this->theme_installed($themeName)){
             $this->error('Error: Theme '.$themeName.' already exist. You must remove it first with "artisan theme:remove '.$themeName.'"');
             $this->clearTempFolder();
@@ -39,14 +39,18 @@ class installPackage extends baseCommand
         }
 
         // Target Paths
-        $viewsPath = themes_path($data['views-path']);
-        $assetPath = public_path($data['asset-path']);
+        $viewsPath = themes_path($themeJson->get('views-path'));
+        $assetPath = public_path($themeJson->get('asset-path'));
 
         // If Views+Asset paths don't exist, move theme from temp to target paths
         if (file_exists($viewsPath)){
             $this->info("Warning: Views path [$viewsPath] already exists. Will not be installed.");
         } else {
             exec("mv {$this->tempPath}/views $viewsPath");
+
+            // Remove 'theme-views' from theme.json
+            $themeJson->unset('views-path');
+            $themeJson->saveToFile("$viewsPath/theme.json");
             $this->info("Theme views installed to path [$viewsPath]");
         }
         

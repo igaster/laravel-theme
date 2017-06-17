@@ -2,9 +2,9 @@
 
 use Illuminate\Console\Command;
 
-class createPackage extends abstractCommand
+class createPackage extends baseCommand
 {
-    protected $signature = 'theme:package:create {themeName?}';
+    protected $signature = 'theme:package {themeName?}';
     protected $description = 'Create a theme package';
 
     public function handle() {

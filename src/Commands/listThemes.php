@@ -2,7 +2,7 @@
 
 use Illuminate\Console\Command;
 
-class listThemes extends Command
+class listThemes extends baseCommand
 {
     // protected $signature = 'namespace:command {argument?} {--option}';
     protected $signature = 'theme:list';

@@ -40,6 +40,12 @@ class themeServiceProvider extends ServiceProvider {
 
 		$themes = $this->app->make('igaster.themes');
         $themes->scanThemes();
+
+		/*--------------------------------------------------------------------------
+		| Activate default theme
+		|--------------------------------------------------------------------------*/
+		if (!$themes->current() && \Config::get('themes.default'))
+			$themes->set(\Config::get('themes.default'));
     }
 
 	public function boot(){

@@ -152,7 +152,7 @@ class Themes{
                 // default theme settings
                 $defaults = [
                     'name'          => $folderName,
-                    'views-path'    => null,
+                    // 'views-path'    => null,
                     'asset-path'    => null,
                     'extends'       => null,
                 ];
@@ -161,14 +161,16 @@ class Themes{
                 $json = file_get_contents($jsonFilename);
                 if($json !== ""){
                     $data = json_decode($json, true);
+                    if($data===null){
+                        throw new \Exception("Invalid theme.json file at [$themeFolder]");
+                    }
                 } else {
                     $data = [];
                 }
 
-                // Is the json file valid?
-                if($data===null){
-                    throw new \Exception("Invalid theme.json file at [$themeFolder]");
-                }
+                // We already know views-path since we have scaned folders.
+                $data['views-path'] = $folderName;
+
                 $data = array_merge($defaults,$data);
 
                 // Are theme settings overriden in config/themes.php?

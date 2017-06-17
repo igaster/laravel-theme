@@ -3,9 +3,9 @@
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem as File;
 
-class installPackage extends abstractCommand
+class installPackage extends baseCommand
 {
-    protected $signature = 'theme:package:install {package?}';
+    protected $signature = 'theme:install {package?}';
     protected $description = 'Install a theme package';
 
     public function handle() {
@@ -20,7 +20,7 @@ class installPackage extends abstractCommand
         }
         $package = $this->packages_path($package.'.theme.tar.gz');
 
-        // Create Temp Folder. Clear it if exists.
+        // Create Temp Folder
         $this->createTempFolder();
 
         // Untar to temp folder
@@ -32,8 +32,8 @@ class installPackage extends abstractCommand
 
         // Check if theme is already installed
         $themeName = $data['name'];
-        if(\Theme::exists($themeName)){
-            $this->info('Warning: Theme '.$themeName.' already exist. You must remove it first with "artisan theme:remove '.$themeName.'"');
+        if($this->theme_installed($themeName)){
+            $this->error('Error: Theme '.$themeName.' already exist. You must remove it first with "artisan theme:remove '.$themeName.'"');
             $this->clearTempFolder();
             return;
         }
@@ -42,11 +42,23 @@ class installPackage extends abstractCommand
         $viewsPath = themes_path($data['views-path']);
         $assetPath = public_path($data['asset-path']);
 
-        exec("mv {$this->tempPath}/views $viewsPath");
-        exec("mv {$this->tempPath}/asset $assetPath");
+        // If Views+Asset paths don't exist, move theme from temp to target paths
+        if (file_exists($viewsPath)){
+            $this->info("Warning: Views path [$viewsPath] already exists. Will not be installed.");
+        } else {
+            exec("mv {$this->tempPath}/views $viewsPath");
+            $this->info("Theme views installed to path [$viewsPath]");
+        }
+        
+        if (file_exists($assetPath)){
+            $this->error("Error: Asset path [$assetPath] already exists. Will not be installed.");
+        } else {
+            exec("mv {$this->tempPath}/asset $assetPath");
+            $this->info("Theme assets installed to path [$assetPath]");
+        }
 
         // Del Temp Folder
-        exec("rm -r {$this->tempPath}");
+        $this->clearTempFolder();
     }
 
 

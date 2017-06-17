@@ -3,7 +3,7 @@
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem as File;
 
-class abstractCommand extends Command
+class baseCommand extends Command
 {
 
     public function __construct() {
@@ -24,5 +24,14 @@ class abstractCommand extends Command
 
     protected function packages_path($path=''){
         return storage_path("themes/$path");
+    }
+
+    protected function theme_installed($themeName){
+        if(!\Theme::exists($themeName)){
+            return false;
+        }
+
+        $viewsPath = \Theme::find($themeName)->viewsPath;
+        return file_exists(themes_path("$viewsPath/theme.json"));
     }
 }

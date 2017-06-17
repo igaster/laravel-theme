@@ -25,12 +25,12 @@ return [
 
 	/*
 	|--------------------------------------------------------------------------
-	| Set the Active Theme. Can be set at runtime with:
-	|  Themes::set('theme-name');
+	| Do we want a theme activeted by default? Can be set at runtime with:
+	| Theme::set('theme-name');
 	|--------------------------------------------------------------------------
 	*/
 
-	'active' => null,
+	'default' => null,
 
 	/*
 	|--------------------------------------------------------------------------
@@ -41,7 +41,8 @@ return [
 	| 		'views-path' 	=> 'path-to-views',    // defaults to: resources/views/theme-name
 	| 		'asset-path' 	=> 'path-to-assets',   // defaults to: public/theme-name
 	|
-	|		// you can add your own custom keys and retrieve them with Theme::config('key');
+	|		// You can add your own custom keys
+	|		// Use Theme::getSetting('key') & Theme::setSetting('key', 'value') to access them
 	| 		'key' 			=> 'value', 
 	| 	],
 	|
@@ -50,7 +51,7 @@ return [
 
 	'themes' => [
 
-		// Add your themes here...
+		// Add your themes here. These settings will overide theme.json settings defined for each theme
 
 		/*
 		|---------------------------[ Example Structure ]--------------------------

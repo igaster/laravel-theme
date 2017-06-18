@@ -86,28 +86,56 @@ class Theme {
         $this->parent = $parent;
     }
 
-    public function createPaths($clearPaths = false){
-        $viewsPathFull = themes_path($this->viewsPath);
-        $assetPathFull = public_path($this->assetPath);
+    public function uninstall(){
+        $viewsPath = themes_path($this->viewsPath);
+        $assetPath = public_path($this->assetPath);
+
+        // Calculate absolute paths
+        $viewsPath = themes_path($this->viewsPath);
+        $assetPath = public_path($this->assetPath);
+
+        // Check that paths exist
+        $viewsExists = \File::exists($viewsPath);
+        $assetExists = \File::exists($assetPath);
+
+        // Check that no other theme uses to the same paths (ie a child theme)
+        foreach (\Theme::list() as $t) {
+            if ($t !== $this && $viewsExists && $t->viewsPath == $this->viewsPath)
+                throw new \Exception("Can not delete folder [$viewsPath] of theme [{$this->name}] because it is also used by theme [{$t->name}]", 1);
+
+            if ($t !== $this && $assetExists && $t->assetPath == $this->assetPath)
+                throw new \Exception("Can not delete folder [$viewsPath] of theme [{$this->name}] because it is also used by theme [{$t->name}]", 1);
+                
+        }
+
+        \File::deleteDirectory($viewsPath);
+        \File::deleteDirectory($assetPath);
+
+        \Theme::rebuildCache();
+    }
+
+    public function install($clearPaths = false){
+        $viewsPath = themes_path($this->viewsPath);
+        $assetPath = public_path($this->assetPath);
 
         if($clearPaths){
-            if(\File::exists($viewsPathFull)){
-                \File::deleteDirectory($viewsPathFull);
+            if(\File::exists($viewsPath)){
+                \File::deleteDirectory($viewsPath);
             }
-             if(\File::exists($assetPathFull)){
-                \File::deleteDirectory($assetPathFull);
+             if(\File::exists($assetPath)){
+                \File::deleteDirectory($assetPath);
             }
         }
 
-        \File::makeDirectory($viewsPathFull);
-        \File::makeDirectory($assetPathFull);
+        \File::makeDirectory($viewsPath);
+        \File::makeDirectory($assetPath);
 
         $themeJson = new \Igaster\LaravelTheme\themeManifest(array_merge($this->settings,[
             'name'          => $this->name,
             'extends'       => $this->parent ? $this->parent->name : null,
             'asset-path'    => $this->assetPath,
         ]));
-        $themeJson->saveToFile("$viewsPathFull/theme.json");
+        $themeJson->saveToFile("$viewsPath/theme.json");
 
         \Theme::rebuildCache();
     }

@@ -8,11 +8,6 @@ class listThemes extends baseCommand
     protected $signature = 'theme:list';
     protected $description = 'List installed themes';
 
-    public function __construct() {
-        parent::__construct();
-        // Add constructor code here
-    }
-
     public function info($text,$newline = true){
         $this->output->write("<info>$text</info>", $newline);        
     }

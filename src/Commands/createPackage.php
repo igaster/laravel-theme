@@ -23,7 +23,7 @@ class createPackage extends baseCommand
 
         // Packages storage path
         $packagesPath = $this->packages_path();
-        if(!file_exists($packagesPath))
+        if(!$this->files->exists($packagesPath))
             mkdir($packagesPath);
 
         // Sanitize target filename
@@ -49,7 +49,7 @@ class createPackage extends baseCommand
         system("cd {$this->tempPath} && tar -cvzf $packageFileName .");
         
         // Del Temp Folder
-        system("rm -r {$this->tempPath}");
+        $this->clearTempFolder();
 
         $this->info("Package created at [$packageFileName]");
     }

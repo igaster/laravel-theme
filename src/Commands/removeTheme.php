@@ -35,8 +35,8 @@ class removeTheme extends baseCommand
         $assetPath = public_path($theme->assetPath);
 
         // Check that paths exist
-        $delViews = file_exists($viewsPath);
-        $delAsset = file_exists($assetPath);
+        $delViews = $this->files->exists($viewsPath);
+        $delAsset = $this->files->exists($assetPath);
 
         // Check that no other theme uses to the same paths (ie a child theme)
         foreach (\Theme::list() as $t) {
@@ -56,8 +56,8 @@ class removeTheme extends baseCommand
 
         // Delete folders
         if($force || $this->confirm("Continue?")){
-            exec("rm -r $viewsPath");
-            exec("rm -r $assetPath");
+            $this->files->deleteDirectory($viewsPath);
+            $this->files->deleteDirectory($assetPath);
 
             // Rebuild Themes Cache
             \Theme::rebuildCache();

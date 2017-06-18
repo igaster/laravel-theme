@@ -12,7 +12,7 @@ class installPackage extends baseCommand
         $package = $this->argument('package');
 
         if(!$package){
-            $filenames = glob($this->packages_path('*.theme.tar.gz'));
+            $filenames = $this->files->glob($this->packages_path('*.theme.tar.gz'));
             $packages = array_map(function($filename){
                 return basename($filename, '.theme.tar.gz');
             }, $filenames);

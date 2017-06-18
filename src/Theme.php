@@ -6,6 +6,7 @@ class Theme {
     public $viewsPath;
     public $assetPath;
     public $parent;
+    public $settings = [];
 
     public function __construct($themeName, $assetPath = null, $viewsPath = null, Theme $parent = null){
         $this->name = $themeName;
@@ -85,11 +86,35 @@ class Theme {
         $this->parent = $parent;
     }
 
+    public function createPaths($clearPaths = false){
+        $viewsPathFull = themes_path($this->viewsPath);
+        $assetPathFull = public_path($this->assetPath);
+
+        if($clearPaths){
+            if(\File::exists($viewsPathFull)){
+                \File::deleteDirectory($viewsPathFull);
+            }
+             if(\File::exists($assetPathFull)){
+                \File::deleteDirectory($assetPathFull);
+            }
+        }
+
+        \File::makeDirectory($viewsPathFull);
+        \File::makeDirectory($assetPathFull);
+
+        $themeJson = new \Igaster\LaravelTheme\themeManifest(array_merge($this->settings,[
+            'name'          => $this->name,
+            'extends'       => $this->parent ? $this->parent->name : null,
+            'asset-path'    => $this->assetPath,
+        ]));
+        $themeJson->saveToFile("$viewsPathFull/theme.json");
+
+        \Theme::rebuildCache();
+    }
+
     /*--------------------------------------------------------------------------
     | Theme Settings
     |--------------------------------------------------------------------------*/
-
-    public $settings = [];
 
     public function setSetting($key, $value){
         $this->settings[$key] = $value;
@@ -106,6 +131,8 @@ class Theme {
     }
 
     public function loadSettings($settings = []){
+
+        // $this->settings = $settings;
 
         $this->settings= array_diff_key((array) $settings, array_flip([
             'name',

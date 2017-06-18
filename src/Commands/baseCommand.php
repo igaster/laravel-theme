@@ -1,24 +1,39 @@
 <?php namespace Igaster\LaravelTheme\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Filesystem\Filesystem as File;
+use Illuminate\Filesystem\Filesystem;
 
 class baseCommand extends Command
 {
 
-    public function __construct() {
+    /**
+     * The filesystem instance.
+     *
+     * @var \Illuminate\Filesystem\Filesystem
+     */
+    protected $files;
+
+    /**
+     * Create a new route command instance.
+     *
+     * @param  \Illuminate\Filesystem\Filesystem  $files
+     * @return void
+     */
+    public function __construct(Filesystem $files)
+    {
         parent::__construct();
         $this->tempPath = $this->packages_path('tmp');
+        $this->files = $files;
     }
-
+    
     protected function createTempFolder(){
         $this->clearTempFolder();
-        mkdir($this->tempPath);
+        $this->files->makeDirectory($this->tempPath);
     }
 
     protected function clearTempFolder(){
-        if (file_exists($this->tempPath)){
-            exec("rm -r $this->tempPath");
+        if ($this->files->exists($this->tempPath)){
+            $this->files->deleteDirectory($this->tempPath);
         }
     }
 
@@ -32,6 +47,6 @@ class baseCommand extends Command
         }
 
         $viewsPath = \Theme::find($themeName)->viewsPath;
-        return file_exists(themes_path("$viewsPath/theme.json"));
+        return $this->files->exists(themes_path("$viewsPath/theme.json"));
     }
 }

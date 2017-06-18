@@ -59,8 +59,8 @@ class createTheme extends baseCommand
             ]);
 
             // Create Paths + copy theme.json
-            system("mkdir $viewsPathFull");
-            system("mkdir $assetPathFull");
+            $this->files->makeDirectory($viewsPathFull);
+            $this->files->makeDirectory($assetPathFull);
 
             $themeJson->saveToFile(themes_path("$viewsPath/theme.json"));
 

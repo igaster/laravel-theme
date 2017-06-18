@@ -9,10 +9,12 @@ class Themes{
     protected $activeTheme = null;
     protected $themes = [];
     protected $laravelViewsPath;
+    protected $cachePath;
 
     public function __construct(){
         $this->laravelViewsPath = Config::get('view.paths');
         $this->themesPath = Config::get('themes.themes_path', null) ?: Config::get('view.paths')[0];
+        $this->cachePath = base_path('bootstrap/cache/themes.php');
     }
 
     /**
@@ -124,36 +126,63 @@ class Themes{
         return $theme;
     }
 
-    public function url($url){
-        // If no Theme set, $url
+    // Return url of current theme
+    public function url($filename){
+        // If no Theme set, $filename
         if (!$this->current())
-            return "/".ltrim($url, '/');
+            return "/".ltrim($filename, '/');
 
-        return $this->current()->url($url);
+        return $this->current()->url($filename);
     }
 
+    // Original view paths defined in config.view.php
     public function getLaravelViewPaths(){
         return $this->laravelViewsPath;
     }
 
-    /**
-     * Scan all folders inside the themes path & config/themes.php 
-     * If a "theme.json" file is found then load it and setup theme
-     */
-    public function scanThemes(){
-        $parentThemes = [];
-        $themesConfig = config('themes.themes');
+    public function cacheEnabled(){
+        return config('themes.cache', true);
+    }
+
+    // Rebuilds the cache file
+    public function rebuildCache(){
+        $themes = $this->scanJsonFiles();
+        // file_put_contents($this->cachePath, json_encode($themes, JSON_PRETTY_PRINT));
+
+        $stub = file_get_contents(__DIR__.'/stubs/cache.stub');
+        $contents = str_replace('[CACHE]', var_export($themes,true), $stub);
+        file_put_contents($this->cachePath, $contents);
+    }
+
+    // Loads themes from the cache
+    public function loadCache(){
+        if(!file_exists($this->cachePath)){
+            $this->rebuildCache();
+        }
+
+        // $data = json_decode(file_get_contents($this->cachePath), true);
+
+        $data = include($this->cachePath);
+
+        if($data===null){
+            throw new \Exception("Invalid theme cache json file [{$this->cachePath}]");
+        }
+        return $data;
+    }
+
+    // Scans theme folders for theme.json files and returns an array of themes
+    public function scanJsonFiles(){
+        $themes = [];
         foreach (glob($this->themes_path('*'),GLOB_ONLYDIR) as $themeFolder) {
             if(file_exists($jsonFilename = $themeFolder.'/'.'theme.json')){
 
                 $folders = explode(DIRECTORY_SEPARATOR,$themeFolder);
-                $folderName = end($folders);
+                $themeName = end($folders);
 
                 // default theme settings
                 $defaults = [
-                    'name'          => $folderName,
-                    // 'views-path'    => null,
-                    'asset-path'    => null,
+                    'name'          => $themeName,
+                    'asset-path'    => $themeName,
                     'extends'       => null,
                 ];
 
@@ -169,32 +198,53 @@ class Themes{
                 }
 
                 // We already know views-path since we have scaned folders.
-                $data['views-path'] = $folderName;
+                // we will overide this setting if exists
+                $data['views-path'] = $themeName;
 
-                $data = array_merge($defaults,$data);
-
-                // Are theme settings overriden in config/themes.php?
-                if(array_key_exists($data['name'], $themesConfig)){
-                    $data = array_merge($data, $themesConfig[$data['name']]);
-                }
-
-                // Create theme
-                $theme = new Theme(
-                    $data['name'],
-                    $data['asset-path'],
-                    $data['views-path']
-                );
-
-                // Has a parent theme? Store parent name to resolve later.
-                if($data['extends']){
-                    $parentThemes[$theme->name] = $data['extends'];
-                }
-
-                // Load the rest of the values as theme Settings
-                $theme->loadSettings($data);
+                $themes[] = array_merge($defaults,$data);
             }
         }
+        return $themes;
+    }
 
+    public function loadThemesJson(){
+        if($this->cacheEnabled()){
+            return $this->loadCache();
+        } else {
+            return $this->scanJsonFiles();
+        }
+    }
+
+    /**
+     * Scan all folders inside the themes path & config/themes.php 
+     * If a "theme.json" file is found then load it and setup theme
+     */
+    public function scanThemes(){
+
+        $parentThemes = [];
+        $themesConfig = config('themes.themes');
+
+        foreach ($this->loadThemesJson() as $data) {
+            // Are theme settings overriden in config/themes.php?
+            if(array_key_exists($data['name'], $themesConfig)){
+                $data = array_merge($data, $themesConfig[$data['name']]);
+            }
+
+            // Create theme
+            $theme = new Theme(
+                $data['name'],
+                $data['asset-path'],
+                $data['views-path']
+            );
+
+            // Has a parent theme? Store parent name to resolve later.
+            if($data['extends']){
+                $parentThemes[$theme->name] = $data['extends'];
+            }
+
+            // Load the rest of the values as theme Settings
+            $theme->loadSettings($data);            
+        }
 
         // Add themes from config/themes.php
         foreach ($themesConfig as $themeName => $themeConfig) {

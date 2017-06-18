@@ -2,12 +2,11 @@
 
 return [
 
-
     /*
     |--------------------------------------------------------------------------
-    | File path where theme Views will be located.
+    | Root path where theme Views will be located.
     | Can be outside default views path EG: resources/themes
-    | Leave it null if you place your themes in the default views folder 
+    | Leave it null if you will put your themes in the default views folder 
     | (as defined in config\views.php)
     |--------------------------------------------------------------------------
     */
@@ -31,6 +30,15 @@ return [
 	*/
 
 	'default' => null,
+
+	/*
+	|--------------------------------------------------------------------------
+	| Cache theme.json configuration files that are located in each theme's folder
+	| in order to avoid searching theme settings in the filesystem for  each request
+	|--------------------------------------------------------------------------
+	*/
+
+	'cache' => true,
 
 	/*
 	|--------------------------------------------------------------------------

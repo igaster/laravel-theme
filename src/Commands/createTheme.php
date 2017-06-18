@@ -63,6 +63,9 @@ class createTheme extends baseCommand
             system("mkdir $assetPathFull");
 
             $themeJson->saveToFile(themes_path("$viewsPath/theme.json"));
+
+            // Rebuild Themes Cache
+            \Theme::rebuildCache();
         }
     }
 

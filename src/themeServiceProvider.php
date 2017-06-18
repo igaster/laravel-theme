@@ -68,6 +68,7 @@ class themeServiceProvider extends ServiceProvider {
                 \Igaster\LaravelTheme\Commands\removeTheme::class,
                 \Igaster\LaravelTheme\Commands\createPackage::class,
                 \Igaster\LaravelTheme\Commands\installPackage::class,
+                \Igaster\LaravelTheme\Commands\refreshCache::class,
             ]);
         }
 

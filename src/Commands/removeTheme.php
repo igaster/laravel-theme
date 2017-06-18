@@ -58,6 +58,10 @@ class removeTheme extends baseCommand
         if($force || $this->confirm("Continue?")){
             exec("rm -r $viewsPath");
             exec("rm -r $assetPath");
+
+            // Rebuild Themes Cache
+            \Theme::rebuildCache();
+        
             $this->info("Theme $themeName was removed");
         }
 

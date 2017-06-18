@@ -61,6 +61,9 @@ class installPackage extends baseCommand
             $this->info("Theme assets installed to path [$assetPath]");
         }
 
+        // Rebuild Themes Cache
+        \Theme::rebuildCache();
+
         // Del Temp Folder
         $this->clearTempFolder();
     }

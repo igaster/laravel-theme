@@ -86,33 +86,6 @@ class Theme {
         $this->parent = $parent;
     }
 
-    public function uninstall(){
-        $viewsPath = themes_path($this->viewsPath);
-        $assetPath = public_path($this->assetPath);
-
-        // Calculate absolute paths
-        $viewsPath = themes_path($this->viewsPath);
-        $assetPath = public_path($this->assetPath);
-
-        // Check that paths exist
-        $viewsExists = \File::exists($viewsPath);
-        $assetExists = \File::exists($assetPath);
-
-        // Check that no other theme uses to the same paths (ie a child theme)
-        foreach (\Theme::list() as $t) {
-            if ($t !== $this && $viewsExists && $t->viewsPath == $this->viewsPath)
-                throw new \Exception("Can not delete folder [$viewsPath] of theme [{$this->name}] because it is also used by theme [{$t->name}]", 1);
-
-            if ($t !== $this && $assetExists && $t->assetPath == $this->assetPath)
-                throw new \Exception("Can not delete folder [$viewsPath] of theme [{$this->name}] because it is also used by theme [{$t->name}]", 1);
-                
-        }
-
-        \File::deleteDirectory($viewsPath);
-        \File::deleteDirectory($assetPath);
-
-        \Theme::rebuildCache();
-    }
 
     public function install($clearPaths = false){
         $viewsPath = themes_path($this->viewsPath);
@@ -140,6 +113,35 @@ class Theme {
         \Theme::rebuildCache();
     }
 
+
+    public function uninstall(){
+        $viewsPath = themes_path($this->viewsPath);
+        $assetPath = public_path($this->assetPath);
+
+        // Calculate absolute paths
+        $viewsPath = themes_path($this->viewsPath);
+        $assetPath = public_path($this->assetPath);
+
+        // Check that paths exist
+        $viewsExists = \File::exists($viewsPath);
+        $assetExists = \File::exists($assetPath);
+
+        // Check that no other theme uses to the same paths (ie a child theme)
+        foreach (\Theme::list() as $t) {
+            if ($t !== $this && $viewsExists && $t->viewsPath == $this->viewsPath)
+                throw new \Exception("Can not delete folder [$viewsPath] of theme [{$this->name}] because it is also used by theme [{$t->name}]", 1);
+
+            if ($t !== $this && $assetExists && $t->assetPath == $this->assetPath)
+                throw new \Exception("Can not delete folder [$viewsPath] of theme [{$this->name}] because it is also used by theme [{$t->name}]", 1);
+                
+        }
+
+        \File::deleteDirectory($viewsPath);
+        \File::deleteDirectory($assetPath);
+
+        \Theme::rebuildCache();
+    }
+    
     /*--------------------------------------------------------------------------
     | Theme Settings
     |--------------------------------------------------------------------------*/

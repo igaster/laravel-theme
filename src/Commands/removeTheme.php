@@ -49,6 +49,4 @@ class removeTheme extends baseCommand
 
     }
 
-
-
 }

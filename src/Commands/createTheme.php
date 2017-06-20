@@ -42,6 +42,8 @@ class createTheme extends baseCommand
             $parentTheme = $this->choice('Which one', $themes);        
         }
 
+        $customConfiguration = $this->askCustomConfiguration();
+
         // Display a summary
         $this->info("Summary:");
         $this->info("- Theme name: ".$themeName);
@@ -49,14 +51,21 @@ class createTheme extends baseCommand
         $this->info("- Asset Path: ".$assetPathFull);
         $this->info("- Extends Theme: ".($parentTheme ?: "No"));
 
+        if(!empty($customConfiguration)){
+            $this->info("Custom Theme Configuration:");
+            foreach ($customConfiguration as $key => $value) {
+                $this->info("- $key: ".print_r($value, true));
+            }
+        }
+
         if ($this->confirm('Create Theme?', true)){
 
-            $themeJson = new \Igaster\LaravelTheme\themeManifest([
+            $themeJson = new \Igaster\LaravelTheme\themeManifest(array_merge([
                 "name"        => $themeName,
                 "extends"     => $parentTheme,
                 "asset-path"  => $assetPath,
                 // "views-path"  => $viewsPath,
-            ]);
+            ],$customConfiguration));
 
             // Create Paths + copy theme.json
             $this->files->makeDirectory($viewsPathFull);
@@ -67,6 +76,18 @@ class createTheme extends baseCommand
             // Rebuild Themes Cache
             \Theme::rebuildCache();
         }
+    }
+
+
+    // You can add request more information during theme setup. Just override this class and implement
+    // the following method. It should return an associative array which will be appended
+    // into the 'theme.json' configuration file. You can retreive this values
+    // with Theme::getSetting('key') at runtime. You may optionaly want to redifine the
+    // command signature too.
+    public function askCustomConfiguration(){
+        return [
+            // 'key' => 'value',
+        ];
     }
 
 }

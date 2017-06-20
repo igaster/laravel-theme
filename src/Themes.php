@@ -126,15 +126,6 @@ class Themes{
         return $theme;
     }
 
-    // Return url of current theme
-    public function url($filename){
-        // If no Theme set, $filename
-        if (!$this->current())
-            return "/".ltrim($filename, '/');
-
-        return $this->current()->url($filename);
-    }
-
     // Original view paths defined in config.view.php
     public function getLaravelViewPaths(){
         return $this->laravelViewsPath;
@@ -293,6 +284,30 @@ class Themes{
     }
 
     /*--------------------------------------------------------------------------
+    | Proxy to current theme
+    |--------------------------------------------------------------------------*/
+
+    // Return url of current theme
+    public function url($filename){
+        // If no Theme set, return /$filename
+        if (!$this->current())
+            return "/".ltrim($filename, '/');
+
+        return $this->current()->url($filename);
+    }
+
+    /**
+     * Act as a proxy to the current theme. Map theme's functions to the Themes class. (Decorator Pattern)
+     */
+    public function __call($method, $args) {
+        if (($theme=$this->current())){
+            return call_user_func_array(array($theme, $method), $args);
+        } else {
+            throw new \Exception("No theme is set. Can not execute method [$method] in [".self::class."]", 1);
+        }
+    }   
+
+    /*--------------------------------------------------------------------------
     | Blade Helper Functions
     |--------------------------------------------------------------------------*/
 
@@ -350,15 +365,4 @@ class Themes{
         return $formatted;
     }
  
-
-    /**
-     * Act as a proxy to the current theme. Map theme's functions to the Themes class
-     */
-    public function __call($method, $args) {
-        if (($theme=$this->current()) && method_exists($theme, $method)){
-            return call_user_func_array(array($theme, $method), $args);
-        } else {
-            throw new \Exception("Method [$method] not defined in [".self::class."] or [".Theme::class."] classes", 1);
-        }
-    }   
 }

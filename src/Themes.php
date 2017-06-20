@@ -165,6 +165,7 @@ class Themes{
     public function scanJsonFiles(){
         $themes = [];
         foreach (glob($this->themes_path('*'),GLOB_ONLYDIR) as $themeFolder) {
+            $themeFolder = realpath($themeFolder);
             if(file_exists($jsonFilename = $themeFolder.'/'.'theme.json')){
 
                 $folders = explode(DIRECTORY_SEPARATOR,$themeFolder);

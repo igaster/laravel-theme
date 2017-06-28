@@ -214,7 +214,7 @@ class Themes{
     public function scanThemes(){
 
         $parentThemes = [];
-        $themesConfig = config('themes.themes');
+        $themesConfig = config('themes.themes',[]);
 
         foreach ($this->loadThemesJson() as $data) {
             // Are theme settings overriden in config/themes.php?

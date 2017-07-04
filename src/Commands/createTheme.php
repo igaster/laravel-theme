@@ -38,7 +38,7 @@ class createTheme extends baseCommand
         if ($this->confirm('Extends an other theme?')){
             $themes = array_map(function($theme){
                 return $theme->name;
-            }, \Theme::list());
+            }, \Theme::all());
             $parentTheme = $this->choice('Which one', $themes);        
         }
 

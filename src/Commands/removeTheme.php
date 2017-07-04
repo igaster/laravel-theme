@@ -14,7 +14,7 @@ class removeTheme extends baseCommand
         if ($themeName == ""){
             $themes = array_map(function($theme){
                 return $theme->name;
-            }, \Theme::list());
+            }, \Theme::all());
             $themeName = $this->choice('Select a theme to create a distributable package:', $themes); 
         }
 

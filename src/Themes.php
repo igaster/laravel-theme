@@ -32,7 +32,7 @@ class Themes{
      * 
      * @return array
      */
-    public function list(){
+    public function all(){
         return $this->themes;
     }
 

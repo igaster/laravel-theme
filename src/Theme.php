@@ -127,7 +127,7 @@ class Theme {
         $assetExists = \File::exists($assetPath);
 
         // Check that no other theme uses to the same paths (ie a child theme)
-        foreach (\Theme::list() as $t) {
+        foreach (\Theme::all() as $t) {
             if ($t !== $this && $viewsExists && $t->viewsPath == $this->viewsPath)
                 throw new \Exception("Can not delete folder [$viewsPath] of theme [{$this->name}] because it is also used by theme [{$t->name}]", 1);
 

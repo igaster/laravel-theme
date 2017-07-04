@@ -13,7 +13,7 @@ class listThemes extends baseCommand
     }
 
     public function handle() {
-        $themes = \Theme::list();
+        $themes = \Theme::all();
         $this->info('+----------------------+----------------------+----------------------+----------------------+');
         $this->info('|      Theme Name      |        Extends       |      Views Path      |      Asset Path      |');
         $this->info('+----------------------+----------------------+----------------------+----------------------+');

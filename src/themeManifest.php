@@ -20,7 +20,7 @@ class themeManifest{
 		$this->data[$key] = $value;
 	}
 
-	public function unset($key){
+	public function remove($key){
 		if(isset($this->data[$key])){
 			unset($this->data[$key]);
 		}

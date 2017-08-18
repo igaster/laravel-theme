@@ -49,7 +49,7 @@ class installPackage extends baseCommand
             exec("mv {$this->tempPath}/views $viewsPath");
 
             // Remove 'theme-views' from theme.json
-            $themeJson->unset('views-path');
+            $themeJson->remove('views-path');
             $themeJson->saveToFile("$viewsPath/theme.json");
             $this->info("Theme views installed to path [$viewsPath]");
         }

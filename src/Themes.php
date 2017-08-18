@@ -189,9 +189,9 @@ class Themes{
                     $data = [];
                 }
 
-                // We already know views-path since we have scaned folders.
-                // we will overide this setting if exists
-                $data['views-path'] = $themeName;
+                if(!isset($data['views-path'])){
+                    $data['views-path'] = $themeName;
+                }
 
                 $themes[] = array_merge($defaults,$data);
             }

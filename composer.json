@@ -26,5 +26,15 @@
             "Igaster\\LaravelTheme\\Tests\\" : "tests/"            
         }
     },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Igaster\\LaravelTheme\\themeServiceProvider"
+            ],
+            "aliases": {
+                "Theme": "Igaster\\LaravelTheme\\Facades\\Theme"
+            }
+        }
+    },
     "minimum-stability": "stable"
 }

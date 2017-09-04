@@ -5,7 +5,7 @@ return [
     /*
     |--------------------------------------------------------------------------
     | Root path where theme Views will be located.
-    | Can be outside default views path EG: resources/themes
+    | Can be outside default views path e.g.: resources/themes
     | Leave it null if you will put your themes in the default views folder 
     | (as defined in config\views.php)
     |--------------------------------------------------------------------------
@@ -15,7 +15,7 @@ return [
 
 	/*
 	|--------------------------------------------------------------------------
-	| Set behavior if an asset is not found in a Theme hierarcy.
+	| Set behavior if an asset is not found in a Theme hierarchy.
 	| Available options: THROW_EXCEPTION | LOG_ERROR | IGNORE
 	|--------------------------------------------------------------------------
 	*/
@@ -24,7 +24,7 @@ return [
 
 	/*
 	|--------------------------------------------------------------------------
-	| Do we want a theme activeted by default? Can be set at runtime with:
+	| Do we want a theme activated by default? Can be set at runtime with:
 	| Theme::set('theme-name');
 	|--------------------------------------------------------------------------
 	*/
@@ -34,7 +34,7 @@ return [
 	/*
 	|--------------------------------------------------------------------------
 	| Cache theme.json configuration files that are located in each theme's folder
-	| in order to avoid searching theme settings in the filesystem for  each request
+	| in order to avoid searching theme settings in the filesystem for each request
 	|--------------------------------------------------------------------------
 	*/
 
@@ -75,7 +75,7 @@ return [
 		|	// Use all Defaults:
 		|	
 		|	'example2',	// Assets =\public\example2, Views =\resources\views\example2
-		|				// Note that if you use all default values, you can ommit decledration completely.
+		|				// Note that if you use all default values, you can ommit decleration completely.
 		|				// i.e. defaults will be used when you call Theme::set('undefined-theme')
 		|	
 		|	
@@ -85,7 +85,7 @@ return [
 		|		'views-path'	=> 'example',
 		|	],
 		|	
-		|	// This theme extends example1 and may ovveride SOME views\assets in its own paths
+		|	// This theme extends example1 and may override SOME views\assets in its own paths
 		|	
 		|	'example4' => [
 		|		'extends'	=> 'example1',

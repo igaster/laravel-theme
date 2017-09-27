@@ -49,18 +49,20 @@ class Theme {
             if(($value=$this->getSetting($param)) !== null)
                 $url = str_replace('{'.$param.'}', $value, $url);
 
-        // If there are url params ignore them for now...
-        if((strpos($url, '?')) !== false){
-            return 'xxx';
+        // Seperate url from url queries
+        if(($position = strpos($url, '?')) !== false){
+            $baseUrl = substr($url, 0, $position);
             $params = substr($url, $position-1);
-            $url = substr($url, 0, $position);
+        } else {
+            $baseUrl = $url;
+            $params = '';            
         }
 
         // Lookup asset in current's theme asset path
-        $fullUrl = (empty($this->assetPath) ? '' : '/').$this->assetPath.'/'.$url;
+        $fullUrl = (empty($this->assetPath) ? '' : '/').$this->assetPath.'/'.$baseUrl;
 
         if (file_exists($fullPath = public_path($fullUrl)))
-            return $fullUrl;
+            return $fullUrl.$params;
 
         // If not found then lookup in parent's theme asset path
         if ($parentTheme = $this->getParent()){
@@ -68,8 +70,8 @@ class Theme {
         }
         // No parent theme? Lookup in the public folder.
         else { 
-            if (file_exists(public_path($url))){
-                return "/".$url;
+            if (file_exists(public_path($baseUrl))){
+                return "/".$baseUrl.$params;
             }
         }
 

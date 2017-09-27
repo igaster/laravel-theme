@@ -49,6 +49,13 @@ class Theme {
             if(($value=$this->getSetting($param)) !== null)
                 $url = str_replace('{'.$param.'}', $value, $url);
 
+        // If there are url params ignore them for now...
+        if((strpos($url, '?')) !== false){
+            return 'xxx';
+            $params = substr($url, $position-1);
+            $url = substr($url, 0, $position);
+        }
+
         // Lookup asset in current's theme asset path
         $fullUrl = (empty($this->assetPath) ? '' : '/').$this->assetPath.'/'.$url;
 

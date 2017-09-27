@@ -52,7 +52,7 @@ class Theme {
         // Seperate url from url queries
         if(($position = strpos($url, '?')) !== false){
             $baseUrl = substr($url, 0, $position);
-            $params = substr($url, $position-1);
+            $params = substr($url, $position);
         } else {
             $baseUrl = $url;
             $params = '';            

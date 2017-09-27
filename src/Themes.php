@@ -65,16 +65,19 @@ class Themes{
 
         // Get theme view paths
         $paths = $theme->getViewPaths();
-
+        
+        $themeViewFinder = app('view.finder');
+        
         // fall-back to default paths (set in views.php config file)
         foreach ($this->laravelViewsPath as $path)
-            if(!in_array($path, $paths))
+            if(!in_array($path, $paths)) {
+                $themeViewFinder->addLocation($path);   
                 $paths[] = $path;
+            }
 
         Config::set('view.paths', $paths);
-
-        $themeViewFinder = app('view.finder');
-        $themeViewFinder->setPaths($paths);
+        
+        
 
         Event::fire('igaster.laravel-theme.change', $theme);
         return $theme;

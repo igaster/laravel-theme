@@ -71,7 +71,7 @@ class Themes{
         // fall-back to default paths (set in views.php config file)
         foreach ($this->laravelViewsPath as $path)
             if(!in_array($path, $paths)) {
-                $themeViewFinder->addLocation($path);   
+                $themeViewFinder->prependLocation($path);   
                 $paths[] = $path;
             }
 

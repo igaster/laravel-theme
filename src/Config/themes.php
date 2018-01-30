@@ -59,7 +59,7 @@ return [
 
 	'themes' => [
 
-		// Add your themes here. These settings will overide theme.json settings defined for each theme
+                // Add your themes here. These settings will override theme.json settings defined for each theme
 
 		/*
 		|---------------------------[ Example Structure ]--------------------------
@@ -75,7 +75,7 @@ return [
 		|	// Use all Defaults:
 		|	
 		|	'example2',	// Assets =\public\example2, Views =\resources\views\example2
-		|				// Note that if you use all default values, you can ommit decleration completely.
+		|				// Note that if you use all default values, you can omit declaration completely.
 		|				// i.e. defaults will be used when you call Theme::set('undefined-theme')
 		|	
 		|	

@@ -33,7 +33,7 @@ class removeTheme extends baseCommand
         // Diaplay Warning
         if(!$force){
             $viewsPath = themes_path($theme->viewsPath);
-            $assetPath = public_path($theme->assetPath);
+            $assetPath = themes_path($viewsPath."/assets");
 
             $this->info("Warning: These folders will be deleted:");
             $this->info("- views: $viewsPath");

@@ -27,7 +27,7 @@ class listThemes extends baseCommand
         }
         $this->info('+----------------------+----------------------+----------------------+----------------------+');
         $this->info('Views Path is relative to: '.themes_path());
-        $this->info('Asset Path is relative to: '.public_path());
+        $this->info('Asset Path is relative to: '.themes_path("{THEME_NAME}/assets"));
 
     }
 }

@@ -31,7 +31,7 @@ class createTheme extends baseCommand
 
         // Calculate Absolute paths
         $viewsPathFull = themes_path($viewsPath);
-        $assetPathFull = public_path($assetPath);
+        $assetPathFull = themes_path($viewsPath."/assets");
 
         // Ask for parent theme
         $parentTheme = "";

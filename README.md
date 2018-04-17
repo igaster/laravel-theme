@@ -14,6 +14,23 @@ Features:
 * Themes are distributable! Create a single-file theme Package and install it on any Laravel application.
 * Ships with console commands to manage themes
 
+## Changes
+* Change your View path in config/view.php to
+`
+'paths' => [
+        base_path('themes')
+    ],
+`
+
+* To use library create `"themes"` folder in base folder of your app.
+* Global function for getting assets folder :  `asset_url('css/app.css')`
+* Folder Structure: 
+* baseroot
+* * themes
+* * * themename (this folder contains blade files and assets folder)
+* * * * assets (compiled css, images, js files)
+* * * * resources (uncompiled vuejs, sass files)
+
 ## Documentation
 
 Check the [Documentation](https://github.com/igaster/laravel-theme/wiki/1.-Installation)

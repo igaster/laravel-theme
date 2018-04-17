@@ -15,3 +15,12 @@ if (!function_exists('theme_url')) {
     }
 
 }
+
+if (!function_exists('asset_url')) {
+
+    function asset_url($url)
+    {
+        return app()->make('igaster.themes')->asset_path($url);
+    }
+
+}

@@ -15,7 +15,15 @@ Features:
 * Ships with console commands to manage themes
 
 ## Changes
-* Global functin for getting assets folder :  asset_url('css/app.css')
+* Change your View path in config/view.php to
+`
+'paths' => [
+        base_path('themes')
+    ],
+`
+
+* To use library create `"themes"` folder in base folder of your app.
+* Global function for getting assets folder :  `asset_url('css/app.css')`
 * Folder Structure: 
 * baseroot
 * * themes

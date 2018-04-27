@@ -96,7 +96,7 @@ class themeViewFinder extends FileViewFinder {
         $this->hints[$namespace] = (array) $hints;
 
         // Overide Error Pages
-        if($namespace == 'errors' || $namespace == 'mail'){
+        if($namespace == 'errors' || $namespace == 'mails'){
 
             $searchPaths = array_diff($this->paths, \Theme::getLaravelViewPaths());
 

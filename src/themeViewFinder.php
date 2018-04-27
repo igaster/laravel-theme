@@ -115,6 +115,7 @@ class themeViewFinder extends FileViewFinder {
      */
     public function setPaths($paths){
         $this->paths = $paths;
+        $this->flush();
     }
 
     /**

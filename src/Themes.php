@@ -75,7 +75,6 @@ class Themes{
 
         $themeViewFinder = app('view.finder');
         $themeViewFinder->setPaths($paths);
-        $themeViewFinder->flushFinderCache();
         Event::fire('igaster.laravel-theme.change', $theme);
         return $theme;
     }

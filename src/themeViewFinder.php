@@ -1,12 +1,12 @@
 <?php namespace Igaster\LaravelTheme;
 
+use Igaster\LaravelTheme\Facades\Theme;
 use Illuminate\Filesystem\Filesystem;
-use Illuminate\View\FileViewFinder;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Config;
+use Illuminate\View\FileViewFinder;
 
-class themeViewFinder extends FileViewFinder {
-
+class themeViewFinder extends FileViewFinder
+{
     public function __construct(Filesystem $files, array $paths, array $extensions = null)
     {
         $this->themeEngine = \App::make('igaster.themes');
@@ -30,7 +30,8 @@ class themeViewFinder extends FileViewFinder {
         return $this->findInPaths($view, $paths);
     }
 
-    public function addThemeNamespacePaths($namespace){
+    public function addThemeNamespacePaths($namespace)
+    {
         // This rule will remap all paths starting with $key to $value.
         // For exapmle paths starting with 'resources/views/vendor' (relative to base_path())
         // will be maped to path 'THEMENAME/vendor' (relative to current theme views-path)
@@ -40,7 +41,7 @@ class themeViewFinder extends FileViewFinder {
         ];
 
         // Does $namespace exists?
-        if(!isset($this->hints[$namespace])){
+        if (!isset($this->hints[$namespace])) {
             return [];
         }
 
@@ -51,12 +52,12 @@ class themeViewFinder extends FileViewFinder {
         // replace with the value of $pathsMap array
         $themeSubPaths = [];
         foreach ($paths as $path) {
-            $pathRelativeToApp = substr($path, strlen(base_path())+1);
+            $pathRelativeToApp = substr($path, strlen(base_path()) + 1);
             // Ignore paths in composer installed packages (paths inside vendor folder)
-            if(strpos($pathRelativeToApp,'vendor')!==0){
+            if (strpos($pathRelativeToApp, 'vendor') !== 0) {
                 // Remap paths definded int $pathsMap array
                 foreach ($pathsMap as $key => $value) {
-                    if(strpos($pathRelativeToApp, $key)===0){
+                    if (strpos($pathRelativeToApp, $key) === 0) {
                         $pathRelativeToApp = str_replace($key, $value, $pathRelativeToApp);
                         break;
                     }
@@ -67,10 +68,10 @@ class themeViewFinder extends FileViewFinder {
 
         // Prepend current theme's view path to the remaped paths
         $newPaths = [];
-        $searchPaths = array_diff($this->paths, \Theme::getLaravelViewPaths());
+        $searchPaths = array_diff($this->paths, Theme::getLaravelViewPaths());
         foreach ($searchPaths as $path1) {
             foreach ($themeSubPaths as $path2) {
-                $newPaths[] = $path1.'/'.$path2;
+                $newPaths[] = $path1 . '/' . $path2;
             }
         }
 
@@ -96,11 +97,11 @@ class themeViewFinder extends FileViewFinder {
         $this->hints[$namespace] = (array) $hints;
 
         // Overide Error Pages
-        if($namespace == 'errors' || $namespace == 'mails'){
+        if ($namespace == 'errors' || $namespace == 'mails') {
 
-            $searchPaths = array_diff($this->paths, \Theme::getLaravelViewPaths());
+            $searchPaths = array_diff($this->paths, Theme::getLaravelViewPaths());
 
-            $addPaths = array_map(function($path) use ($namespace){
+            $addPaths = array_map(function ($path) use ($namespace) {
                 return "$path/$namespace";
             }, $searchPaths);
 
@@ -113,7 +114,8 @@ class themeViewFinder extends FileViewFinder {
      *
      * @param  array  $paths
      */
-    public function setPaths($paths){
+    public function setPaths($paths)
+    {
         $this->paths = $paths;
         $this->flush();
     }
@@ -121,7 +123,8 @@ class themeViewFinder extends FileViewFinder {
     /**
      * Get the array of paths wherew the views are being searched.
      */
-    public function getPaths(){
+    public function getPaths()
+    {
         return $this->paths;
     }
 

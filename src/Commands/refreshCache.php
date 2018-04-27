@@ -1,20 +1,18 @@
 <?php namespace Igaster\LaravelTheme\Commands;
 
-use Illuminate\Console\Command;
+use Igaster\LaravelTheme\Facades\Theme;
 
 class refreshCache extends baseCommand
 {
     protected $signature = 'theme:refresh-cache';
     protected $description = 'Rebuilds the cache of "theme.json" files for each theme';
 
-    public function handle() {
+    public function handle()
+    {
         // Rebuild Themes Cache
-        \Theme::rebuildCache();
+        Theme::rebuildCache();
 
-        $this->info("Themes cache was refreshed. Currently theme caching is: ".(\Theme::cacheEnabled() ? "ENABLED" : "DISABLED"));
+        $this->info("Themes cache was refreshed. Currently theme caching is: " . (Theme::cacheEnabled() ? "ENABLED" : "DISABLED"));
     }
-
-
-
 
 }

@@ -1,6 +1,7 @@
 <?php namespace Igaster\LaravelTheme\Middleware;
 
 use Closure;
+use Igaster\LaravelTheme\Facades\Theme;
 
 class setTheme
 {
@@ -14,7 +15,7 @@ class setTheme
      */
     public function handle($request, Closure $next, $themeName)
     {
-        \Theme::set($themeName);
+        Theme::set($themeName);
         return $next($request);
     }
 }

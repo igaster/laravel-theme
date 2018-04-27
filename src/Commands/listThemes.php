@@ -1,6 +1,6 @@
 <?php namespace Igaster\LaravelTheme\Commands;
 
-use Illuminate\Console\Command;
+use Igaster\LaravelTheme\Facades\Theme;
 
 class listThemes extends baseCommand
 {
@@ -8,16 +8,18 @@ class listThemes extends baseCommand
     protected $signature = 'theme:list';
     protected $description = 'List installed themes';
 
-    public function info($text,$newline = true){
-        $this->output->write("<info>$text</info>", $newline);        
+    public function info($text, $newline = true)
+    {
+        $this->output->write("<info>$text</info>", $newline);
     }
 
-    public function handle() {
-        $themes = \Theme::all();
+    public function handle()
+    {
+        $themes = Theme::all();
         $this->info('+----------------------+----------------------+----------------------+----------------------+');
         $this->info('|      Theme Name      |        Extends       |      Views Path      |      Asset Path      |');
         $this->info('+----------------------+----------------------+----------------------+----------------------+');
-        foreach($themes as $theme){
+        foreach ($themes as $theme) {
             $this->info(sprintf("| %-20s | %-20s | %-20s | %-20s |",
                 $theme->name,
                 $theme->getParent() ? $theme->getParent()->name : "",
@@ -26,8 +28,8 @@ class listThemes extends baseCommand
             ));
         }
         $this->info('+----------------------+----------------------+----------------------+----------------------+');
-        $this->info('Views Path is relative to: '.themes_path());
-        $this->info('Asset Path is relative to: '.public_path());
+        $this->info('Views Path is relative to: ' . themes_path());
+        $this->info('Asset Path is relative to: ' . public_path());
 
     }
 }

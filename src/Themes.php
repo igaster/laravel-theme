@@ -148,7 +148,7 @@ class Themes
 
     public function cacheEnabled()
     {
-        return config('themes.cache', true);
+        return config('themes.cache', false);
     }
 
     // Rebuilds the cache file

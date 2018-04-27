@@ -27,8 +27,8 @@ class createTheme extends baseCommand
         }
 
         // Read theme paths
-        $viewsPath = $this->anticipate("Where will views be located [Default='$themeName']?", [$themeName]);
-        $assetPath = $this->anticipate("Where will assets be located [Default='$themeName']?", [$themeName]);
+        $viewsPath = $this->anticipate("Where will views be located?", [$themeName], $themeName);
+        $assetPath = $this->anticipate("Where will assets be located?", [$themeName], $themeName);
 
         // Calculate Absolute paths & check if they exist
         $viewsPathFull = themes_path($viewsPath);

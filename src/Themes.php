@@ -29,7 +29,7 @@ class Themes{
 
     /**
      * Return list of registered themes
-     * 
+     *
      * @return array
      */
     public function all(){
@@ -38,7 +38,7 @@ class Themes{
 
     /**
      * Check if @themeName is registered
-     * 
+     *
      * @return bool
      */
     public function exists($themeName){
@@ -51,7 +51,7 @@ class Themes{
 
     /**
      * Enable $themeName & set view paths
-     * 
+     *
      * @return Theme
      */
     public function set($themeName){
@@ -75,14 +75,14 @@ class Themes{
 
         $themeViewFinder = app('view.finder');
         $themeViewFinder->setPaths($paths);
-
+        $themeViewFinder->flushFinderCache();
         Event::fire('igaster.laravel-theme.change', $theme);
         return $theme;
     }
 
     /**
      * Get current theme
-     * 
+     *
      * @return Theme
      */
     public function current(){
@@ -91,7 +91,7 @@ class Themes{
 
     /**
      * Get current theme's name
-     * 
+     *
      * @return string
      */
     public function get(){
@@ -100,7 +100,7 @@ class Themes{
 
     /**
      * Find a theme by it's name
-     * 
+     *
      * @return Theme
      */
     public function find($themeName){
@@ -115,7 +115,7 @@ class Themes{
 
     /**
      * Register a new theme
-     * 
+     *
      * @return Theme
      */
     public function add(Theme $theme){
@@ -208,7 +208,7 @@ class Themes{
     }
 
     /**
-     * Scan all folders inside the themes path & config/themes.php 
+     * Scan all folders inside the themes path & config/themes.php
      * If a "theme.json" file is found then load it and setup theme
      */
     public function scanThemes(){
@@ -235,12 +235,12 @@ class Themes{
             }
 
             // Load the rest of the values as theme Settings
-            $theme->loadSettings($data);            
+            $theme->loadSettings($data);
         }
 
         // Add themes from config/themes.php
         foreach ($themesConfig as $themeName => $themeConfig) {
-            
+
             // Is it an element with no values?
             if(is_string($themeConfig)){
                 $themeName = $themeConfig;
@@ -279,7 +279,7 @@ class Themes{
             } else {
                 $parent = new Theme($parentName);
             }
-            
+
             $child->setParent($parent);
         }
     }
@@ -306,7 +306,7 @@ class Themes{
         } else {
             throw new \Exception("No theme is set. Can not execute method [$method] in [".self::class."]", 1);
         }
-    }   
+    }
 
     /*--------------------------------------------------------------------------
     | Blade Helper Functions
@@ -329,7 +329,7 @@ class Themes{
      * @return string
      */
     public function js($href){
-        return sprintf('<script src="%s"></script>',$this->url($href)); 
+        return sprintf('<script src="%s"></script>',$this->url($href));
     }
 
     /**
@@ -349,7 +349,7 @@ class Themes{
             $this->HtmlAttributes($attributes)
         );
     }
-    
+
     /**
      * Return attributes in html format
      *
@@ -365,5 +365,5 @@ class Themes{
         }, array_keys($attributes)));
         return $formatted;
     }
- 
+
 }

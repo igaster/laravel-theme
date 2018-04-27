@@ -109,7 +109,7 @@ class themeViewFinder extends FileViewFinder {
     }
 
     /**
-     * Set the array of paths wherew the views are being searched.
+     * Set the array of paths where the views are being searched.
      *
      * @param  array  $paths
      */

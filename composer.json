@@ -1,7 +1,7 @@
 {
     "name": "igaster/laravel-theme",
     "description": "Laravel 5 Themes: Asset & Views folder per theme. Theme inheritance. Blade integration and more...",
-    "keywords": ["themes", "views", "assets", "blade", "laravel-5", "package"],
+    "keywords": ["themes", "views", "assets", "blade", "laravel", "package"],
     "license": "MIT",
     "homepage": "https://github.com/Igaster/laravel-theme.git",
     "authors": [
@@ -11,11 +11,7 @@
         }
     ],	
     "require": {
-        "illuminate/contracts": "5.4.*|5.5.*|5.6.*|5.7.*"
-    },
-    "require-dev": {
-        "orchestra/testbench": "~3.4",
-        "phpunit/phpunit": "^6.0"
+        "illuminate/contracts": "5.4.*|5.5.*|5.6.*|5.7.*|5.8.*"
     },
     "suggest": {
         "orchestra/asset" : "Use '@css' and '@js' in Blade files"

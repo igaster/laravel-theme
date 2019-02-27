@@ -47,7 +47,7 @@ class baseCommand extends Command
 
     protected function packages_path($path = '')
     {
-        return storage_path("themes/$path");
+        return storage_path('themes'.DIRECTORY_SEPARATOR.$path);
     }
 
     protected function theme_installed($themeName)
@@ -60,6 +60,6 @@ class baseCommand extends Command
 
         $viewsPath = \Theme::find($themeName)->viewsPath;
 
-        return $this->files->exists(themes_path("$viewsPath/theme.json"));
+        return $this->files->exists(themes_path($viewsPath.DIRECTORY_SEPARATOR.'theme.json'));
     }
 }

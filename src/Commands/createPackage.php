@@ -10,6 +10,17 @@ class createPackage extends baseCommand
 
     public function handle()
     {
+        // Check if tar exists
+        exec("tar --version", $output, $status);
+
+        if($status !== 0 ) {
+
+            $this->info('Error: tar executable could not be found. Please install tar utility before you can continue');
+
+            return;
+
+        }
+
         $themeName = $this->argument('themeName');
 
         if ($themeName == "") {

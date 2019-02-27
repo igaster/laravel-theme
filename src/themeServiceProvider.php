@@ -1,5 +1,11 @@
 <?php namespace Igaster\LaravelTheme;
 
+use Igaster\LaravelTheme\Commands\createPackage;
+use Igaster\LaravelTheme\Commands\createTheme;
+use Igaster\LaravelTheme\Commands\installPackage;
+use Igaster\LaravelTheme\Commands\listThemes;
+use Igaster\LaravelTheme\Commands\refreshCache;
+use Igaster\LaravelTheme\Commands\removeTheme;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
@@ -68,12 +74,12 @@ class themeServiceProvider extends ServiceProvider
         |--------------------------------------------------------------------------*/
         if ($this->app->runningInConsole()) {
             $this->commands([
-                \Igaster\LaravelTheme\Commands\listThemes::class,
-                \Igaster\LaravelTheme\Commands\createTheme::class,
-                \Igaster\LaravelTheme\Commands\removeTheme::class,
-                \Igaster\LaravelTheme\Commands\createPackage::class,
-                \Igaster\LaravelTheme\Commands\installPackage::class,
-                \Igaster\LaravelTheme\Commands\refreshCache::class,
+                listThemes::class,
+                createTheme::class,
+                removeTheme::class,
+                createPackage::class,
+                installPackage::class,
+                refreshCache::class,
             ]);
         }
 

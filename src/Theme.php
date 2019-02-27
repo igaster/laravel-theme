@@ -1,22 +1,32 @@
 <?php namespace Igaster\LaravelTheme;
 
-use Igaster\LaravelTheme\Facades\Theme as Themes;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 
 class Theme
 {
     public $name;
     public $viewsPath;
     public $assetPath;
-    public $parent;
     public $settings = [];
+
+    /** @var Theme  */
+    public $parent;
+
+    /** @var \Igaster\LaravelTheme\Themes */
+    private $themes;
 
     public function __construct($themeName, $assetPath = null, $viewsPath = null, Theme $parent = null)
     {
+        $this->themes = resolve('igaster.themes');
+
         $this->name = $themeName;
         $this->assetPath = $assetPath === null ? $themeName : $assetPath;
         $this->viewsPath = $viewsPath === null ? $themeName : $viewsPath;
         $this->parent = $parent;
-        Themes::add($this);
+
+        $this->themes->add($this);
     }
 
     public function getViewPaths()
@@ -88,12 +98,12 @@ class Theme
         }
 
         // Asset not found at all. Error handling
-        $action = \Config::get('themes.asset_not_found', 'LOG_ERROR');
+        $action = Config::get('themes.asset_not_found', 'LOG_ERROR');
 
         if ($action == 'THROW_EXCEPTION') {
             throw new Exceptions\themeException("Asset not found [$url]");
         } elseif ($action == 'LOG_ERROR') {
-            \Log::warning("Asset not found [$url] in Theme [" . Themes::current()->name . "]");
+            Log::warning("Asset not found [$url] in Theme [" . $this->themes->current()->name . "]");
         } else {
             // themes.asset_not_found = 'IGNORE'
             return '/' . $url;
@@ -116,16 +126,16 @@ class Theme
         $assetPath = public_path($this->assetPath);
 
         if ($clearPaths) {
-            if (\File::exists($viewsPath)) {
-                \File::deleteDirectory($viewsPath);
+            if (File::exists($viewsPath)) {
+                File::deleteDirectory($viewsPath);
             }
-            if (\File::exists($assetPath)) {
-                \File::deleteDirectory($assetPath);
+            if (File::exists($assetPath)) {
+                File::deleteDirectory($assetPath);
             }
         }
 
-        \File::makeDirectory($viewsPath);
-        \File::makeDirectory($assetPath);
+        File::makeDirectory($viewsPath);
+        File::makeDirectory($assetPath);
 
         $themeJson = new \Igaster\LaravelTheme\themeManifest(array_merge($this->settings, [
             'name' => $this->name,
@@ -134,24 +144,21 @@ class Theme
         ]));
         $themeJson->saveToFile("$viewsPath/theme.json");
 
-        Themes::rebuildCache();
+        $this->themes->rebuildCache();
     }
 
     public function uninstall()
     {
-        $viewsPath = themes_path($this->viewsPath);
-        $assetPath = public_path($this->assetPath);
-
         // Calculate absolute paths
         $viewsPath = themes_path($this->viewsPath);
         $assetPath = public_path($this->assetPath);
 
         // Check that paths exist
-        $viewsExists = \File::exists($viewsPath);
-        $assetExists = \File::exists($assetPath);
+        $viewsExists = File::exists($viewsPath);
+        $assetExists = File::exists($assetPath);
 
         // Check that no other theme uses to the same paths (ie a child theme)
-        foreach (Themes::all() as $t) {
+        foreach ($this->themes->all() as $t) {
             if ($t !== $this && $viewsExists && $t->viewsPath == $this->viewsPath) {
                 throw new \Exception("Can not delete folder [$viewsPath] of theme [{$this->name}] because it is also used by theme [{$t->name}]", 1);
             }
@@ -162,10 +169,10 @@ class Theme
 
         }
 
-        \File::deleteDirectory($viewsPath);
-        \File::deleteDirectory($assetPath);
+        File::deleteDirectory($viewsPath);
+        File::deleteDirectory($assetPath);
 
-        Themes::rebuildCache();
+        $this->themes->rebuildCache();
     }
 
     /*--------------------------------------------------------------------------

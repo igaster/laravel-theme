@@ -26,6 +26,8 @@ class installPackage extends baseCommand
 
                 $this->info("No theme packages found to install at ".$this->packages_path());
 
+                return;
+
             }
 
             $package = $this->choice('Select a theme to install:', $packages);

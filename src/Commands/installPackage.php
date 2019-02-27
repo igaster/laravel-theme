@@ -1,6 +1,7 @@
 <?php namespace Igaster\LaravelTheme\Commands;
 
 use Igaster\LaravelTheme\Facades\Theme;
+use Igaster\LaravelTheme\themeManifest;
 
 class installPackage extends baseCommand
 {
@@ -12,12 +13,24 @@ class installPackage extends baseCommand
         $package = $this->argument('package');
 
         if (!$package) {
+
             $filenames = $this->files->glob($this->packages_path('*.theme.tar.gz'));
+
             $packages = array_map(function ($filename) {
+
                 return basename($filename, '.theme.tar.gz');
+
             }, $filenames);
+
+            if(empty($packages)){
+
+                $this->info("No theme packages found to install at ".$this->packages_path());
+
+            }
+
             $package = $this->choice('Select a theme to install:', $packages);
         }
+
         $package = $this->packages_path($package . '.theme.tar.gz');
 
         // Create Temp Folder
@@ -27,14 +40,18 @@ class installPackage extends baseCommand
         exec("tar xzf $package -C {$this->tempPath}");
 
         // Read theme.json
-        $themeJson = new \Igaster\LaravelTheme\themeManifest();
+        $themeJson = new themeManifest();
+
         $themeJson->loadFromFile("{$this->tempPath}/views/theme.json");
 
         // Check if theme is already installed
         $themeName = $themeJson->get('name');
         if ($this->theme_installed($themeName)) {
+
             $this->error('Error: Theme ' . $themeName . ' already exist. You must remove it first with "artisan theme:remove ' . $themeName . '"');
+
             $this->clearTempFolder();
+
             return;
         }
 
@@ -50,7 +67,9 @@ class installPackage extends baseCommand
 
             // Remove 'theme-views' from theme.json
             $themeJson->remove('views-path');
+
             $themeJson->saveToFile("$viewsPath/theme.json");
+
             $this->info("Theme views installed to path [$viewsPath]");
         }
 

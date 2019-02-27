@@ -22,31 +22,44 @@ class baseCommand extends Command
     public function __construct(Filesystem $files)
     {
         parent::__construct();
+
         $this->tempPath = $this->packages_path('tmp');
+
         $this->files = $files;
+
     }
-    
-    protected function createTempFolder(){
+
+    protected function createTempFolder()
+    {
         $this->clearTempFolder();
+
         $this->files->makeDirectory($this->tempPath);
     }
 
-    protected function clearTempFolder(){
-        if ($this->files->exists($this->tempPath)){
+    protected function clearTempFolder()
+    {
+        if ($this->files->exists($this->tempPath)) {
+
             $this->files->deleteDirectory($this->tempPath);
+
         }
     }
 
-    protected function packages_path($path=''){
+    protected function packages_path($path = '')
+    {
         return storage_path("themes/$path");
     }
 
-    protected function theme_installed($themeName){
-        if(!\Theme::exists($themeName)){
+    protected function theme_installed($themeName)
+    {
+        if (!\Theme::exists($themeName)) {
+
             return false;
+
         }
 
         $viewsPath = \Theme::find($themeName)->viewsPath;
+
         return $this->files->exists(themes_path("$viewsPath/theme.json"));
     }
 }

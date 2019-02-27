@@ -1,6 +1,5 @@
 <?php namespace Igaster\LaravelTheme;
 
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Event;
 
 class Themes
@@ -13,8 +12,8 @@ class Themes
 
     public function __construct()
     {
-        $this->laravelViewsPath = Config::get('view.paths');
-        $this->themesPath = Config::get('themes.themes_path', null) ?: Config::get('view.paths')[0];
+        $this->laravelViewsPath = config('view.paths');
+        $this->themesPath = config('themes.themes_path', null) ?: config('view.paths')[0];
         $this->cachePath = base_path('bootstrap/cache/themes.php');
     }
 
@@ -80,7 +79,7 @@ class Themes
             }
         }
 
-        Config::set('view.paths', $paths);
+        config(['view.paths' => $paths]);
 
         $themeViewFinder = app('view.finder');
         $themeViewFinder->setPaths($paths);
@@ -192,9 +191,9 @@ class Themes
 
                 // default theme settings
                 $defaults = [
-                    'name' => $themeName,
+                    'name'       => $themeName,
                     'asset-path' => $themeName,
-                    'extends' => null,
+                    'extends'    => null,
                 ];
 
                 // If theme.json is not an empty file parse json values
@@ -326,7 +325,7 @@ class Themes
     public function __call($method, $args)
     {
         if (($theme = $this->current())) {
-            return call_user_func_array(array($theme, $method), $args);
+            return call_user_func_array([$theme, $method], $args);
         } else {
             throw new \Exception("No theme is set. Can not execute method [$method] in [" . self::class . "]", 1);
         }
@@ -364,10 +363,10 @@ class Themes
      * @param  string $src
      * @param  string $alt
      * @param  string $Class
-     * @param  array  $attributes
+     * @param  array $attributes
      * @return string
      */
-    public function img($src, $alt = '', $class = '', $attributes = array())
+    public function img($src, $alt = '', $class = '', $attributes = [])
     {
         return sprintf('<img src="%s" alt="%s" class="%s" %s>',
             $this->url($src),

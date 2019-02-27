@@ -42,6 +42,11 @@ class themeServiceProvider extends ServiceProvider
 
         require_once 'Helpers/helpers.php';
 
+    }
+
+    public function boot()
+    {
+
         /*--------------------------------------------------------------------------
         | Initialize Themes
         |--------------------------------------------------------------------------*/
@@ -55,11 +60,6 @@ class themeServiceProvider extends ServiceProvider
         if (!$themes->current() && \Config::get('themes.default')) {
             $themes->set(\Config::get('themes.default'));
         }
-
-    }
-
-    public function boot()
-    {
 
         /*--------------------------------------------------------------------------
         | Pulish configuration file

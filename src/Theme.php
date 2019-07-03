@@ -51,11 +51,12 @@ class Theme
 
     public function url($url)
     {
-        $url = ltrim($url, '/');
         // return external URLs unmodified
         if (preg_match('/^((http(s?):)?\/\/)/i', $url)) {
             return $url;
         }
+
+        $url = ltrim($url, '/');
 
         // Is theme folder located on the web (ie AWS)? Dont lookup parent themes...
         if (preg_match('/^((http(s?):)?\/\/)/i', $this->assetPath)) {

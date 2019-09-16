@@ -58,11 +58,6 @@ class Theme
 
         $url = ltrim($url, '/');
 
-        // Is theme folder located on the web (ie AWS)? Dont lookup parent themes...
-        if (preg_match('/^((http(s?):)?\/\/)/i', $this->assetPath)) {
-            return $this->assetPath . '/' . $url;
-        }
-
         // Check for valid {xxx} keys and replace them with the Theme's configuration value (in themes.php)
         preg_match_all('/\{(.*?)\}/', $url, $matches);
         foreach ($matches[1] as $param) {
@@ -98,6 +93,11 @@ class Theme
             }
         }
 
+        // Is theme folder located on the web (ie AWS)? Dont lookup parent themes...
+        if (preg_match('/^((http(s?):)?\/\/)/i', $this->assetPath)) {
+            return $this->assetPath . '/' . $url;
+        }
+        
         // Asset not found at all. Error handling
         $action = Config::get('themes.asset_not_found', 'LOG_ERROR');
 

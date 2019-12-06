@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Arr;
 
 class Theme
 {
@@ -187,8 +188,8 @@ class Theme
 
     public function getSetting($key, $default = null)
     {
-        if (array_key_exists($key, $this->settings)) {
-            return $this->settings[$key];
+        if (Arr::has($this->settings,$key)) {
+            return Arr::get($this->settings,$key);
         } elseif ($parent = $this->getParent()) {
             return $parent->getSetting($key, $default);
         } else {

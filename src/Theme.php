@@ -20,7 +20,7 @@ class Theme
 
     public function __construct($themeName, $assetPath = null, $viewsPath = null, Theme $parent = null)
     {
-        $this->themes = resolve('igaster.themes');
+        $this->themes = app('igaster.themes');
 
         $this->name = $themeName;
         $this->assetPath = $assetPath === null ? $themeName : $assetPath;

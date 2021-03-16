@@ -38,6 +38,7 @@ class themeViewFinder extends FileViewFinder
         $pathsMap = [
             // 'resources/views/vendor/mail' => 'mail',
             'resources/views/vendor' => 'vendor',
+            'resources/views/modules' => 'modules',
         ];
 
         // Does $namespace exists?

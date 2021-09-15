@@ -2,6 +2,7 @@
 
 use Illuminate\Console\Command;
 use Igaster\LaravelTheme\Facades\Theme;
+use Illuminate\Support\Facades\File;  
 
 class createPackage extends baseCommand
 {
@@ -68,9 +69,9 @@ class createPackage extends baseCommand
         $this->createTempFolder();
 
         // Copy Views+Assets to Temp Folder
-        system("cp -r $viewsPath {$this->tempPath}/views");
+        File::copyDirectory($viewsPath, "{$this->tempPath}/views");
 
-        system("cp -r $assetPath {$this->tempPath}/asset");
+        File::copyDirectory($assetPath, "{$this->tempPath}/asset");
 
         // Add viewsPath into theme.json file
         $themeJson = new \Igaster\LaravelTheme\themeManifest();

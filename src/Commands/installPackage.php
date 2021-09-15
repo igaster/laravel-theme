@@ -2,6 +2,7 @@
 
 use Igaster\LaravelTheme\Facades\Theme;
 use Igaster\LaravelTheme\themeManifest;
+use Illuminate\Support\Facades\File;
 
 class installPackage extends baseCommand
 {
@@ -76,7 +77,7 @@ class installPackage extends baseCommand
         if (file_exists($viewsPath)) {
             $this->info("Warning: Views path [$viewsPath] already exists. Will not be installed.");
         } else {
-            exec("mv {$this->tempPath}/views $viewsPath");
+            File::moveDirectory("{$this->tempPath}/views", $viewsPath);
 
             // Remove 'theme-views' from theme.json
             $themeJson->remove('views-path');
@@ -89,7 +90,7 @@ class installPackage extends baseCommand
         if (file_exists($assetPath)) {
             $this->error("Error: Asset path [$assetPath] already exists. Will not be installed.");
         } else {
-            exec("mv {$this->tempPath}/asset $assetPath");
+            File::moveDirectory("{$this->tempPath}/asset", $assetPath);
             $this->info("Theme assets installed to path [$assetPath]");
         }
 

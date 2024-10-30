@@ -87,7 +87,9 @@ class themeServiceProvider extends ServiceProvider
         | Register custom Blade Directives
         |--------------------------------------------------------------------------*/
 
-        $this->registerBladeDirectives();
+        if(\Config::get('themes.register_blade_directives', true)) {
+            $this->registerBladeDirectives();
+        }
     }
 
     protected function registerBladeDirectives()

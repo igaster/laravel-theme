@@ -2,16 +2,16 @@
 
 return [
 
-    /*
-    |--------------------------------------------------------------------------
-    | Root path where theme Views will be located.
-    | Can be outside default views path e.g.: resources/themes
-    | Leave it null if you will put your themes in the default views folder
-    | (as defined in config\views.php)
-    |--------------------------------------------------------------------------
-    */
+	/*
+	|--------------------------------------------------------------------------
+	| Root path where theme Views will be located.
+	| Can be outside default views path e.g.: resources/themes
+	| Leave it null if you will put your themes in the default views folder
+	| (as defined in config\views.php)
+	|--------------------------------------------------------------------------
+	*/
 
-    'themes_path' => null, // eg: base_path('resources/themes')
+	'themes_path' => null, // eg: base_path('resources/themes')
 
 	/*
 	|--------------------------------------------------------------------------
@@ -39,6 +39,20 @@ return [
 	*/
 
 	'cache' => false,
+
+	/*
+	|--------------------------------------------------------------------------
+	| Laravel introduced the @js directive in Laravel 9, released on February 8, 2022.
+	| This directive was added to simplify safely passing PHP data to JavaScript
+	| within Blade templates, eliminating the need for manual JSON encoding and escaping,
+	| which was commonly done with json_encode() in older versions.
+	|
+	| which may conflict with you if you're (or package ex: filament) using it.
+	| so you might want to disabled registering this package @js @jsIn @css blade directives.
+	|--------------------------------------------------------------------------
+	*/
+
+    	'register_blade_directives' => true,
 
 	/*
 	|--------------------------------------------------------------------------
